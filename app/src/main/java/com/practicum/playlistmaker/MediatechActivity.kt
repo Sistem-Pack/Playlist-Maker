@@ -1,8 +1,6 @@
 package com.practicum.playlistmaker
 
-import android.app.Activity
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 
 class MediatechActivity : AppCompatActivity() {
