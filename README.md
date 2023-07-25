@@ -1,3 +1,3 @@
-# Playlist_Maker_test
+# Playlist Maker
 
 Yandex Homework
