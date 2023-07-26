@@ -42,46 +42,46 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="24dp"/>
+        android:layout_height="24dp" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dm21"
         android:paddingStart="@dimen/dm16"
-        android:paddingEnd="6dp"
-        android:paddingVertical="@dimen/dm21">
+        android:paddingEnd="6dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:fontFamily="@font/ys_regular"
             android:gravity="center"
             android:text="@string/dark_theme"
             android:textColor="@color/black"
-            android:layout_gravity="center_vertical"
             android:textSize="@dimen/ln16" />
 
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"/>
+            android:layout_gravity="end|center_vertical" />
 
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dm21"
         android:paddingStart="@dimen/dm16"
-        android:paddingEnd="@dimen/dm12"
-        android:paddingVertical="@dimen/dm21">
+        android:paddingEnd="@dimen/dm12">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:fontFamily="@font/ys_regular"
             android:text="@string/send"
             android:textColor="@color/black"
-            android:layout_gravity="center_vertical"
             android:textSize="@dimen/ln16" />
 
         <ImageView
@@ -97,17 +97,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dm21"
         android:paddingStart="@dimen/dm16"
-        android:paddingEnd="@dimen/dm12"
-        android:paddingVertical="@dimen/dm21">
+        android:paddingEnd="@dimen/dm12">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:fontFamily="@font/ys_regular"
             android:text="@string/support"
             android:textColor="@color/black"
-            android:layout_gravity="center_vertical"
             android:textSize="@dimen/ln16" />
 
         <ImageView
@@ -123,17 +123,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/dm21"
         android:paddingStart="@dimen/dm16"
-        android:paddingEnd="@dimen/dm12"
-        android:paddingVertical="@dimen/dm21">
+        android:paddingEnd="@dimen/dm12">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:fontFamily="@font/ys_regular"
             android:text="@string/privacy"
             android:textColor="@color/black"
-            android:layout_gravity="center_vertical"
             android:textSize="@dimen/ln16" />
 
         <ImageView
