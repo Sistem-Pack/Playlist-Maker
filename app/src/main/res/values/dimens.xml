@@ -9,4 +9,5 @@
     <dimen name="dm52">52dp</dimen>
     -- size for string
     <dimen name="ln22">22sp</dimen>
+    <dimen name="ln16">16sp</dimen>
 </resources>
