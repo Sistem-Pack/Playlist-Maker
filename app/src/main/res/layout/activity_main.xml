@@ -2,16 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/back"
-    android:orientation="vertical"
+    style="@style/StartScreenStyle"
     tools:context=".MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_medium"
+        android:fontFamily="@font/ys_text_medium"
         android:paddingStart="@dimen/dm16"
         android:paddingTop="10dp"
         android:paddingEnd="62dp"
@@ -30,58 +27,21 @@
 
         <Button
             android:id="@+id/search_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dm16"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/ys_medium"
             android:text="@string/button_text_search"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ln22"
-            app:cornerRadius="@dimen/dm16"
             app:icon="@drawable/ic_search"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/dm8"
-            app:iconTint="@color/black" />
+            style="@style/ButtonMainScreenStyle"/>
 
         <Button
             android:id="@+id/mediatech_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dm16"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/ys_medium"
+            style="@style/ButtonMainScreenStyle"
             android:text="@string/button_text_mediatech"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ln22"
-            app:cornerRadius="@dimen/dm16"
-            app:icon="@drawable/ic_music"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/dm8"
-            app:iconTint="@color/black" />
+            app:icon="@drawable/ic_music" />
 
         <Button
             android:id="@+id/settings_button"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dm16"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:fontFamily="@font/ys_medium"
             android:text="@string/button_text_settings"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ln22"
-            app:cornerRadius="@dimen/dm16"
             app:icon="@drawable/ic_settings"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/dm8"
-            app:iconTint="@color/black" />
+            style="@style/ButtonMainScreenStyle" />
 
     </LinearLayout>
 

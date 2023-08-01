@@ -2,10 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
+    style="@style/BodyStartScreenStyle"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -16,25 +13,24 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:focusable="true"
+            android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
             android:padding="@dimen/dm12">
 
             <ImageView
                 android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/null_string"
+                style="@style/BackButtonImageView"
+                android:layout_gravity="end|center_vertical"
                 android:src="@drawable/arrow_back" />
 
         </FrameLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ys_medium"
+            style="@style/SettingsTextViewList"
+            android:fontFamily="@font/ys_text_medium"
             android:paddingVertical="@dimen/dm12"
             android:text="@string/settings_title"
-            android:textColor="@color/black"
             android:textSize="@dimen/ln22" />
 
     </LinearLayout>
@@ -45,104 +41,60 @@
         android:layout_height="24dp" />
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/dm21"
-        android:paddingStart="@dimen/dm16"
+        android:id="@+id/switch_layout"
+        style="@style/SettingsListFrame"
         android:paddingEnd="6dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/ys_regular"
-            android:gravity="center"
-            android:text="@string/dark_theme"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ln16" />
+            style="@style/SettingsTextViewList"
+            android:text="@string/dark_theme" />
 
         <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical" />
+            style="@style/ModeSwitch"
+            android:id="@+id/mode_switch" />
 
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/dm21"
-        android:paddingStart="@dimen/dm16"
-        android:paddingEnd="@dimen/dm12">
+        android:id="@+id/share"
+        style="@style/SettingsListFrame">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/ys_regular"
-            android:text="@string/send"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ln16" />
+            style="@style/SettingsTextViewList"
+            android:text="@string/send"/>
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="end|center_vertical"
-            android:contentDescription="@string/null_string"
-            android:src="@drawable/share"
-            app:tint="@color/gray" />
+            style="@style/SettingsImageViewList"
+            android:src="@drawable/share" />
 
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/dm21"
-        android:paddingStart="@dimen/dm16"
-        android:paddingEnd="@dimen/dm12">
+        android:id="@+id/send"
+        style="@style/SettingsListFrame">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/ys_regular"
-            android:text="@string/support"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ln16" />
+            style="@style/SettingsTextViewList"
+            android:text="@string/support" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:contentDescription="@string/null_string"
-            android:src="@drawable/operator"
-            app:tint="@color/gray" />
+            style="@style/SettingsImageViewList"
+            android:src="@drawable/operator" />
 
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/dm21"
-        android:paddingStart="@dimen/dm16"
-        android:paddingEnd="@dimen/dm12">
+        android:id="@+id/offer"
+        style="@style/SettingsListFrame">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/ys_regular"
-            android:text="@string/privacy"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ln16" />
+            style="@style/SettingsTextViewList"
+            android:layout_gravity="start|center_vertical"
+            android:text="@string/privacy"/>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:contentDescription="@string/null_string"
-            android:src="@drawable/arrow_forward"
-            app:tint="@color/gray" />
+            style="@style/SettingsImageViewList"
+            android:src="@drawable/arrow_forward" />
 
     </FrameLayout>
 
