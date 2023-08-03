@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    -- size for all
+    <dimen name="dm4">4dp</dimen>
+    <dimen name="dm8">8dp</dimen>
+    <dimen name="dm12">12dp</dimen>
+    <dimen name="dm16">16dp</dimen>
+    <dimen name="dm21">21dp</dimen>
+    <dimen name="dm52">52dp</dimen>
+    -- size for string
+    <dimen name="ln22">22sp</dimen>
+    <dimen name="ln16">16sp</dimen>
+</resources>
