@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     -- style for button on the Main Screen activity_main.xml
-    <style name="ButtonMainScreenStyle" parent="Widget.MaterialComponents.Button">
+    <style name="ButtonMainScreenStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginTop">@dimen/dm16</item>

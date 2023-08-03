@@ -69,18 +69,21 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         offerButton.setOnClickListener {
-            val url = "https://yandex.ru/legal/practicum_offer/"
+            val url = getString(R.string.practicum_offer)
             val i = Intent(Intent.ACTION_VIEW)
             i.data = Uri.parse(url)
             startActivity(i)
         }
 
         sendButton.setOnClickListener {
-            val message = "Спасибо разработчикам и разработчицам за крутое приложение!"
-            val subject = "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+            val message = getString(R.string.support_message)
+            val subject = getString(R.string.support_subject)
             val shareIntent = Intent(Intent.ACTION_SENDTO)
+
+
+
             shareIntent.data = Uri.parse("mailto:")
-            shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("alexandrneshev@yandex.ru"))
+            shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
             shareIntent.putExtra(Intent.EXTRA_TEXT, message)
             startActivity(shareIntent)
@@ -89,8 +92,8 @@ class SettingsActivity : AppCompatActivity() {
         shareButton.setOnClickListener {
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://practicum.yandex.ru/android-developer/")
-            sendIntent.type = "text/plain"
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+            sendIntent.type = getString(R.string.share_type)
             startActivity(sendIntent)
         }
     }
