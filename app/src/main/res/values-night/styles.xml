@@ -77,4 +77,35 @@
         <item name="android:layout_gravity">end|center_vertical</item>
     </style>
 
+    -- style for EditText in search_settings.xml Dark/Light Mode
+    <style name="EditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_marginHorizontal">@dimen/dm16</item>
+        <item name="android:textCursorDrawable">@color/background</item>
+        <item name="android:drawableStart">@drawable/ic_search</item>
+        <item name="android:drawableTint">@color/black</item>
+        <item name="android:background">@drawable/rounded_corners_edit</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:hint">@string/search_title</item>
+        <item name="android:textColorHint">@color/black</item>
+        <item name="android:drawablePadding">@dimen/dm4</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/ln16</item>
+        <item name="android:paddingEnd">@dimen/dm8</item>
+        <item name="endIconMode">clear_text</item>
+    </style>
+
+    -- clear text button ImageButton in search_activity.xml
+    <style name="ClearTextImageButtonStyle">
+        <item name="android:layout_width">@dimen/dm36</item>
+        <item name="android:layout_height">@dimen/dm36</item>
+        <item name="android:src">@drawable/clear_text</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_marginEnd">@dimen/dm16</item>
+        <item name="android:tint">@color/black</item>
+    </style>
+
 </resources>

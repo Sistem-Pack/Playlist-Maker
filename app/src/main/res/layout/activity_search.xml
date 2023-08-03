@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BodyStartScreenStyle"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/dm12">
+
+            <ImageView
+                style="@style/BackButtonImageView"
+                android:layout_gravity="end|center_vertical"
+                android:src="@drawable/arrow_back" />
+
+        </FrameLayout>
+
+        <TextView
+            style="@style/SettingsTextViewList"
+            android:fontFamily="@font/ys_text_medium"
+            android:paddingVertical="@dimen/dm12"
+            android:text="@string/search_title"
+            android:textSize="@dimen/ln22" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm8" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edit_view_search"
+            style="@style/EditTextStyle"
+            android:cursorVisible="true"
+            android:textColor="@color/black" />
+
+        <ImageButton
+            android:id="@+id/clear_text"
+            style="@style/ClearTextImageButtonStyle"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
