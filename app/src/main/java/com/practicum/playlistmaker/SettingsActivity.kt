@@ -69,32 +69,32 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         offerButton.setOnClickListener {
-            val url = getString(R.string.practicum_offer)
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
-            startActivity(i)
+            Intent().apply {
+                action = Intent.ACTION_VIEW
+                data = Uri.parse(getString(R.string.practicum_offer))
+                startActivity(this)
+            }
         }
 
         sendButton.setOnClickListener {
-            val message = getString(R.string.support_message)
-            val subject = getString(R.string.support_subject)
-            val shareIntent = Intent(Intent.ACTION_SENDTO)
-
-
-
-            shareIntent.data = Uri.parse("mailto:")
-            shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_email)))
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, subject)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-            startActivity(shareIntent)
+            Intent().apply {
+                action = Intent.ACTION_SENDTO
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.user_email)))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_subject))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.support_message))
+                data = Uri.parse("mailto:")
+                startActivity(this)
+            }
         }
 
         shareButton.setOnClickListener {
-            val sendIntent = Intent()
-            sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
-            sendIntent.type = getString(R.string.share_type)
-            startActivity(sendIntent)
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+                type = getString(R.string.share_type)
+                startActivity(this)
+            }
+
         }
     }
 

@@ -18,7 +18,7 @@
     <string name="practicum_offer">https://yandex.ru/legal/practicum_offer/</string>
     <string name="support_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
-    <string name="support_email">alexandrneshev@yandex.ru</string>
+    <string name="user_email">alexandrneshev@yandex.ru</string>
     <string name="share_link">https://practicum.yandex.ru/android-developer/</string>
-    <string name="share_type">getString(R.string.support_subject)</string>
+    <string name="share_type">text/plain</string>
 </resources>

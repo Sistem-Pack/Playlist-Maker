@@ -50,7 +50,9 @@
 
         <ImageButton
             android:id="@+id/clear_text"
-            style="@style/ClearTextImageButtonStyle"/>
+            style="@style/ClearTextImageButtonStyle"
+            android:visibility="gone"
+            tools:visibility="gone" />
 
     </RelativeLayout>
 
