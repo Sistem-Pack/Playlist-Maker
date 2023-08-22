@@ -4,6 +4,7 @@
     <string name="button_text_mediatech">Медиатека</string>
     <string name="button_text_settings">Настройки</string>
     <string name="settings_title">Настройки</string>
+    <string name="search_title">Поиск</string>
     <string name="dark_theme">Темная тема</string>
     <string name="support">Написать в поддержку</string>
     <string name="send">Поделиться приложением</string>
@@ -13,4 +14,11 @@
     <string name="title_activity_search">SearchActivity</string>
     -- strings for empty erros in the xml screen
     <string name="null_string"></string>
+    -- strings for settings activity
+    <string name="practicum_offer">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="support_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="user_email">alexandrneshev@yandex.ru</string>
+    <string name="share_link">https://practicum.yandex.ru/android-developer/</string>
+    <string name="share_type">text/plain</string>
 </resources>
