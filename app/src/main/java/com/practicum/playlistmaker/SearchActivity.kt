@@ -46,12 +46,43 @@ class SearchActivity : AppCompatActivity() {
         val clearButton = findViewById<ImageButton>(R.id.clear_text)
         val trackRecyclerView = findViewById<RecyclerView>(R.id.track_recycler_view)
         val errorConnection = findViewById<LinearLayout>(R.id.no_connection_error_layout)
-        //val notFound = findViewById<LinearLayout>(R.id.not_found_layout)
+        val notFound = findViewById<LinearLayout>(R.id.not_found_layout)
         val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
 
         trackRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        trackRecyclerView.adapter = TrackAdapter(tracks)
+
+        fun search() {
+
+            searchApiService.search(inputEditText.text.toString())
+                .enqueue(object : Callback<TrackResponse> {
+
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onResponse(
+                        call: Call<TrackResponse>,
+                        response: Response<TrackResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            errorConnection.visibility = View.GONE
+                            tracks.clear()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                tracks.addAll(response.body()?.results!!)
+                            } else {
+                                notFound.visibility = View.VISIBLE
+                            }
+                        } else {
+                            errorConnection.visibility = View.VISIBLE
+                        }
+                        trackRecyclerView.adapter = TrackAdapter(tracks)
+                        TrackAdapter(tracks).notifyDataSetChanged()
+                    }
+
+                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                        tracks.clear()
+                        errorConnection.visibility = View.VISIBLE
+                    }
+                })
+        }
 
         backButton.setOnClickListener {
             finish()
@@ -60,40 +91,17 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             hideSoftKeyboard(it)
+            tracks.clear()
+            trackRecyclerView.adapter = TrackAdapter(tracks)
+            TrackAdapter(tracks).notifyDataSetChanged()
         }
 
-
-
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
+            trackRecyclerView.visibility = View.VISIBLE
+            notFound.visibility = View.GONE
+            errorConnection.visibility = View.GONE
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchApiService.search(inputEditText.text.toString())
-                    .enqueue(object : Callback<TrackResponse> {
-
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onResponse(
-                            call: Call<TrackResponse>,
-                            response: Response<TrackResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                tracks.clear()
-                                if (response.body()?.results?.isNotEmpty() == true) {
-                                    tracks.addAll(response.body()?.results!!)
-                                } else {
-                                    tracks.clear()
-                                    //notFound.visibility = View.VISIBLE
-                                }
-                            } else {
-                                tracks.clear()
-                                //errorConnection.visibility = View.VISIBLE
-                            }
-                            TrackAdapter(tracks).notifyDataSetChanged()
-                        }
-
-                        override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                            tracks.clear()
-                            //errorConnection.visibility = View.VISIBLE
-                        }
-                    })
+                search()
                 true
             }
             false
@@ -118,6 +126,10 @@ class SearchActivity : AppCompatActivity() {
 
         if (savedInstanceState != null) {
             inputEditText.setText(savedInstanceState.getString(SEARCH_TEXT, ""))
+        }
+
+        searchRefreshButton.setOnClickListener {
+            search()
         }
     }
 
