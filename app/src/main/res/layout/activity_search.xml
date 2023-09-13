@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/BodyStartScreenStyle"
     tools:context=".MainActivity">
 
@@ -14,8 +14,8 @@
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:focusable="true"
             android:clickable="true"
+            android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:padding="@dimen/dm12">
 
@@ -47,6 +47,8 @@
             android:id="@+id/edit_view_search"
             style="@style/EditTextStyle"
             android:cursorVisible="true"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             android:textColor="@color/black" />
 
         <ImageButton
@@ -56,13 +58,47 @@
             tools:visibility="gone" />
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/not_found_layout"
+        style="searchStatusFoundOrErrorStyle" >
+
+        <ImageView
+            style="@style/notFoundStyle" />
+
+        <TextView
+            style="@style/errorTextStyle"
+            android:text="@string/not_found_string" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/no_connection_error_layout"
+        style="searchStatusFoundOrErrorStyle" >
+
+        <ImageView
+            style="@style/noConnectionStyle" />
+
+        <TextView
+            style="@style/errorTextStyle"
+            android:text="@string/no_connection_string" />
+
+        <Button
+            android:id="@+id/search_refresh_button"
+            style="@style/refresh_button_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dm24"
+            app:cornerRadius="@dimen/dm54" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/track_recycler_view"
-        tools:listitem="@layout/view_track"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dm16"
-        />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_track" />
 
 </LinearLayout>
