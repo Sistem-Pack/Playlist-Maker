@@ -46,11 +46,12 @@ class SearchActivity : AppCompatActivity() {
         val clearButton = findViewById<ImageButton>(R.id.clear_text)
         val trackRecyclerView = findViewById<RecyclerView>(R.id.track_recycler_view)
         val errorConnection = findViewById<LinearLayout>(R.id.no_connection_error_layout)
-        val notFound = findViewById<LinearLayout>(R.id.not_found_layout)
+        //val notFound = findViewById<LinearLayout>(R.id.not_found_layout)
         val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
 
         trackRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        trackRecyclerView.adapter = TrackAdapter(tracks)
 
         backButton.setOnClickListener {
             finish()
@@ -61,7 +62,7 @@ class SearchActivity : AppCompatActivity() {
             hideSoftKeyboard(it)
         }
 
-        trackRecyclerView.adapter = TrackAdapter(tracks)
+
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -79,18 +80,18 @@ class SearchActivity : AppCompatActivity() {
                                     tracks.addAll(response.body()?.results!!)
                                 } else {
                                     tracks.clear()
-                                    notFound.visibility = View.VISIBLE
+                                    //notFound.visibility = View.VISIBLE
                                 }
                             } else {
                                 tracks.clear()
-                                errorConnection.visibility = View.VISIBLE
+                                //errorConnection.visibility = View.VISIBLE
                             }
                             TrackAdapter(tracks).notifyDataSetChanged()
                         }
 
                         override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                             tracks.clear()
-                            errorConnection.visibility = View.VISIBLE
+                            //errorConnection.visibility = View.VISIBLE
                         }
                     })
                 true

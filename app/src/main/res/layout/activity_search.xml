@@ -61,7 +61,7 @@
 
     <LinearLayout
         android:id="@+id/not_found_layout"
-        style="searchStatusFoundOrErrorStyle" >
+        style="@style/searchStatusFoundOrErrorStyle" >
 
         <ImageView
             style="@style/notFoundStyle" />
@@ -74,7 +74,7 @@
 
     <LinearLayout
         android:id="@+id/no_connection_error_layout"
-        style="searchStatusFoundOrErrorStyle" >
+        style="@style/searchStatusFoundOrErrorStyle" >
 
         <ImageView
             style="@style/noConnectionStyle" />
