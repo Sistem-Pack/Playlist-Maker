@@ -70,11 +70,10 @@
 
     -- style for Switch in activity_settings.xml Dark/Light Mode
     <style name="ModeSwitch">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:thumbTint">@color/background</item>
-        <item name="android:trackTint">@color/light_blue</item>
-        <item name="android:layout_gravity">end|center_vertical</item>
+        <item name="android:text">@string/switch_mode_string</item>
+        <item name="android:layout_gravity">start</item>
     </style>
 
     -- style for EditText in search_settings.xml Dark/Light Mode
@@ -152,7 +151,7 @@
     </style>
 
     <style name="noConnectionStyle" parent="trackSearchResultsImage">
-        <item name="android:src">@drawable/l_m_no_connection_error</item>
+        <item name="android:src">@drawable/d_m_no_connection_error</item>
     </style>
 
     <style name="refresh_button_style">

@@ -21,6 +21,8 @@
     <string name="user_email">alexandrneshev@yandex.ru</string>
     <string name="share_link">https://practicum.yandex.ru/android-developer/</string>
     <string name="share_type">text/plain</string>
+    <string name="switch_mode_string">Темная тема</string>
+    -- strings for search activity
     <string name="not_found_string">Ничего не нашлось</string>
     <string name="no_connection_string">Проблемы со связью\n\n Загрузка не удалась.Проверьте подключение к интернету</string>
     <string name="refresh_button_string">Обновить</string>

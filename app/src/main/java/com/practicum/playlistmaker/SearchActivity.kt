@@ -20,7 +20,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class SearchActivity : AppCompatActivity() {
 
@@ -35,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
         .baseUrl("https://itunes.apple.com")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    private val searchApiService = retrofit.create(SearchApiService::class.java)
+    private val searchApiService = retrofit.create(ISearchApiService::class.java)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -91,6 +90,8 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             hideSoftKeyboard(it)
+            notFound.visibility = View.GONE
+            errorConnection.visibility = View.GONE
             tracks.clear()
             trackRecyclerView.adapter = TrackAdapter(tracks)
             TrackAdapter(tracks).notifyDataSetChanged()

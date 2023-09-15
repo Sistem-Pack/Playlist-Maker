@@ -10,53 +10,22 @@ import android.widget.ImageView
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+
     @SuppressLint("MissingInflatedId", "UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
         // get system use dark mode
-        val modeButton = findViewById<Switch>(R.id.mode_switch)
-        val switchModeLayout = findViewById<FrameLayout>(R.id.switch_layout)
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.mode_switch)
 
-        switchModeLayout.setOnClickListener {
-            when (modeButton.isChecked) {
-                true -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    modeButton.isChecked = false
-                }
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
 
-                else -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    modeButton.isChecked = true
-                }
-            }
-        }
-
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES ->
-                modeButton.isChecked = true
-
-            Configuration.UI_MODE_NIGHT_NO ->
-                modeButton.isChecked = false
-        }
-
-        modeButton.setOnClickListener {
-            modeButton.isChecked = !modeButton.isChecked
-            when (modeButton.isChecked) {
-                true -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    modeButton.isChecked = false
-                }
-
-                else -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    modeButton.isChecked = true
-                }
-            }
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
 
         val backButton = findViewById<ImageView>(R.id.back_button)

@@ -12,6 +12,7 @@
     <dimen name="dm45">45dp</dimen>
     <dimen name="dm52">52dp</dimen>
     <dimen name="dm54">54dp</dimen>
+    <dimen name="dm60">60dp</dimen>
     <dimen name="dm102">102dp</dimen>
     -- size for strings
     <dimen name="ln14">14sp</dimen>
