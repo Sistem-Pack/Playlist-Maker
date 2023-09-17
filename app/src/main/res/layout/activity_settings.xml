@@ -45,13 +45,9 @@
         style="@style/SettingsListFrame"
         android:paddingEnd="6dp">
 
-        <TextView
-            style="@style/SettingsTextViewList"
-            android:text="@string/dark_theme" />
-
-        <Switch
-            style="@style/ModeSwitch"
-            android:id="@+id/mode_switch" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/mode_switch"
+            style="@style/ModeSwitch" />
 
     </FrameLayout>
 
