@@ -85,12 +85,34 @@
 
         <Button
             android:id="@+id/search_refresh_button"
-            style="@style/refresh_button_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/refreshButtonStyle"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dm24"
             app:cornerRadius="@dimen/dm54" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/history_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <TextView
+            style="@style/historySearchTextStyly" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <Button
+            android:id="@+id/clean_history_button"
+            style="@style/cleanHistoryButtonStyle" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

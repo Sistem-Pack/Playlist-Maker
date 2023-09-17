@@ -3,12 +3,15 @@ package com.practicum.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class App : Application() {
 
     private companion object {
         const val USER_PREFS = "PREFS"
         const val SW_MODE = "SWITCH_MODE"
+        const val SEARCH_HISTORY = "HISTORY_TRACKS"
     }
 
     var darkTheme = false
@@ -32,4 +35,25 @@ class App : Application() {
         )
         //sharedPrefs.edit(SW_MODE, darkTheme)
     }
+    fun writeSearchHistory(tracks: ArrayList<Track>) {
+        val json = createJsonStringTracks(tracks)
+        sharedPrefs.edit()
+            .putString(SEARCH_HISTORY, json)
+            .apply()
+    }
+
+    fun readSearchHistory(): ArrayList<Track> {
+        val json = sharedPrefs.getString(SEARCH_HISTORY, null) ?: return ArrayList<Track>()
+        return createTracksFromJson(json)
+    }
+
+    private fun createJsonStringTracks(tracks: ArrayList<Track>): String {
+        return Gson().toJson(tracks)
+    }
+
+    private fun createTracksFromJson(json: String): ArrayList<Track> {
+        val token = object : TypeToken<ArrayList<Track>>() {}.type
+        return Gson().fromJson<ArrayList<Track>>(json, token)
+    }
+
 }
