@@ -21,7 +21,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), IClickView {
 
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
@@ -29,6 +29,8 @@ class SearchActivity : AppCompatActivity() {
 
     private var query: String? = null
     private var tracks = ArrayList<Track>()
+    private var tracksHistory = ArrayList<Track>()
+    private lateinit var searchHistory: SearchHistory
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
@@ -47,6 +49,9 @@ class SearchActivity : AppCompatActivity() {
         val errorConnection = findViewById<LinearLayout>(R.id.no_connection_error_layout)
         val notFound = findViewById<LinearLayout>(R.id.not_found_layout)
         val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
+        val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
+        val historyLayout = findViewById<View>(R.id.history_layout)
+        val trackRecyclerViewSearchHistory = findViewById<RecyclerView>(R.id.search_history)
 
         trackRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -87,6 +92,12 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+        fun refreshHistory() {
+            tracksHistory = searchHistory.getTracksHistory()
+            trackRecyclerViewSearchHistory.adapter = TrackAdapter(tracksHistory)
+            TrackAdapter(tracks).notifyDataSetChanged()
+        }
+
         clearButton.setOnClickListener {
             inputEditText.setText("")
             hideSoftKeyboard(it)
@@ -95,6 +106,8 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
             trackRecyclerView.adapter = TrackAdapter(tracks)
             TrackAdapter(tracks).notifyDataSetChanged()
+            historyLayout.visibility = View.VISIBLE
+            refreshHistory()
         }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -106,6 +119,22 @@ class SearchActivity : AppCompatActivity() {
                 true
             }
             false
+        }
+
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus
+                && inputEditText.text.isEmpty()
+                && tracksHistory.isNotEmpty()
+            ) {
+                refreshHistory()
+            } else {
+                historyLayout.visibility = View.GONE
+            }
+        }
+
+        cleanHistoryButton.setOnClickListener {
+            historyLayout.visibility = View.GONE
+            searchHistory.clean()
         }
 
         // at now all work process
@@ -156,6 +185,9 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_TEXT, query)
+    }
+    override fun onClick(track: Track) {
+        searchHistory.addTrack(track)
     }
 
 }
