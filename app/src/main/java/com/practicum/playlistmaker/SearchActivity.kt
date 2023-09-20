@@ -52,6 +52,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
         val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
         val historyLayout = findViewById<View>(R.id.history_layout)
         val trackRecyclerViewSearchHistory = findViewById<RecyclerView>(R.id.search_history)
+        searchHistory = SearchHistory(applicationContext as App)
 
         trackRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
