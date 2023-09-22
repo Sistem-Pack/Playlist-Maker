@@ -33,7 +33,9 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        //sharedPrefs.edit(SW_MODE, darkTheme)
+        sharedPrefs.edit()
+            .putBoolean(SW_MODE, darkTheme)
+            .apply()
     }
     fun writeSearchHistory(tracks: ArrayList<Track>) {
         val json = createJsonStringTracks(tracks)
@@ -53,7 +55,7 @@ class App : Application() {
 
     private fun createTracksFromJson(json: String): ArrayList<Track> {
         val token = object : TypeToken<ArrayList<Track>>() {}.type
-        return Gson().fromJson<ArrayList<Track>>(json, token)
+        return Gson().fromJson(json, token)
     }
 
 }

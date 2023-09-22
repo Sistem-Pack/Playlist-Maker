@@ -1,14 +1,12 @@
 package com.practicum.playlistmaker
 
-import android.content.SharedPreferences
-
-class SearchHistory(val sharedPreferences: App) {
+class SearchHistory(private val sharedPreferences: App) {
 
     private companion object {
         const val MAX_TRACKS_LIST_COUNT = 10
     }
 
-    val tracks: ArrayList<Track> = getArrayOfTracks()
+    private val tracks: ArrayList<Track> = getArrayOfTracks()
 
     private fun getArrayOfTracks(): ArrayList<Track> {
         return sharedPreferences.readSearchHistory()
@@ -22,7 +20,7 @@ class SearchHistory(val sharedPreferences: App) {
         }
         if (tracks.isNotEmpty()) {
             for (item in tracks) {
-                if (item.key == track.key) {
+                if (item.trackId == track.trackId) {
                     tracks.remove(item)
                     tracks.add(0, track)
                     sharedPreferences.writeSearchHistory(tracks)
@@ -36,7 +34,6 @@ class SearchHistory(val sharedPreferences: App) {
             tracks.removeLast()
             tracks.add(0, track)
         }
-
         sharedPreferences.writeSearchHistory(tracks)
     }
 
