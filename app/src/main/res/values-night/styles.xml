@@ -31,6 +31,14 @@
     </style>
 
     -- style for FrameLayout in activity_settings.xml
+    <style name="SettingsListFrameForSwitch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingVertical">@dimen/dm12</item>
+        <item name="android:paddingStart">@dimen/dm16</item>
+        <item name="android:paddingEnd">@dimen/dm12</item>
+    </style>
+
     <style name="SettingsListFrame">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -72,6 +80,8 @@
     <style name="ModeSwitch">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/ln16</item>
         <item name="android:text">@string/switch_mode_string</item>
         <item name="android:layout_gravity">start</item>
     </style>
