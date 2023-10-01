@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -52,8 +53,8 @@ class SearchActivity : AppCompatActivity(), IClickView {
         val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
         val historyLayout = findViewById<View>(R.id.history_layout)
         val trackRecyclerViewSearchHistory = findViewById<RecyclerView>(R.id.search_history)
-        val adapterSearch = TrackAdapter(tracks, this)
-        val adapterHistory = TrackAdapter(tracksHistory, this)
+        var adapterSearch = TrackAdapter(tracks, this)
+        var adapterHistory = TrackAdapter(tracksHistory, this)
         trackRecyclerView.adapter = adapterSearch
         trackRecyclerViewSearchHistory.adapter = adapterHistory
         searchHistory = SearchHistory(applicationContext as App)
@@ -62,10 +63,6 @@ class SearchActivity : AppCompatActivity(), IClickView {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         trackRecyclerViewSearchHistory.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        if (searchHistory.getTracksHistory().isNotEmpty()) {
-            tracksHistory.addAll(searchHistory.getTracksHistory())
-        }
 
         fun search() {
 
@@ -102,6 +99,12 @@ class SearchActivity : AppCompatActivity(), IClickView {
             finish()
         }
 
+        fun refreshHistory() {
+            historyLayout.visibility = View.VISIBLE
+            tracksHistory = searchHistory.getTracksHistory()
+            adapterHistory.notifyDataSetChanged()
+        }
+
         clearButton.setOnClickListener {
             inputEditText.setText("")
             hideSoftKeyboard(it)
@@ -109,7 +112,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
             errorConnection.visibility = View.GONE
             tracks.clear()
             adapterSearch.notifyDataSetChanged()
-            refreshHistory(historyLayout, adapterHistory)
+            refreshHistory()
         }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -118,16 +121,19 @@ class SearchActivity : AppCompatActivity(), IClickView {
             errorConnection.visibility = View.GONE
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 search()
+                true
             }
             false
         }
 
-        inputEditText.setOnFocusChangeListener { _, hasFocus ->
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus
                 && inputEditText.text.isEmpty()
                 && tracksHistory.isNotEmpty()
             ) {
-                refreshHistory(historyLayout, adapterHistory)
+                if (tracksHistory.isNotEmpty()) {
+                    refreshHistory()
+                }
             } else {
                 historyLayout.visibility = View.GONE
             }
@@ -168,14 +174,6 @@ class SearchActivity : AppCompatActivity(), IClickView {
         searchRefreshButton.setOnClickListener {
             search()
         }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun refreshHistory(layout: View, adapter: TrackAdapter) {
-        tracksHistory.clear()
-        layout.visibility = View.VISIBLE
-        tracksHistory.addAll(searchHistory.getTracksHistory())
-        adapter.notifyDataSetChanged()
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
