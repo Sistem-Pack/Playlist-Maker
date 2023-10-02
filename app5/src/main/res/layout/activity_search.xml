@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/BodyStartScreenStyle"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:padding="@dimen/dm12">
+
+            <ImageView
+                style="@style/BackButtonImageView"
+                android:layout_gravity="end|center_vertical"
+                android:src="@drawable/arrow_back" />
+
+        </FrameLayout>
+
+        <TextView
+            style="@style/SettingsTextViewList"
+            android:fontFamily="@font/ys_text_medium"
+            android:paddingVertical="@dimen/dm12"
+            android:text="@string/search_title"
+            android:textSize="@dimen/ln22" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm8" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edit_view_search"
+            style="@style/EditTextStyle"
+            android:cursorVisible="true"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textColor="@color/black" />
+
+        <ImageButton
+            android:id="@+id/clear_text"
+            style="@style/ClearTextImageButtonStyle"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/history_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dm24"
+        android:visibility="visible">
+
+        <TextView style="@style/historySearchTextStyly" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/view_track" />
+
+        <Button
+            android:id="@+id/clean_history_button"
+            style="@style/cleanHistoryButtonStyle" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/track_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm16"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_track" />
+
+    <LinearLayout
+        android:id="@+id/not_found_layout"
+        style="@style/searchStatusFoundOrErrorStyle">
+
+        <ImageView style="@style/notFoundStyle" />
+
+        <TextView
+            style="@style/errorTextStyle"
+            android:text="@string/not_found_string" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/no_connection_error_layout"
+        style="@style/searchStatusFoundOrErrorStyle">
+
+        <ImageView style="@style/noConnectionStyle" />
+
+        <TextView
+            style="@style/errorTextStyle"
+            android:text="@string/no_connection_string" />
+
+        <Button
+            android:id="@+id/search_refresh_button"
+            style="@style/refreshButtonStyle"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dm24"
+            app:cornerRadius="@dimen/dm54" />
+    </LinearLayout>
+
+</LinearLayout>

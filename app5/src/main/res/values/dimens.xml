@@ -20,7 +20,6 @@
     -- size for strings
     <dimen name="ln13">13sp</dimen>
     <dimen name="ln14">14sp</dimen>
-    <dimen name="ln15">15sp</dimen>
     <dimen name="ln16">16sp</dimen>
     <dimen name="ln19">19sp</dimen>
     <dimen name="ln22">22sp</dimen>

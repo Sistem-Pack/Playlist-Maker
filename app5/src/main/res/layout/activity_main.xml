@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/StartScreenStyle"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_text_medium"
+        android:paddingStart="@dimen/dm16"
+        android:paddingTop="10dp"
+        android:paddingEnd="62dp"
+        android:paddingBottom="@dimen/dm12"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/ln22" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/dm16"
+        android:paddingTop="@dimen/dm8"
+        android:paddingBottom="28dp">
+
+        <Button
+            android:id="@+id/search_button"
+            android:text="@string/button_text_search"
+            app:icon="@drawable/ic_search"
+            style="@style/ButtonMainScreenStyle"/>
+
+        <Button
+            android:id="@+id/mediatech_button"
+            style="@style/ButtonMainScreenStyle"
+            android:text="@string/button_text_mediatech"
+            app:icon="@drawable/ic_music" />
+
+        <Button
+            android:id="@+id/settings_button"
+            android:text="@string/button_text_settings"
+            app:icon="@drawable/ic_settings"
+            style="@style/ButtonMainScreenStyle" />
+
+    </LinearLayout>
+
+</LinearLayout>
