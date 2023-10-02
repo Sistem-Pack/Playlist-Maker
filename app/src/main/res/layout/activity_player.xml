@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".PlayerActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.066" />
+        app:layout_constraintGuide_begin="@dimen/dm24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dm24" />
 
     <ImageButton
         android:id="@+id/back_button"
@@ -21,24 +28,37 @@
         android:padding="@dimen/dm12"
         android:background="@null"
         android:contentDescription="@string/null_string"
-        app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        app:layout_constraintEnd_toStartOf="@+id/left_guideline"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:srcCompat="@drawable/arrow_back" />
 
     <ImageView
         android:id="@+id/cover"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginHorizontal="24dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="w, 1:1"
+        app:layout_constraintEnd_toEndOf="@id/right_guideline"
+        app:layout_constraintStart_toStartOf="@id/left_guideline"
+        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:layout_constraintBottom_toTopOf="@id/track_name"
+        tools:src="@drawable/album_3x"/>
+
+    <!--
+    <ImageView
+        android:id="@+id/cover"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
-        android:contentDescription="@string/null_string"
+        android:layout_marginHorizontal="24dp"
+        android:contentDescription="@null"
         android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="2:3"
-        app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-        app:layout_constraintStart_toStartOf="@+id/left_guideline"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toBottomOf="@+id/back_button"
-        app:srcCompat="@drawable/album_3x"
-        />
+        app:srcCompat="@drawable/album_3x" />
+        -->
 
     <TextView
         android:id="@+id/track_name"
@@ -61,58 +81,183 @@
         app:layout_constraintTop_toBottomOf="@+id/track_name"
         android:textAllCaps="false"
         android:textSize="@dimen/ln14"
-        android:text="@string/you_are_search"
-        />
+        android:text="@string/you_are_search" />
+
+    <ImageButton
+        android:id="@+id/add_to_track"
+        style="@style/BackButtonImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dm54"
+        android:background="@null"
+        android:contentDescription="@null"
+        app:layout_constraintStart_toStartOf="@+id/left_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/track_group"
+        app:srcCompat="@drawable/playlist_add_up" />
+
+    <ImageButton
+        android:id="@+id/add_to_track2"
+        style="@style/BackButtonImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/null_string"
+        android:paddingTop="@dimen/dm30"
+        app:layout_constraintEnd_toStartOf="@+id/add_to_track3"
+        app:layout_constraintStart_toEndOf="@+id/add_to_track"
+        app:layout_constraintTop_toBottomOf="@+id/track_group"
+        app:srcCompat="@drawable/play_dark" />
+
+    <ImageButton
+        android:id="@+id/add_to_track3"
+        style="@style/BackButtonImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dm54"
+        android:background="@null"
+        android:contentDescription="@string/null_string"
+        app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/track_group"
+        app:srcCompat="@drawable/like_up" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/buttonGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm12"
         android:visibility="visible"
-        app:constraint_referenced_ids="back_button2, back_button3, back_button4" />
+        app:constraint_referenced_ids="add_to_track, add_to_track2, add_to_track3" />
 
-    <ImageButton
-        android:id="@+id/back_button2"
-        style="@style/BackButtonImageView"
+    <TextView
+        android:id="@+id/timeline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dm12"
-        android:background="@null"
-        android:contentDescription="@string/null_string"
+        android:layout_marginTop="@dimen/dm12"
+        android:text="@string/you_are_search"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln14"
+        app:layout_constraintEnd_toStartOf="@+id/add_to_track3"
+        app:layout_constraintStart_toEndOf="@+id/add_to_track"
+        app:layout_constraintTop_toBottomOf="@+id/add_to_track2" />
+
+    <TextView
+        android:id="@+id/track_group2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm30"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/track_group"
-        app:srcCompat="@drawable/arrow_back" />
+        app:layout_constraintTop_toBottomOf="@+id/timeline"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search" />
 
-    <ImageButton
-        android:id="@+id/back_button3"
-        style="@style/BackButtonImageView"
+    <TextView
+        android:id="@+id/track_group3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:contentDescription="@string/null_string"
-        android:padding="@dimen/dm12"
-        app:lay="@+id/back_button2"
-        app:layout_constraintEnd_toEndOf="@+id/back_button2"
-        app:layout_constraintLeft_toRightOf="@+id/back_button2"
-        app:srcCompat="@drawable/arrow_back" />
+        android:layout_marginTop="@dimen/dm30"
+        app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/timeline"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
 
-    <ImageButton
-        android:id="@+id/back_button4"
-        style="@style/BackButtonImageView"
+    <TextView
+        android:id="@+id/track_group4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dm12"
-        android:background="@null"
-        android:contentDescription="@string/null_string"
+        android:layout_marginTop="@dimen/dm12"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/track_group"
-        app:srcCompat="@drawable/arrow_back" />
+        app:layout_constraintTop_toBottomOf="@+id/track_group2"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/right_guideline"
+    <TextView
+        android:id="@+id/track_group5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.934" />
+        android:layout_marginTop="@dimen/dm12"
+        app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/track_group3"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
+
+    <TextView
+        android:id="@+id/track_group6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm12"
+        app:layout_constraintStart_toStartOf="@+id/left_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/track_group5"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
+
+    <TextView
+        android:id="@+id/track_group7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm12"
+        app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/track_group4"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
+
+    <TextView
+        android:id="@+id/track_group8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm12"
+        app:layout_constraintStart_toStartOf="@+id/left_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/track_group7"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
+
+    <TextView
+        android:id="@+id/track_group9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm12"
+        app:layout_constraintEnd_toEndOf="@+id/right_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/track_group6"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
+
+    <TextView
+        android:id="@+id/track_group10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm12"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        app:layout_constraintBottom_toBottomOf="@id/track_group9"
+        app:layout_constraintEnd_toEndOf="@id/right_guideline"
+        app:layout_constraintStart_toEndOf="@id/track_group11"
+        />
+
+    <TextView
+        android:id="@+id/track_group11"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dm28"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/left_guideline"
+        android:textAllCaps="false"
+        android:textSize="@dimen/ln13"
+        android:text="@string/you_are_search"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

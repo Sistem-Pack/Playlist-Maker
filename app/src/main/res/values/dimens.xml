@@ -9,6 +9,8 @@
     <dimen name="dm18">16dp</dimen>
     <dimen name="dm21">21dp</dimen>
     <dimen name="dm24">24dp</dimen>
+    <dimen name="dm28">28dp</dimen>
+    <dimen name="dm30">30dp</dimen>
     <dimen name="dm36">36dp</dimen>
     <dimen name="dm45">45dp</dimen>
     <dimen name="dm52">52dp</dimen>
@@ -16,6 +18,7 @@
     <dimen name="dm60">60dp</dimen>
     <dimen name="dm102">102dp</dimen>
     -- size for strings
+    <dimen name="ln13">13sp</dimen>
     <dimen name="ln14">14sp</dimen>
     <dimen name="ln16">16sp</dimen>
     <dimen name="ln19">19sp</dimen>
