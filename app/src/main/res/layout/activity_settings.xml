@@ -42,7 +42,7 @@
 
     <FrameLayout
         android:id="@+id/switch_layout"
-        style="@style/SettingsListFrame"
+        style="@style/SettingsListFrameForSwitch"
         android:paddingEnd="6dp">
 
         <com.google.android.material.switchmaterial.SwitchMaterial

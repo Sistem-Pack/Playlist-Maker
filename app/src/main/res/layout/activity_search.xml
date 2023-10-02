@@ -60,11 +60,42 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/not_found_layout"
-        style="@style/searchStatusFoundOrErrorStyle" >
+        android:id="@+id/history_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dm24"
+        android:visibility="visible">
 
-        <ImageView
-            style="@style/notFoundStyle" />
+        <TextView style="@style/historySearchTextStyly" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/view_track" />
+
+        <Button
+            android:id="@+id/clean_history_button"
+            style="@style/cleanHistoryButtonStyle" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/track_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm16"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_track" />
+
+    <LinearLayout
+        android:id="@+id/not_found_layout"
+        style="@style/searchStatusFoundOrErrorStyle">
+
+        <ImageView style="@style/notFoundStyle" />
 
         <TextView
             style="@style/errorTextStyle"
@@ -74,10 +105,9 @@
 
     <LinearLayout
         android:id="@+id/no_connection_error_layout"
-        style="@style/searchStatusFoundOrErrorStyle" >
+        style="@style/searchStatusFoundOrErrorStyle">
 
-        <ImageView
-            style="@style/noConnectionStyle" />
+        <ImageView style="@style/noConnectionStyle" />
 
         <TextView
             style="@style/errorTextStyle"
@@ -85,20 +115,10 @@
 
         <Button
             android:id="@+id/search_refresh_button"
-            style="@style/refresh_button_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/refreshButtonStyle"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dm24"
             app:cornerRadius="@dimen/dm54" />
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/track_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dm16"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/view_track" />
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -21,7 +22,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), IClickView {
 
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
@@ -29,6 +30,8 @@ class SearchActivity : AppCompatActivity() {
 
     private var query: String? = null
     private var tracks = ArrayList<Track>()
+    private var tracksHistory = ArrayList<Track>()
+    private lateinit var searchHistory: SearchHistory
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
@@ -47,8 +50,18 @@ class SearchActivity : AppCompatActivity() {
         val errorConnection = findViewById<LinearLayout>(R.id.no_connection_error_layout)
         val notFound = findViewById<LinearLayout>(R.id.not_found_layout)
         val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
+        val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
+        val historyLayout = findViewById<View>(R.id.history_layout)
+        val trackRecyclerViewSearchHistory = findViewById<RecyclerView>(R.id.search_history)
+        var adapterSearch = TrackAdapter(tracks, this)
+        var adapterHistory = TrackAdapter(tracksHistory, this)
+        trackRecyclerView.adapter = adapterSearch
+        trackRecyclerViewSearchHistory.adapter = adapterHistory
+        searchHistory = SearchHistory(applicationContext as App)
 
         trackRecyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        trackRecyclerViewSearchHistory.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         fun search() {
@@ -72,8 +85,7 @@ class SearchActivity : AppCompatActivity() {
                         } else {
                             errorConnection.visibility = View.VISIBLE
                         }
-                        trackRecyclerView.adapter = TrackAdapter(tracks)
-                        TrackAdapter(tracks).notifyDataSetChanged()
+                        adapterSearch.notifyDataSetChanged()
                     }
 
                     override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
@@ -87,14 +99,20 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+        fun refreshHistory() {
+            historyLayout.visibility = View.VISIBLE
+            tracksHistory = searchHistory.getTracksHistory()
+            adapterHistory.notifyDataSetChanged()
+        }
+
         clearButton.setOnClickListener {
             inputEditText.setText("")
             hideSoftKeyboard(it)
             notFound.visibility = View.GONE
             errorConnection.visibility = View.GONE
             tracks.clear()
-            trackRecyclerView.adapter = TrackAdapter(tracks)
-            TrackAdapter(tracks).notifyDataSetChanged()
+            adapterSearch.notifyDataSetChanged()
+            refreshHistory()
         }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -108,6 +126,24 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus
+                && inputEditText.text.isEmpty()
+                && tracksHistory.isNotEmpty()
+            ) {
+                if (tracksHistory.isNotEmpty()) {
+                    refreshHistory()
+                }
+            } else {
+                historyLayout.visibility = View.GONE
+            }
+        }
+
+        cleanHistoryButton.setOnClickListener {
+            historyLayout.visibility = View.GONE
+            searchHistory.clean()
+        }
+
         // at now all work process
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -117,10 +153,16 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 query = s.toString()
+                historyLayout.visibility =
+                    if (inputEditText.hasFocus()
+                        && s?.isEmpty() == true
+                        && tracksHistory.isNotEmpty()
+                    ) View.VISIBLE else View.GONE
+
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // empty
+                query = inputEditText.text.toString()
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
@@ -156,6 +198,10 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_TEXT, query)
+    }
+
+    override fun onClick(track: Track) {
+        searchHistory.addTrack(track)
     }
 
 }
