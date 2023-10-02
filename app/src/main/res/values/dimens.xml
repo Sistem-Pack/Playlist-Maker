@@ -2,6 +2,7 @@
 <resources>
     -- size for all views
     <dimen name="zero">0dp</dimen>
+    <dimen name="dm2">2dp</dimen>
     <dimen name="dm4">4dp</dimen>
     <dimen name="dm8">8dp</dimen>
     <dimen name="dm12">12dp</dimen>
