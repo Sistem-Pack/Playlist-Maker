@@ -17,18 +17,21 @@ class MainActivity : AppCompatActivity() {
         val settingsButton = findViewById<Button>(R.id.settings_button)
 
         searchButton.setOnClickListener {
-            val displayIntent = Intent(this, SearchActivity::class.java)
-            startActivity(displayIntent)
+            Intent(this, SearchActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
         mediatechButton.setOnClickListener {
-            val displayIntent = Intent(this, MediatechActivity::class.java)
-            startActivity(displayIntent)
+            Intent(this, MediatechActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
         settingsButton.setOnClickListener {
-            val displayIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(displayIntent)
+            Intent(this, SettingsActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
     }

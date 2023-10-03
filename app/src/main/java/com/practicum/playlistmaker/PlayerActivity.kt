@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker
 
+import android.app.Activity
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -10,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
 class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +28,16 @@ class PlayerActivity : AppCompatActivity() {
         val year = findViewById<TextView>(R.id.year)
         val genre = findViewById<TextView>(R.id.genre)
         val country = findViewById<TextView>(R.id.country)
-        val track = intent.getParcelableExtra<Track>("track")
+
+        fun <T : Serializable?> getSerializable(name: String, clazz: Class<T>): T
+        {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getParcelableExtra(name, clazz)!!
+            } else
+                intent.getParcelableExtra<Track>(name)!! as T
+        }
+
+        val track = getSerializable("track", Track<T>) //intent.getParcelableExtra<Track>("track")
 
         backButton.setOnClickListener {
             finish()
@@ -51,6 +64,10 @@ class PlayerActivity : AppCompatActivity() {
                 .centerCrop()
                 .transform(RoundedCorners(this.resources.getDimensionPixelSize(R.dimen.dm2)))
                 .into(coverImage)
+        }
+
+        if (track != null) {
+            getTrackInfo(track)
         }
     }
 }

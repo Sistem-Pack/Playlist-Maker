@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -59,6 +60,17 @@ class SearchActivity : AppCompatActivity(), IClickView {
         trackRecyclerViewSearchHistory.adapter = adapterHistory
         searchHistory = SearchHistory(applicationContext as App)
 
+        fun refreshHistory() {
+            tracksHistory.clear()
+            historyLayout.visibility = View.VISIBLE
+            tracksHistory.addAll(searchHistory.getTracksHistory())
+            adapterHistory.notifyDataSetChanged()
+        }
+
+        if (searchHistory.getTracksHistory().isNotEmpty()) {
+            refreshHistory()
+        }
+
         trackRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         trackRecyclerViewSearchHistory.layoutManager =
@@ -99,12 +111,6 @@ class SearchActivity : AppCompatActivity(), IClickView {
             finish()
         }
 
-        fun refreshHistory() {
-            historyLayout.visibility = View.VISIBLE
-            tracksHistory = searchHistory.getTracksHistory()
-            adapterHistory.notifyDataSetChanged()
-        }
-
         clearButton.setOnClickListener {
             inputEditText.setText("")
             hideSoftKeyboard(it)
@@ -121,19 +127,16 @@ class SearchActivity : AppCompatActivity(), IClickView {
             errorConnection.visibility = View.GONE
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 search()
-                true
             }
             false
         }
 
-        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+        inputEditText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus
                 && inputEditText.text.isEmpty()
                 && tracksHistory.isNotEmpty()
             ) {
-                if (tracksHistory.isNotEmpty()) {
-                    refreshHistory()
-                }
+                refreshHistory()
             } else {
                 historyLayout.visibility = View.GONE
             }
@@ -202,6 +205,10 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
     override fun onClick(track: Track) {
         searchHistory.addTrack(track)
+        Intent(this, PlayerActivity()::class.java).apply {
+            putExtra("track", track)
+            startActivity(this)
+        }
     }
 
 }
