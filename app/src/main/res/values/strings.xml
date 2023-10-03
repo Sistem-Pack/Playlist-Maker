@@ -12,8 +12,9 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_mediatech">MediatechActivity</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_player">PlayerActivity</string>
     -- strings for empty erros in the xml screen
-    <string name="null_string"></string>
+    <string name="null_string">@null</string>
     -- strings for settings activity
     <string name="practicum_offer">https://yandex.ru/legal/practicum_offer/</string>
     <string name="support_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
@@ -28,4 +29,10 @@
     <string name="refresh_button_string">Обновить</string>
     <string name="you_are_search">Вы искали</string>
     <string name="clean_history">Очистить историю</string>
+    -- string for player activity
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
 </resources>
