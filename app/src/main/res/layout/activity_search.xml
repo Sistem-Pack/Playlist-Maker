@@ -60,11 +60,27 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="@dimen/dm44"
+            android:layout_height="@dimen/dm44"
+            android:indeterminateTint="@color/looper"
+            android:visibility="visible" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/history_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="@dimen/dm24"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <TextView style="@style/historySearchTextStyly" />
@@ -87,7 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dm16"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_track" />
 

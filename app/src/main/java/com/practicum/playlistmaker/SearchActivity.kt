@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,8 @@ class SearchActivity : AppCompatActivity(), IClickView {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val searchApiService = retrofit.create(ISearchApiService::class.java)
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -54,6 +57,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
         val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
         val historyLayout = findViewById<View>(R.id.history_layout)
         val trackRecyclerViewSearchHistory = findViewById<RecyclerView>(R.id.search_history)
+        val looper = findViewById<ProgressBar>(R.id.progress_bar)
         var adapterSearch = TrackAdapter(tracks, this)
         var adapterHistory = TrackAdapter(tracksHistory, this)
         trackRecyclerView.adapter = adapterSearch
@@ -78,33 +82,42 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
         fun search() {
 
-            searchApiService.search(inputEditText.text.toString())
-                .enqueue(object : Callback<TrackResponse> {
+            if (inputEditText.text.isNotEmpty()) {
 
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun onResponse(
-                        call: Call<TrackResponse>,
-                        response: Response<TrackResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            errorConnection.visibility = View.GONE
-                            tracks.clear()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                tracks.addAll(response.body()?.results!!)
+                trackRecyclerViewSearchHistory.visibility = View.GONE
+                notFound.visibility = View.GONE
+                looper.visibility = View.VISIBLE
+
+                searchApiService.search(inputEditText.text.toString())
+                    .enqueue(object : Callback<TrackResponse> {
+
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onResponse(
+                            call: Call<TrackResponse>,
+                            response: Response<TrackResponse>
+                        ) {
+                            if (response.code() == 200) {
+                                errorConnection.visibility = View.GONE
+                                tracks.clear()
+                                if (response.body()?.results?.isNotEmpty() == true) {
+                                    tracks.addAll(response.body()?.results!!)
+                                } else {
+                                    notFound.visibility = View.VISIBLE
+                                }
                             } else {
-                                notFound.visibility = View.VISIBLE
+                                errorConnection.visibility = View.VISIBLE
                             }
-                        } else {
+                            adapterSearch.notifyDataSetChanged()
+                        }
+
+                        override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                            tracks.clear()
                             errorConnection.visibility = View.VISIBLE
                         }
-                        adapterSearch.notifyDataSetChanged()
-                    }
-
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        tracks.clear()
-                        errorConnection.visibility = View.VISIBLE
-                    }
-                })
+                    })
+            } else {
+                notFound.visibility = View.VISIBLE
+            }
         }
 
         backButton.setOnClickListener {
