@@ -1,11 +1,9 @@
 package com.practicum.playlistmaker
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,18 +15,21 @@ class MainActivity : AppCompatActivity() {
         val settingsButton = findViewById<Button>(R.id.settings_button)
 
         searchButton.setOnClickListener {
-            val displayIntent = Intent(this, SearchActivity::class.java)
-            startActivity(displayIntent)
+            Intent(this, SearchActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
         mediatechButton.setOnClickListener {
-            val displayIntent = Intent(this, MediatechActivity::class.java)
-            startActivity(displayIntent)
+            Intent(this, MediatechActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
         settingsButton.setOnClickListener {
-            val displayIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(displayIntent)
+            Intent(this, SettingsActivity::class.java).apply {
+                startActivity(this)
+            }
         }
 
     }
