@@ -13,7 +13,7 @@ import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var track: Track
+    private var track: Track? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -28,10 +28,14 @@ class PlayerActivity : AppCompatActivity() {
         val genre = findViewById<TextView>(R.id.genre)
         val country = findViewById<TextView>(R.id.country)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            track = intent.getParcelableExtra("track", Track::class.java)!!
+        track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("track", Track::class.java)
         } else {
-            intent.getParcelableExtra<Track>("track")!!
+            intent.getParcelableExtra<Track>("track")
+        }
+
+        if (track == null){
+          finish()
         }
 
         backButton.setOnClickListener {
@@ -61,6 +65,6 @@ class PlayerActivity : AppCompatActivity() {
                 .into(coverImage)
         }
 
-        getTrackInfo(track)
+        getTrackInfo(track!!)
     }
 }
