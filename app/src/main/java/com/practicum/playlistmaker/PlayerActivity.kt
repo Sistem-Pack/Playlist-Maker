@@ -1,8 +1,13 @@
 package com.practicum.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,19 +19,30 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
 
     private var track: Track? = null
+    private lateinit var play: ImageButton
+    private var playerState = STATE_DEFAULT
+    private var mediaPlayer = MediaPlayer()
+    private var url: String? = null
+    private var mainThreadHandler: Handler? = null
+    private lateinit var durationView: TextView
+    private var currentTrackTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
+        play = findViewById(R.id.play)
         val coverImage = findViewById<ImageView>(R.id.cover)
         val backButton = findViewById<View>(R.id.back_button)
         val trackName = findViewById<TextView>(R.id.track_name)
         val trackGroup = findViewById<TextView>(R.id.track_group)
-        val duration = findViewById<TextView>(R.id.duration)
+        durationView = findViewById<TextView>(R.id.duration)
         val timeline = findViewById<TextView>(R.id.timeline)
         val albumName = findViewById<TextView>(R.id.album)
         val year = findViewById<TextView>(R.id.year)
         val genre = findViewById<TextView>(R.id.genre)
         val country = findViewById<TextView>(R.id.country)
+        mainThreadHandler = Handler(Looper.getMainLooper())
+        play.isEnabled = false
+        play.alpha = 0.5f
 
         track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("track", Track::class.java)
@@ -34,21 +50,37 @@ class PlayerActivity : AppCompatActivity() {
             intent.getParcelableExtra<Track>("track")
         }
 
-        if (track == null){
-          finish()
+        if (track == null) {
+            finish()
+        } else {
+            url = track!!.previewUrl
+            preparePlayer()
         }
 
         backButton.setOnClickListener {
             finish()
         }
 
+        play.setOnClickListener {
+            val currentTimeTrackPosition = if (currentTrackTime != 0L) currentTrackTime else INTRO_TIME
+            startTimer(currentTimeTrackPosition)
+            playbackControl()
+        }
+
+        mediaPlayer.setOnCompletionListener {
+            if ((applicationContext as App).darkTheme) {
+                play.setImageResource(R.drawable.play_dark)
+            } else play.setImageResource(R.drawable.play_for_light)
+            playerState = STATE_PREPARED
+            currentTrackTime = 0L
+        }
+
         fun getTrackInfo(track: Track) {
 
             trackName.text = track.trackName
             trackGroup.text = track.artistName
-            duration.text =
-                SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-            timeline.text = duration.text
+            durationView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(INTRO_TIME * DELAY)
+            timeline.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
             albumName.text =
                 if (track.collectionName!!.isNotEmpty()) track.collectionName else ""
             year.text = track.releaseDate?.substring(0, 4)
@@ -67,4 +99,93 @@ class PlayerActivity : AppCompatActivity() {
 
         getTrackInfo(track!!)
     }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        mainThreadHandler?.removeCallbacks(createUpdateTimerTask(0, 0))
+    }
+
+    private fun preparePlayer() {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            play.isEnabled = true
+            play.alpha = 1f
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            playerState = STATE_PREPARED
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        if ((applicationContext as App).darkTheme) {
+                play.setImageResource(R.drawable.pause_for_black)
+        } else play.setImageResource(R.drawable.pause_light)
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        if ((applicationContext as App).darkTheme) {
+            play.setImageResource(R.drawable.play_dark)
+        } else play.setImageResource(R.drawable.play_for_light)
+        playerState = STATE_PAUSED
+        mainThreadHandler?.removeCallbacks(createUpdateTimerTask(0, 0))
+    }
+
+    private fun playbackControl() {
+        when (playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    private fun startTimer(duration: Long) {
+        val startTime = System.currentTimeMillis()
+        mainThreadHandler?.post(
+            createUpdateTimerTask(startTime, duration * DELAY)
+        )
+    }
+    private fun createUpdateTimerTask(startTime: Long, duration: Long): Runnable {
+        return object : Runnable {
+            override fun run() {
+                if (playerState == STATE_PLAYING) {
+                    val elapsedTime = System.currentTimeMillis() - startTime
+                    val remainingTime = duration - elapsedTime
+
+                    if (remainingTime > 0) {
+                        val seconds = remainingTime / DELAY
+                        durationView.text =
+                            SimpleDateFormat("mm:ss", Locale.getDefault()).format(seconds * DELAY)
+                        currentTrackTime = seconds
+                        mainThreadHandler?.postDelayed(this, DELAY)
+                    } else {
+                        durationView.text = "00:00"
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+        private const val DELAY = 1000L
+        private const val INTRO_TIME = 30L
+    }
+
 }

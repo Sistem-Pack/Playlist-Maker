@@ -3,6 +3,8 @@ package com.practicum.playlistmaker
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,6 +17,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,12 +31,22 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
     private var query: String? = null
     private var tracks = ArrayList<Track>()
     private var tracksHistory = ArrayList<Track>()
     private lateinit var searchHistory: SearchHistory
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var inputEditText: TextView
+    private lateinit var trackRecyclerViewSearchHistory: RecyclerView
+    private lateinit var looper: LinearLayout
+    private lateinit var notFound: LinearLayout
+    private lateinit var errorConnection: LinearLayout
+    private lateinit var adapterSearch: TrackAdapter
+    private lateinit var trackRecyclerView: RecyclerView
+    private val searchRunnable = Runnable { search() }
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
@@ -48,17 +61,18 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
         // in first step set all conditions
         val backButton = findViewById<FrameLayout>(R.id.back_button)
-        val inputEditText = findViewById<EditText>(R.id.edit_view_search)
+        inputEditText = findViewById<EditText>(R.id.edit_view_search)
         val clearButton = findViewById<ImageButton>(R.id.clear_text)
-        val trackRecyclerView = findViewById<RecyclerView>(R.id.track_recycler_view)
-        val errorConnection = findViewById<LinearLayout>(R.id.no_connection_error_layout)
-        val notFound = findViewById<LinearLayout>(R.id.not_found_layout)
+        trackRecyclerView = findViewById(R.id.track_recycler_view)
+        errorConnection = findViewById(R.id.no_connection_error_layout)
+        notFound = findViewById(R.id.not_found_layout)
         val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
         val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
         val historyLayout = findViewById<View>(R.id.history_layout)
-        val trackRecyclerViewSearchHistory = findViewById<RecyclerView>(R.id.search_history)
-        val looper = findViewById<ProgressBar>(R.id.progress_bar)
-        var adapterSearch = TrackAdapter(tracks, this)
+        trackRecyclerViewSearchHistory = findViewById(R.id.search_history)
+        looper = findViewById(R.id.progress_bar)
+        val searchRunnable = Runnable { search() }
+        adapterSearch = TrackAdapter(tracks, this)
         var adapterHistory = TrackAdapter(tracksHistory, this)
         trackRecyclerView.adapter = adapterSearch
         trackRecyclerViewSearchHistory.adapter = adapterHistory
@@ -66,8 +80,10 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
         fun refreshHistory() {
             tracksHistory.clear()
-            historyLayout.visibility = View.VISIBLE
             tracksHistory.addAll(searchHistory.getTracksHistory())
+            if (tracksHistory.isNotEmpty())
+            historyLayout.visibility = View.VISIBLE
+            else historyLayout.visibility = View.GONE
             adapterHistory.notifyDataSetChanged()
         }
 
@@ -79,46 +95,6 @@ class SearchActivity : AppCompatActivity(), IClickView {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         trackRecyclerViewSearchHistory.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        fun search() {
-
-            if (inputEditText.text.isNotEmpty()) {
-
-                trackRecyclerViewSearchHistory.visibility = View.GONE
-                notFound.visibility = View.GONE
-                looper.visibility = View.VISIBLE
-
-                searchApiService.search(inputEditText.text.toString())
-                    .enqueue(object : Callback<TrackResponse> {
-
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onResponse(
-                            call: Call<TrackResponse>,
-                            response: Response<TrackResponse>
-                        ) {
-                            if (response.code() == 200) {
-                                errorConnection.visibility = View.GONE
-                                tracks.clear()
-                                if (response.body()?.results?.isNotEmpty() == true) {
-                                    tracks.addAll(response.body()?.results!!)
-                                } else {
-                                    notFound.visibility = View.VISIBLE
-                                }
-                            } else {
-                                errorConnection.visibility = View.VISIBLE
-                            }
-                            adapterSearch.notifyDataSetChanged()
-                        }
-
-                        override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                            tracks.clear()
-                            errorConnection.visibility = View.VISIBLE
-                        }
-                    })
-            } else {
-                notFound.visibility = View.VISIBLE
-            }
-        }
 
         backButton.setOnClickListener {
             finish()
@@ -157,6 +133,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
         cleanHistoryButton.setOnClickListener {
             historyLayout.visibility = View.GONE
+            tracksHistory.clear()
             searchHistory.clean()
         }
 
@@ -174,7 +151,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
                         && s?.isEmpty() == true
                         && tracksHistory.isNotEmpty()
                     ) View.VISIBLE else View.GONE
-
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -192,12 +169,59 @@ class SearchActivity : AppCompatActivity(), IClickView {
         }
     }
 
+    private fun search(){
+
+        if (inputEditText.text.isNotEmpty()) {
+
+            trackRecyclerViewSearchHistory.visibility = View.GONE
+            notFound.visibility = View.GONE
+            looper.visibility = View.VISIBLE
+
+            searchApiService.search(inputEditText.text.toString())
+                .enqueue(object : Callback<TrackResponse> {
+
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onResponse(
+                        call: Call<TrackResponse>,
+                        response: Response<TrackResponse>
+                    ) {
+                        if (response.code() == 200) {
+                            tracks.clear()
+                            if (response.body()?.results?.isNotEmpty() == true) {
+                                tracks.addAll(response.body()?.results!!)
+                                errorConnection.visibility = View.GONE
+                                looper.visibility = View.GONE
+                                trackRecyclerView.visibility = View.VISIBLE
+                            } else {
+                                notFound.visibility = View.VISIBLE
+                            }
+                        } else {
+                            errorConnection.visibility = View.VISIBLE
+                        }
+                        adapterSearch.notifyDataSetChanged()
+                    }
+
+                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                        tracks.clear()
+                        errorConnection.visibility = View.VISIBLE
+                    }
+                })
+        } else {
+            notFound.visibility = View.VISIBLE
+        }
+    }
+
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
         } else {
             View.VISIBLE
         }
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun hideSoftKeyboard(view: View) {

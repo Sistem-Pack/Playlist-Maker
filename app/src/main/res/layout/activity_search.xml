@@ -60,18 +60,18 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:gravity="center"
+        android:visibility="gone"
         >
 
         <ProgressBar
-            android:id="@+id/progress_bar"
             android:layout_width="@dimen/dm44"
             android:layout_height="@dimen/dm44"
-            android:indeterminateTint="@color/looper"
-            android:visibility="visible" />
+            android:indeterminateTint="@color/looper" />
 
     </LinearLayout>
 
