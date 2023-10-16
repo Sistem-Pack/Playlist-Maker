@@ -71,7 +71,7 @@
         <ProgressBar
             android:layout_width="@dimen/dm44"
             android:layout_height="@dimen/dm44"
-            android:indeterminateTint="@color/looper" />
+            android:indeterminateTint="@color/background" />
 
     </LinearLayout>
 

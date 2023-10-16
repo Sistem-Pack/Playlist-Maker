@@ -32,6 +32,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     private var query: String? = null
@@ -39,6 +40,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
     private var tracksHistory = ArrayList<Track>()
     private lateinit var searchHistory: SearchHistory
     private val handler = Handler(Looper.getMainLooper())
+    private val handlerEx = Handler(Looper.getMainLooper())
     private lateinit var inputEditText: TextView
     private lateinit var trackRecyclerViewSearchHistory: RecyclerView
     private lateinit var looper: LinearLayout
@@ -46,7 +48,10 @@ class SearchActivity : AppCompatActivity(), IClickView {
     private lateinit var errorConnection: LinearLayout
     private lateinit var adapterSearch: TrackAdapter
     private lateinit var trackRecyclerView: RecyclerView
+    private lateinit var historyLayout: View
     private val searchRunnable = Runnable { search() }
+
+    private var isClickAllowed = true
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com")
@@ -68,7 +73,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
         notFound = findViewById(R.id.not_found_layout)
         val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
         val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
-        val historyLayout = findViewById<View>(R.id.history_layout)
+        historyLayout = findViewById(R.id.history_layout)
         trackRecyclerViewSearchHistory = findViewById(R.id.search_history)
         looper = findViewById(R.id.progress_bar)
         val searchRunnable = Runnable { search() }
@@ -81,9 +86,7 @@ class SearchActivity : AppCompatActivity(), IClickView {
         fun refreshHistory() {
             tracksHistory.clear()
             tracksHistory.addAll(searchHistory.getTracksHistory())
-            if (tracksHistory.isNotEmpty())
-            historyLayout.visibility = View.VISIBLE
-            else historyLayout.visibility = View.GONE
+            historyLayout.visibility = if (tracksHistory.isNotEmpty()) View.VISIBLE else View.GONE
             adapterHistory.notifyDataSetChanged()
         }
 
@@ -169,11 +172,11 @@ class SearchActivity : AppCompatActivity(), IClickView {
         }
     }
 
-    private fun search(){
+    private fun search() {
 
         if (inputEditText.text.isNotEmpty()) {
 
-            trackRecyclerViewSearchHistory.visibility = View.GONE
+            historyLayout.visibility = View.GONE
             notFound.visibility = View.GONE
             looper.visibility = View.VISIBLE
 
@@ -203,21 +206,15 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
                     override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                         tracks.clear()
+                        looper.visibility = View.GONE
                         errorConnection.visibility = View.VISIBLE
                     }
                 })
-        } else {
-            notFound.visibility = View.VISIBLE
-        }
+        } else notFound.visibility = View.VISIBLE
     }
 
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
+    private fun clearButtonVisibility(s: CharSequence?): Int =
+        if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
@@ -241,11 +238,22 @@ class SearchActivity : AppCompatActivity(), IClickView {
     }
 
     override fun onClick(track: Track) {
-        searchHistory.addTrack(track)
-        Intent(this, PlayerActivity()::class.java).apply {
-            putExtra("track", track)
-            startActivity(this)
+        if (clickDebounce()) {
+            searchHistory.addTrack(track)
+            Intent(this, PlayerActivity()::class.java).apply {
+                putExtra("track", track)
+                startActivity(this)
+            }
         }
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
 }
