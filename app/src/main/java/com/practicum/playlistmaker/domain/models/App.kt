@@ -1,10 +1,11 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.domain.models
 
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.practicum.playlistmaker.domain.models.Track
 
 class App : Application() {
 

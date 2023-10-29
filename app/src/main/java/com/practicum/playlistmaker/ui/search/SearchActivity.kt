@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui.search
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -16,18 +15,25 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.practicum.playlistmaker.domain.models.App
+import com.practicum.playlistmaker.data.IClickView
+import com.practicum.playlistmaker.ui.player.PlayerActivity
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.data.TracksRepositoryImpl
+import com.practicum.playlistmaker.data.network.IDataLoadCallback
+import com.practicum.playlistmaker.domain.models.SearchHistory
+import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
+import com.practicum.playlistmaker.domain.api.ITrackInteractor
+import com.practicum.playlistmaker.domain.api.ITracksRepository
+import com.practicum.playlistmaker.domain.impl.TrackInteractorImpl
+import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.presentation.track.TrackAdapter
 
-class SearchActivity : AppCompatActivity(), IClickView {
+class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
 
     private companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
@@ -40,7 +46,6 @@ class SearchActivity : AppCompatActivity(), IClickView {
     private var tracksHistory = ArrayList<Track>()
     private lateinit var searchHistory: SearchHistory
     private val handler = Handler(Looper.getMainLooper())
-    private val handlerEx = Handler(Looper.getMainLooper())
     private lateinit var inputEditText: TextView
     private lateinit var trackRecyclerViewSearchHistory: RecyclerView
     private lateinit var looper: LinearLayout
@@ -53,11 +58,15 @@ class SearchActivity : AppCompatActivity(), IClickView {
 
     private var isClickAllowed = true
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val searchApiService = retrofit.create(ISearchApiService::class.java)
+    object Creator {
+        private fun getTrackRepository(): ITracksRepository {
+            return TracksRepositoryImpl(RetrofitNetworkClient())
+        }
+
+        fun tracksInteractor(): ITrackInteractor {
+            return TrackInteractorImpl(getTrackRepository())
+        }
+    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -175,41 +184,11 @@ class SearchActivity : AppCompatActivity(), IClickView {
     private fun search() {
 
         if (inputEditText.text.isNotEmpty()) {
-
+            errorConnection.visibility = View.GONE
             historyLayout.visibility = View.GONE
             notFound.visibility = View.GONE
             looper.visibility = View.VISIBLE
-
-            searchApiService.search(inputEditText.text.toString())
-                .enqueue(object : Callback<TrackResponse> {
-
-                    @SuppressLint("NotifyDataSetChanged")
-                    override fun onResponse(
-                        call: Call<TrackResponse>,
-                        response: Response<TrackResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            tracks.clear()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                tracks.addAll(response.body()?.results!!)
-                                errorConnection.visibility = View.GONE
-                                looper.visibility = View.GONE
-                                trackRecyclerView.visibility = View.VISIBLE
-                            } else {
-                                notFound.visibility = View.VISIBLE
-                            }
-                        } else {
-                            errorConnection.visibility = View.VISIBLE
-                        }
-                        adapterSearch.notifyDataSetChanged()
-                    }
-
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        tracks.clear()
-                        looper.visibility = View.GONE
-                        errorConnection.visibility = View.VISIBLE
-                    }
-                })
+            Creator.tracksInteractor().search(inputEditText.text.toString(), this)
         } else notFound.visibility = View.VISIBLE
     }
 
@@ -254,6 +233,32 @@ class SearchActivity : AppCompatActivity(), IClickView {
             handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
+    }
+
+    override fun onDataLoaded(tracksL: List<Track>) {
+        runOnUiThread {
+            tracks.clear()
+            looper.visibility = View.GONE
+            if (tracksL.isNotEmpty()) {
+                tracks.addAll(tracksL)
+                errorConnection.visibility = View.GONE
+                trackRecyclerView.visibility = View.VISIBLE
+                adapterSearch.notifyDataSetChanged()
+            } else {
+                notFound.visibility = View.VISIBLE
+            }
+
+        }
+    }
+
+    override fun onError(code: Int) {
+        if (code != 200) {
+            runOnUiThread {
+                tracks.clear()
+                looper.visibility = View.GONE
+                errorConnection.visibility = View.VISIBLE
+            }
+        }
     }
 
 }
