@@ -23,6 +23,7 @@ import com.practicum.playlistmaker.domain.models.App
 import com.practicum.playlistmaker.data.IClickView
 import com.practicum.playlistmaker.ui.player.PlayerActivity
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.data.TracksRepositoryImpl
 import com.practicum.playlistmaker.data.network.IDataLoadCallback
 import com.practicum.playlistmaker.domain.models.SearchHistory
@@ -57,16 +58,6 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
     private val searchRunnable = Runnable { search() }
 
     private var isClickAllowed = true
-
-    object Creator {
-        private fun getTrackRepository(): ITracksRepository {
-            return TracksRepositoryImpl(RetrofitNetworkClient())
-        }
-
-        fun tracksInteractor(): ITrackInteractor {
-            return TrackInteractorImpl(getTrackRepository())
-        }
-    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {

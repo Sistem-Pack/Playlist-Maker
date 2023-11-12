@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.settings
+package com.practicum.playlistmaker.ui.settings.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -6,37 +6,45 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.practicum.playlistmaker.domain.models.App
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.data.sharing.ExternalNavigator
+import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
+import com.practicum.playlistmaker.domain.sharing.SharingInteractor
+import com.practicum.playlistmaker.domain.sharing.impl.SharingInteractorImpl
+import com.practicum.playlistmaker.ui.settings.view_model.SettingsViewModel
+import com.practicum.playlistmaker.ui.settings.view_model.SettingsViewModelFactory
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var settingsViewModel: SettingsViewModel
 
     @SuppressLint("MissingInflatedId", "UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        val view: LinearLayout = binding.root
+        setContentView(view)
 
-        // get system use dark mode
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.mode_switch)
+        settingsViewModel = ViewModelProvider(this, SettingsViewModelFactory(this))[SettingsViewModel::class.java]
 
-        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        binding.modeSwitch.isChecked = (applicationContext as App).darkTheme
 
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+        binding.modeSwitch.setOnCheckedChangeListener { _, checked ->
             (applicationContext as App).switchTheme(checked)
         }
 
-        val backButton = findViewById<ImageView>(R.id.back_button)
-        val offerButton = findViewById<FrameLayout>(R.id.offer)
-        val sendButton = findViewById<FrameLayout>(R.id.send)
-        val shareButton = findViewById<FrameLayout>(R.id.share)
-
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish()
         }
 
-        offerButton.setOnClickListener {
+        binding.offer.setOnClickListener {
             Intent().apply {
                 action = Intent.ACTION_VIEW
                 data = Uri.parse(getString(R.string.practicum_offer))
@@ -44,7 +52,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        sendButton.setOnClickListener {
+        binding.send.setOnClickListener {
             Intent().apply {
                 action = Intent.ACTION_SENDTO
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.user_email)))
@@ -55,7 +63,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        shareButton.setOnClickListener {
+        binding.share.setOnClickListener {
             Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
