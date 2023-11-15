@@ -171,9 +171,7 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             search()
         }
     }
-
     private fun search() {
-
         if (inputEditText.text.isNotEmpty()) {
             errorConnection.visibility = View.GONE
             historyLayout.visibility = View.GONE
