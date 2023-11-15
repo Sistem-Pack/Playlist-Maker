@@ -19,18 +19,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.domain.models.App
+import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.data.IClickView
 import com.practicum.playlistmaker.ui.player.PlayerActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.data.TracksRepositoryImpl
 import com.practicum.playlistmaker.data.network.IDataLoadCallback
 import com.practicum.playlistmaker.domain.models.SearchHistory
-import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.domain.api.ITrackInteractor
-import com.practicum.playlistmaker.domain.api.ITracksRepository
-import com.practicum.playlistmaker.domain.impl.TrackInteractorImpl
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.presentation.track.TrackAdapter
 

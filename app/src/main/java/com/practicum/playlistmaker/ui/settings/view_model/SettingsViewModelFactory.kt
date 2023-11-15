@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.domain.models.App
+import com.practicum.playlistmaker.App
 
 class SettingsViewModelFactory(context: Context, application: Application): ViewModelProvider.AndroidViewModelFactory(application) {
 

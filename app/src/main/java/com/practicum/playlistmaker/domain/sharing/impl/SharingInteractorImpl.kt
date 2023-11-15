@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.domain.sharing.impl
 
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
-import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
+import com.practicum.playlistmaker.data.contentprovider.ContentProvider
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 import com.practicum.playlistmaker.domain.sharing.model.EmailData
 

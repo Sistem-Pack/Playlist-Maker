@@ -1,14 +1,10 @@
 package com.practicum.playlistmaker.ui.settings.activity
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.domain.models.App
-import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.ui.settings.view_model.SettingsViewModel
 import com.practicum.playlistmaker.ui.settings.view_model.SettingsViewModelFactory

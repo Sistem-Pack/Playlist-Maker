@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.creator
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.data.TracksRepositoryImpl
-import com.practicum.playlistmaker.data.contentprovider.ContentProviderImpl
+import com.practicum.playlistmaker.data.contentprovider.impl.ContentProviderImpl
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepository
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepositoryImpl
@@ -16,7 +16,7 @@ import com.practicum.playlistmaker.domain.settings.SettingsInteractor
 import com.practicum.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 import com.practicum.playlistmaker.domain.sharing.impl.SharingInteractorImpl
-import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
+import com.practicum.playlistmaker.data.contentprovider.ContentProvider
 
 object Creator {
     private fun getTrackRepository(): ITracksRepository {

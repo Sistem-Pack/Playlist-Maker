@@ -1,26 +1,23 @@
-package com.practicum.playlistmaker.domain.models
+package com.practicum.playlistmaker
 
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.practicum.playlistmaker.creator.Consts
+import com.practicum.playlistmaker.creator.Consts.SEARCH_HISTORY
+import com.practicum.playlistmaker.creator.Consts.SW_MODE
 import com.practicum.playlistmaker.domain.models.Track
 
 class App : Application() {
-
-    private companion object {
-        const val USER_PREFS = "PREFS"
-        const val SW_MODE = "SWITCH_MODE"
-        const val SEARCH_HISTORY = "HISTORY_TRACKS"
-    }
 
     var darkTheme = false
     private lateinit var sharedPrefs : SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
-        sharedPrefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE)
+        sharedPrefs = getSharedPreferences(Consts.USER_PREFS, MODE_PRIVATE)
         darkTheme = sharedPrefs.getBoolean(SW_MODE, false)
         switchTheme(darkTheme)
     }

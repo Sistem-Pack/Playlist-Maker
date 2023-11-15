@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.domain.models
 
+import com.practicum.playlistmaker.App
+
 class SearchHistory(private val sharedPreferences: App) {
 
     private companion object {
