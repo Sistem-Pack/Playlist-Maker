@@ -22,7 +22,7 @@ class SettingsActivity : AppCompatActivity() {
 
         settingsViewModel = ViewModelProvider(
             this,
-            SettingsViewModelFactory(this, application)
+            SettingsViewModelFactory(this)
         )[SettingsViewModel::class.java]
 
         settingsViewModel.themeSettingsState.observe(this) { themeSettings ->

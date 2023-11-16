@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.search
+package com.practicum.playlistmaker.ui.search.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -21,21 +21,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.data.IClickView
-import com.practicum.playlistmaker.ui.player.PlayerActivity
+import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.data.network.IDataLoadCallback
+import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.domain.models.SearchHistory
 import com.practicum.playlistmaker.domain.models.Track
 import com.practicum.playlistmaker.presentation.track.TrackAdapter
 
 class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
 
-    private companion object {
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-    }
+    private lateinit var binding: ActivitySettingsBinding
 
     private var query: String? = null
     private var tracks = ArrayList<Track>()
@@ -159,7 +157,7 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
         if (savedInstanceState != null) {
-            inputEditText.setText(savedInstanceState.getString(SEARCH_TEXT, ""))
+            inputEditText.setText(savedInstanceState.getString(Consts.SEARCH_TEXT, ""))
         }
 
         searchRefreshButton.setOnClickListener {
@@ -181,7 +179,7 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
 
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun hideSoftKeyboard(view: View) {
@@ -192,12 +190,12 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        query = savedInstanceState.getString(SEARCH_TEXT, "")
+        query = savedInstanceState.getString(Consts.SEARCH_TEXT, "")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_TEXT, query)
+        outState.putString(Consts.SEARCH_TEXT, query)
     }
 
     override fun onClick(track: Track) {
@@ -214,7 +212,7 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            handler.postDelayed({ isClickAllowed = true }, Consts.CLICK_DEBOUNCE_DELAY)
         }
         return current
     }

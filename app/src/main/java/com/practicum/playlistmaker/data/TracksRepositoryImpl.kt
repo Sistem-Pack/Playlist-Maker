@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.data
 
-import com.practicum.playlistmaker.data.dto.TrackSearchRequest
-import com.practicum.playlistmaker.data.dto.TrackSearchResponse
+import com.practicum.playlistmaker.data.search.dto.TrackSearchRequest
+import com.practicum.playlistmaker.data.search.dto.TrackSearchResponse
 import com.practicum.playlistmaker.domain.api.ITracksRepository
 import com.practicum.playlistmaker.domain.models.Track
 

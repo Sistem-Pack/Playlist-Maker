@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.player
+package com.practicum.playlistmaker.ui.player.activity
 
 import android.media.MediaPlayer
 import android.os.Build
@@ -14,11 +14,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityPlayerBinding
 
     private var track: Track? = null
     private lateinit var play: ImageButton
@@ -70,9 +73,9 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         mediaPlayer.setOnCompletionListener {
-            if ((applicationContext as App).darkTheme) {
+            /*if ((applicationContext as App).darkTheme) {
                 play.setImageResource(R.drawable.play_dark)
-            } else play.setImageResource(R.drawable.play_for_light)
+            } else play.setImageResource(R.drawable.play_for_light)*/
             playerState = STATE_PREPARED
             currentTrackTime = 0L
         }
@@ -128,17 +131,17 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun startPlayer() {
         mediaPlayer.start()
-        if ((applicationContext as App).darkTheme) {
+        /*if ((applicationContext as App).darkTheme) {
                 play.setImageResource(R.drawable.pause_for_black)
-        } else play.setImageResource(R.drawable.pause_light)
+        } else play.setImageResource(R.drawable.pause_light)*/
         playerState = STATE_PLAYING
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
-        if ((applicationContext as App).darkTheme) {
+        /*if ((applicationContext as App).darkTheme) {
             play.setImageResource(R.drawable.play_dark)
-        } else play.setImageResource(R.drawable.play_for_light)
+        } else play.setImageResource(R.drawable.play_for_light)*/
         playerState = STATE_PAUSED
         mainThreadHandler?.removeCallbacks(createUpdateTimerTask(0, 0))
     }

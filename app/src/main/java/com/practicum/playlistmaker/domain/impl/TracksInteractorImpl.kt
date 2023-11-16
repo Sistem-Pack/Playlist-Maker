@@ -3,7 +3,6 @@ package com.practicum.playlistmaker.domain.impl
 import com.practicum.playlistmaker.data.network.IDataLoadCallback
 import com.practicum.playlistmaker.domain.api.ITrackInteractor
 import com.practicum.playlistmaker.domain.api.ITracksRepository
-import com.practicum.playlistmaker.ui.search.SearchActivity
 import java.util.concurrent.Executors
 
 class TrackInteractorImpl(private val repository: ITracksRepository) : ITrackInteractor {
