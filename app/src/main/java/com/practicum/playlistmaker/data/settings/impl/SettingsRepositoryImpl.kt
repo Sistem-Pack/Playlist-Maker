@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.data.settings.impl
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.domain.settings.models.ThemeSettings
 
@@ -20,6 +21,16 @@ class SettingsRepositoryImpl(context: Context) : SettingsRepository {
         sharedPreferences.edit()
             .putBoolean(Consts.SW_MODE, settings.darkTheme)
             .apply()
+    }
+
+    override fun setTheme(application: Application, useDarkTheme: ThemeSettings) {
+        AppCompatDelegate.setDefaultNightMode(
+            if (useDarkTheme) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
     }
 
 }

@@ -28,7 +28,10 @@ object Creator {
     }
 
     fun provideSettingsInteractor(context: Context): SettingsInteractor {
-        return SettingsInteractorImpl(getSettingsRepository(context))
+        return SettingsInteractorImpl(provideSettingsRepository(context))
+    }
+    fun provideSettingsRepository(context: Context): SettingsRepository {
+        return SettingsRepositoryImpl(context)
     }
 
     fun provideSharingInteractor(context: Context): SharingInteractor {
@@ -46,17 +49,5 @@ object Creator {
         return ExternalNavigatorImpl(context)
     }
 
-    private fun getSettingsRepository(context: Context): SettingsRepository {
-        return SettingsRepositoryImpl(getSettingsStorage(context))
-    }
-
-    private fun getSettingsStorage(context: Context): SettingsThemeStorage {
-        return SharedPrefsSettingsThemeStorage(
-            context.getSharedPreferences(
-                ContentProviderImpl(context).getStringFromResources(""),
-                AppCompatActivity.MODE_PRIVATE
-            )
-        )
-    }
 
 }

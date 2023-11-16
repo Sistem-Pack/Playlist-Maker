@@ -25,10 +25,12 @@ class SettingsActivity : AppCompatActivity() {
             SettingsViewModelFactory(this, application)
         )[SettingsViewModel::class.java]
 
-        binding.modeSwitch.isChecked = (applicationContext as App).darkTheme
+        settingsViewModel.themeSettingsState.observe(this) { themeSettings ->
+            binding.modeSwitch.isChecked = themeSettings.darkTheme
+        }
 
         binding.modeSwitch.setOnCheckedChangeListener { _, checked ->
-            (applicationContext as App).switchTheme(checked)
+            settingsViewModel.switchTheme(checked)
         }
 
         binding.backButton.setOnClickListener {

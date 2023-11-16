@@ -2,39 +2,25 @@ package com.practicum.playlistmaker
 
 import android.app.Application
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.creator.Consts.SEARCH_HISTORY
-import com.practicum.playlistmaker.creator.Consts.SW_MODE
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.domain.models.Track
 
 class App : Application() {
 
-    var darkTheme = false
-    private lateinit var sharedPrefs : SharedPreferences
-
+    //var darkTheme = false
+    private lateinit var sharedPrefs: SharedPreferences
+    private val settingsRepository = Creator.provideSettingsRepository(context = this)
     override fun onCreate() {
         super.onCreate()
-        sharedPrefs = getSharedPreferences(Consts.USER_PREFS, MODE_PRIVATE)
-        darkTheme = sharedPrefs.getBoolean(SW_MODE, false)
-        switchTheme(darkTheme)
+        settingsRepository.setTheme(
+            application = this,
+            useDarkTheme = Creator.provideSettingsInteractor(this).getThemeSettings()
+        )
     }
 
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        )
-        sharedPrefs.edit()
-            .putBoolean(SW_MODE, darkTheme)
-            .apply()
-    }
     fun writeSearchHistory(tracks: ArrayList<Track>) {
         val json = createJsonStringTracks(tracks)
         sharedPrefs.edit()
