@@ -25,7 +25,7 @@ class SettingsRepositoryImpl(context: Context) : SettingsRepository {
 
     override fun setTheme(application: Application, useDarkTheme: ThemeSettings) {
         AppCompatDelegate.setDefaultNightMode(
-            if (useDarkTheme) {
+            if (useDarkTheme.darkTheme) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
