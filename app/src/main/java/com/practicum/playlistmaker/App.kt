@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.practicum.playlistmaker.creator.Consts.SEARCH_HISTORY
 import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.domain.search.models.Track
 
 class App : Application() {
 

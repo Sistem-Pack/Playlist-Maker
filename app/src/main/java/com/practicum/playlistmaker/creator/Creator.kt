@@ -1,17 +1,16 @@
 package com.practicum.playlistmaker.creator
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.data.TracksRepositoryImpl
+import com.practicum.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.practicum.playlistmaker.data.contentprovider.impl.ContentProviderImpl
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepository
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
-import com.practicum.playlistmaker.domain.api.ITrackInteractor
-import com.practicum.playlistmaker.domain.api.ITracksRepository
-import com.practicum.playlistmaker.domain.impl.TrackInteractorImpl
+import com.practicum.playlistmaker.domain.search.api.ITrackInteractor
+import com.practicum.playlistmaker.domain.search.api.ITracksRepository
+import com.practicum.playlistmaker.domain.search.impl.TrackInteractorImpl
 import com.practicum.playlistmaker.domain.settings.SettingsInteractor
 import com.practicum.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor

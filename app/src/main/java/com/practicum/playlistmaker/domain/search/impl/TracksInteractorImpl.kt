@@ -1,8 +1,8 @@
-package com.practicum.playlistmaker.domain.impl
+package com.practicum.playlistmaker.domain.search.impl
 
 import com.practicum.playlistmaker.data.network.IDataLoadCallback
-import com.practicum.playlistmaker.domain.api.ITrackInteractor
-import com.practicum.playlistmaker.domain.api.ITracksRepository
+import com.practicum.playlistmaker.domain.search.api.ITrackInteractor
+import com.practicum.playlistmaker.domain.search.api.ITracksRepository
 import java.util.concurrent.Executors
 
 class TrackInteractorImpl(private val repository: ITracksRepository) : ITrackInteractor {

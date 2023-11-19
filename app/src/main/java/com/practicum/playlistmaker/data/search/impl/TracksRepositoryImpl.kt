@@ -1,9 +1,10 @@
-package com.practicum.playlistmaker.data
+package com.practicum.playlistmaker.data.search.impl
 
+import com.practicum.playlistmaker.data.network.INetworkClient
 import com.practicum.playlistmaker.data.search.dto.TrackSearchRequest
 import com.practicum.playlistmaker.data.search.dto.TrackSearchResponse
-import com.practicum.playlistmaker.domain.api.ITracksRepository
-import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.domain.search.api.ITracksRepository
+import com.practicum.playlistmaker.domain.search.models.Track
 
 class TracksRepositoryImpl(private val networkClient: INetworkClient) : ITracksRepository {
     override var errorCode: Int = 0

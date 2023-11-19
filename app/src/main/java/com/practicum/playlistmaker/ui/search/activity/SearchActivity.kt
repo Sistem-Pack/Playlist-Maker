@@ -17,36 +17,40 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.App
-import com.practicum.playlistmaker.data.IClickView
+import com.practicum.playlistmaker.data.search.IClickView
 import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.data.network.IDataLoadCallback
-import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
-import com.practicum.playlistmaker.domain.models.SearchHistory
-import com.practicum.playlistmaker.domain.models.Track
-import com.practicum.playlistmaker.presentation.track.TrackAdapter
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.domain.search.models.SearchHistory
+import com.practicum.playlistmaker.domain.search.models.Track
+import com.practicum.playlistmaker.ui.track.TrackAdapter
+import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
+import com.practicum.playlistmaker.ui.search.view_model.SearchViewModelFactory
 
 class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
 
-    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var binding: ActivitySearchBinding
+    private lateinit var searchViewModel: SearchViewModel
 
     private var query: String? = null
-    private var tracks = ArrayList<Track>()
-    private var tracksHistory = ArrayList<Track>()
+
     private lateinit var searchHistory: SearchHistory
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var inputEditText: TextView
-    private lateinit var trackRecyclerViewSearchHistory: RecyclerView
+    //private lateinit var inputEditText: TextView
+    //private lateinit var trackRecyclerViewSearchHistory: RecyclerView
     private lateinit var looper: LinearLayout
     private lateinit var notFound: LinearLayout
     private lateinit var errorConnection: LinearLayout
     private lateinit var adapterSearch: TrackAdapter
-    private lateinit var trackRecyclerView: RecyclerView
+    private lateinit var adapterHistory: TrackAdapter
+    //private lateinit var trackRecyclerView: RecyclerView
     private lateinit var historyLayout: View
     private val searchRunnable = Runnable { search() }
 
@@ -55,25 +59,42 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        searchViewModel = ViewModelProvider(
+            this,
+            SearchViewModelFactory(this)
+        )[SearchViewModel::class.java]
+
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
+        binding.trackRecyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.searchHistory.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        adapterSearch = TrackAdapter(tracks, this)
+        adapterHistory = TrackAdapter(tracksHistory, this)
+
 
         // in first step set all conditions
-        val backButton = findViewById<FrameLayout>(R.id.back_button)
-        inputEditText = findViewById<EditText>(R.id.edit_view_search)
-        val clearButton = findViewById<ImageButton>(R.id.clear_text)
-        trackRecyclerView = findViewById(R.id.track_recycler_view)
+        //inputEditText = findViewById<EditText>(R.id.edit_view_search)
+        //val clearButton = findViewById<ImageButton>(R.id.clear_text)
+        //trackRecyclerView = findViewById(R.id.track_recycler_view)
         errorConnection = findViewById(R.id.no_connection_error_layout)
         notFound = findViewById(R.id.not_found_layout)
         val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
         val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
         historyLayout = findViewById(R.id.history_layout)
-        trackRecyclerViewSearchHistory = findViewById(R.id.search_history)
+        //trackRecyclerViewSearchHistory = findViewById(R.id.search_history)
         looper = findViewById(R.id.progress_bar)
         val searchRunnable = Runnable { search() }
-        adapterSearch = TrackAdapter(tracks, this)
-        var adapterHistory = TrackAdapter(tracksHistory, this)
-        trackRecyclerView.adapter = adapterSearch
-        trackRecyclerViewSearchHistory.adapter = adapterHistory
+
+        //trackRecyclerView.adapter = adapterSearch
+        //trackRecyclerViewSearchHistory.adapter = adapterHistory
         searchHistory = SearchHistory(applicationContext as App)
 
         fun refreshHistory() {
@@ -87,27 +108,8 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             refreshHistory()
         }
 
-        trackRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        trackRecyclerViewSearchHistory.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        backButton.setOnClickListener {
-            finish()
-        }
-
-        clearButton.setOnClickListener {
-            inputEditText.setText("")
-            hideSoftKeyboard(it)
-            notFound.visibility = View.GONE
-            errorConnection.visibility = View.GONE
-            tracks.clear()
-            adapterSearch.notifyDataSetChanged()
-            refreshHistory()
-        }
-
-        inputEditText.setOnEditorActionListener { _, actionId, _ ->
-            trackRecyclerView.visibility = View.VISIBLE
+        binding.editViewSearch.setOnEditorActionListener { _, actionId, _ ->
+            binding.trackRecyclerView.visibility = View.VISIBLE
             notFound.visibility = View.GONE
             errorConnection.visibility = View.GONE
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -116,9 +118,15 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             false
         }
 
-        inputEditText.setOnFocusChangeListener { _, hasFocus ->
+        fun hideSoftKeyboard(view: View) {
+            val imm =
+                getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+
+        binding.editViewSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus
-                && inputEditText.text.isEmpty()
+                && binding.editViewSearch.text.isEmpty()
                 && tracksHistory.isNotEmpty()
             ) {
                 refreshHistory()
@@ -140,10 +148,10 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
+                binding.clearText.visibility = clearButtonVisibility(s)
                 query = s.toString()
                 historyLayout.visibility =
-                    if (inputEditText.hasFocus()
+                    if (binding.editViewSearch.hasFocus()
                         && s?.isEmpty() == true
                         && tracksHistory.isNotEmpty()
                     ) View.VISIBLE else View.GONE
@@ -151,13 +159,13 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                query = inputEditText.text.toString()
+                query = binding.editViewSearch.text.toString()
             }
         }
-        inputEditText.addTextChangedListener(simpleTextWatcher)
+        binding.editViewSearch.addTextChangedListener(simpleTextWatcher)
 
         if (savedInstanceState != null) {
-            inputEditText.setText(savedInstanceState.getString(Consts.SEARCH_TEXT, ""))
+            binding.editViewSearch.setText(savedInstanceState.getString(Consts.SEARCH_TEXT, ""))
         }
 
         searchRefreshButton.setOnClickListener {
@@ -165,12 +173,12 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
         }
     }
     private fun search() {
-        if (inputEditText.text.isNotEmpty()) {
+        if (binding.editViewSearch.text.isNotEmpty()) {
             errorConnection.visibility = View.GONE
             historyLayout.visibility = View.GONE
             notFound.visibility = View.GONE
             looper.visibility = View.VISIBLE
-            Creator.tracksInteractor().search(inputEditText.text.toString(), this)
+            Creator.tracksInteractor().search(binding.editViewSearch.text.toString(), this)
         } else notFound.visibility = View.VISIBLE
     }
 
@@ -224,7 +232,7 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             if (tracksL.isNotEmpty()) {
                 tracks.addAll(tracksL)
                 errorConnection.visibility = View.GONE
-                trackRecyclerView.visibility = View.VISIBLE
+                binding.trackRecyclerView.visibility = View.VISIBLE
                 adapterSearch.notifyDataSetChanged()
             } else {
                 notFound.visibility = View.VISIBLE
