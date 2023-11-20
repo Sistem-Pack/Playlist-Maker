@@ -3,10 +3,10 @@ package com.practicum.playlistmaker.data.search.impl
 import com.practicum.playlistmaker.data.network.INetworkClient
 import com.practicum.playlistmaker.data.search.dto.TrackSearchRequest
 import com.practicum.playlistmaker.data.search.dto.TrackSearchResponse
-import com.practicum.playlistmaker.domain.search.api.ITracksRepository
+import com.practicum.playlistmaker.domain.search.api.TrackSearchRepository
 import com.practicum.playlistmaker.domain.search.models.Track
 
-class TracksRepositoryImpl(private val networkClient: INetworkClient) : ITracksRepository {
+class TracksRepositoryImpl(private val networkClient: INetworkClient) : TrackSearchRepository {
     override var errorCode: Int = 0
     override fun search(expression: String): ArrayList<Track> {
         val response = networkClient.doRequest(TrackSearchRequest(expression))

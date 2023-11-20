@@ -1,11 +1,12 @@
 package com.practicum.playlistmaker.domain.search.impl
 
 import com.practicum.playlistmaker.data.network.IDataLoadCallback
-import com.practicum.playlistmaker.domain.search.api.ITrackInteractor
-import com.practicum.playlistmaker.domain.search.api.ITracksRepository
+import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
+import com.practicum.playlistmaker.domain.search.api.TrackSearchRepository
+import com.practicum.playlistmaker.domain.search.models.Track
 import java.util.concurrent.Executors
 
-class TrackInteractorImpl(private val repository: ITracksRepository) : ITrackInteractor {
+class TrackSearchInteractorImpl(private val repository: TrackSearchRepository) : TrackSearchInteractor {
 
     private val executor = Executors.newCachedThreadPool()
 
@@ -16,5 +17,17 @@ class TrackInteractorImpl(private val repository: ITracksRepository) : ITrackInt
             callback.onDataLoaded(tracks)
             callback.onError(code)
         }
+    }
+
+    override fun readSearchHistory(): ArrayList<Track> {
+        return repository.readSearchHistory()
+    }
+
+    override fun saveHistory(tracks: List<Track>) {
+        repository.saveHistory(tracks)
+    }
+
+    override fun clearSearchHistory() {
+        repository.clearSearchHistory()
     }
 }

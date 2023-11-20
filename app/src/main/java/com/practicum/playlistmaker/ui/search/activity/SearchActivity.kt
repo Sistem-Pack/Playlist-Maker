@@ -71,11 +71,6 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             finish()
         }
 
-        binding.trackRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.searchHistory.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
         adapterSearch = TrackAdapter(tracks, this)
         adapterHistory = TrackAdapter(tracksHistory, this)
 
@@ -118,12 +113,6 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             false
         }
 
-        fun hideSoftKeyboard(view: View) {
-            val imm =
-                getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-
         binding.editViewSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus
                 && binding.editViewSearch.text.isEmpty()
@@ -135,7 +124,7 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
             }
         }
 
-        cleanHistoryButton.setOnClickListener {
+        binding.cleanHistoryButton.setOnClickListener {
             historyLayout.visibility = View.GONE
             tracksHistory.clear()
             searchHistory.clean()
@@ -188,12 +177,6 @@ class SearchActivity : AppCompatActivity(), IClickView, IDataLoadCallback {
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)
-    }
-
-    private fun hideSoftKeyboard(view: View) {
-        val imm =
-            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

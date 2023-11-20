@@ -8,9 +8,9 @@ import com.practicum.playlistmaker.data.settings.impl.SettingsRepository
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
-import com.practicum.playlistmaker.domain.search.api.ITrackInteractor
-import com.practicum.playlistmaker.domain.search.api.ITracksRepository
-import com.practicum.playlistmaker.domain.search.impl.TrackInteractorImpl
+import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
+import com.practicum.playlistmaker.domain.search.api.TrackSearchRepository
+import com.practicum.playlistmaker.domain.search.impl.TrackSearchInteractorImpl
 import com.practicum.playlistmaker.domain.settings.SettingsInteractor
 import com.practicum.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor
@@ -18,12 +18,12 @@ import com.practicum.playlistmaker.domain.sharing.impl.SharingInteractorImpl
 import com.practicum.playlistmaker.data.contentprovider.ContentProvider
 
 object Creator {
-    private fun getTrackRepository(): ITracksRepository {
+    private fun getTrackRepository(): TrackSearchRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient())
     }
 
-    fun tracksInteractor(): ITrackInteractor {
-        return TrackInteractorImpl(getTrackRepository())
+    fun tracksInteractor(): TrackSearchInteractor {
+        return TrackSearchInteractorImpl(getTrackRepository())
     }
 
     fun provideSettingsInteractor(context: Context): SettingsInteractor {
