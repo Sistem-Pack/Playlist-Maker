@@ -22,7 +22,7 @@ object Creator {
         return TracksRepositoryImpl(RetrofitNetworkClient())
     }
 
-    fun tracksInteractor(): TrackSearchInteractor {
+    fun provideSearchInteractor(): TrackSearchInteractor {
         return TrackSearchInteractorImpl(getTrackRepository())
     }
 
@@ -40,7 +40,7 @@ object Creator {
         )
     }
 
-    private fun provideContentProvider(context: Context): ContentProvider {
+    fun provideContentProvider(context: Context): ContentProvider {
         return ContentProviderImpl(context)
     }
 
