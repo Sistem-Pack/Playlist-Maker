@@ -9,11 +9,13 @@ class SearchViewModelFactory(context: Context) : ViewModelProvider.AndroidViewMo
 
     private val searchInteractor = Creator.provideSearchInteractor()
     private val contentProvider = Creator.provideContentProvider(context = context)
+    private val showPlayerInteractor = Creator.provideShowPlayerInteractor(context)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SearchViewModel(
             searchInteractor = searchInteractor,
-            contentProvider = contentProvider
+            contentProvider = contentProvider,
+            showPlayerInteractor = showPlayerInteractor
         ) as T
     }
 }

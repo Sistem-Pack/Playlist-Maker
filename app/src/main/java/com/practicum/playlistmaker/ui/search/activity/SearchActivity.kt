@@ -1,10 +1,15 @@
 package com.practicum.playlistmaker.ui.search.activity
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.creator.Consts
@@ -75,12 +80,29 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
             finish()
         }
 
-        searchViewModel.searchScreenState.observe(this) { state ->
-            render(state)
+        binding.clearText.setOnClickListener {
+            binding.editViewSearch.setText("")
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager)?.hideSoftInputFromWindow(
+                binding.editViewSearch.windowToken,
+                0
+            )
+            searchViewModel.showHistoryTracks()
+        }
+
+        binding.searchRefreshButton.setOnClickListener {
+            searchViewModel.searchDebounce(binding.editViewSearch.text.toString())
+        }
+
+        binding.cleanHistoryButton.setOnClickListener {
+            searchViewModel.clearSearchHistory()
         }
 
         binding.editViewSearch.setOnFocusChangeListener { _, hasFocus ->
             searchViewModel.searchFocusChanged(hasFocus, binding.editViewSearch.text.toString())
+        }
+
+        searchViewModel.searchScreenState.observe(this) { state ->
+            render(state)
         }
 
         // отправляем все на поиск
@@ -103,64 +125,17 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
         })
     }
 
-    private fun renderEx(visibleType: String) {
-        binding.trackRecyclerView.visibility = if (visibleType == trackRecyclerView) { View.GONE } else View.VISIBLE
-        binding.noConnectionErrorLayout.visibility = View.GONE
-        binding.notFoundLayout.visibility = View.GONE
-        binding.historyLayout.visibility = View.GONE
-        binding.progressBar.visibility = View.VISIBLE
-    }
-
     private fun render(state: SearchState) {
-        when (state) {
-            is SearchState.Loading -> {
-                binding.trackRecyclerView.visibility = View.GONE
-                binding.noConnectionErrorLayout.visibility = View.GONE
-                binding.notFoundLayout.visibility = View.GONE
-                binding.historyLayout.visibility = View.GONE
-                binding.progressBar.visibility = View.VISIBLE
-            }
-
-            is SearchState.Content -> {
-                binding.progressBar.visibility = View.GONE
-                binding.noConnectionErrorLayout.visibility = View.GONE
-                binding.notFoundLayout.visibility = View.GONE
-                binding.historyLayout.visibility = View.GONE
-                binding.trackRecyclerView.visibility = View.VISIBLE
-                //trackAdapter.setTracks(state.tracks)
-            }
-
-            is SearchState.SearchHistory -> {
-                binding.trackRecyclerView.visibility = View.GONE
-                binding.progressBar.visibility = View.GONE
-                binding.noConnectionErrorLayout.visibility = View.GONE
-                binding.notFoundLayout.visibility = View.GONE
-                binding.historyLayout.visibility = View.VISIBLE
-                /*trackHistoryAdapter.setTracks(state.tracks)
-                if(state.tracks.isNotEmpty()) {
-                    setStatus(SearchStatus.HISTORY)
-                } else {
-                    setStatus(SearchStatus.ALL_GONE)
-                }*/
-            }
-
-            is SearchState.Empty -> {
-                binding.trackRecyclerView.visibility = View.GONE
-                binding.progressBar.visibility = View.GONE
-                binding.noConnectionErrorLayout.visibility = View.GONE
-                binding.historyLayout.visibility = View.GONE
-                binding.notFoundLayout.visibility = View.VISIBLE
-            }
-
-            is SearchState.Error -> {
-                binding.progressBar.visibility = View.GONE
-                binding.trackRecyclerView.visibility = View.GONE
-                binding.notFoundLayout.visibility = View.GONE
-                binding.historyLayout.visibility = View.GONE
-                binding.noConnectionErrorLayout.visibility = View.VISIBLE
-            }
-
-        }
+        binding.trackRecyclerView.visibility =
+            if (state is SearchState.Content) View.VISIBLE else View.GONE
+        binding.noConnectionErrorLayout.visibility =
+            if (state is SearchState.Error) View.VISIBLE else View.GONE
+        binding.notFoundLayout.visibility =
+            if (state is SearchState.Empty) View.VISIBLE else View.GONE
+        binding.historyLayout.visibility =
+            if (state is SearchState.SearchHistory) View.VISIBLE else View.GONE
+        binding.progressBar.visibility =
+            if (state is SearchState.Loading) View.VISIBLE else View.GONE
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -174,11 +149,7 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+        return if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
 }

@@ -16,21 +16,35 @@ import com.practicum.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 import com.practicum.playlistmaker.domain.sharing.impl.SharingInteractorImpl
 import com.practicum.playlistmaker.data.contentprovider.ContentProvider
+import com.practicum.playlistmaker.data.search.ShowPlayerInteractor
+import com.practicum.playlistmaker.data.search.TracksHistoryStorage
+import com.practicum.playlistmaker.data.search.impl.ShowPlayerInteractorImpl
 
 object Creator {
-    private fun getTrackRepository(): TrackSearchRepository {
-        return TracksRepositoryImpl(RetrofitNetworkClient())
+
+    private fun getTrackRepository(context: Context): TrackSearchRepository {
+        return TracksRepositoryImpl(
+            RetrofitNetworkClient(context),
+            TracksHistoryStorage(
+                context.getSharedPreferences(Consts.HISTORY_TRACK_FILE, Context.MODE_PRIVATE)
+            )
+        )
     }
 
-    fun provideSearchInteractor(): TrackSearchInteractor {
-        return TrackSearchInteractorImpl(getTrackRepository())
+    fun provideSearchInteractor(context: Context): TrackSearchInteractor {
+        return TrackSearchInteractorImpl(getTrackRepository(context))
     }
 
     fun provideSettingsInteractor(context: Context): SettingsInteractor {
         return SettingsInteractorImpl(provideSettingsRepository(context))
     }
+
     fun provideSettingsRepository(context: Context): SettingsRepository {
         return SettingsRepositoryImpl(context)
+    }
+
+    fun provideShowPlayerInteractor(context: Context): ShowPlayerInteractor {
+        return ShowPlayerInteractorImpl(context, provideContentProvider(context))
     }
 
     fun provideSharingInteractor(context: Context): SharingInteractor {

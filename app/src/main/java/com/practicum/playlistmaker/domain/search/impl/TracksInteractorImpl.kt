@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.domain.search.impl
 
-import com.practicum.playlistmaker.data.network.IDataLoadCallback
 import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
 import com.practicum.playlistmaker.domain.search.api.TrackSearchRepository
 import com.practicum.playlistmaker.domain.search.models.Track
@@ -10,12 +9,12 @@ class TrackSearchInteractorImpl(private val repository: TrackSearchRepository) :
 
     private val executor = Executors.newCachedThreadPool()
 
-    override fun search(expression: String, callback: IDataLoadCallback) {
+    override fun search(expression: String, consumer: TrackSearchInteractor.TracksConsumer) {
         executor.execute {
             val tracks = repository.search(expression)
             val code = repository.errorCode
-            callback.onDataLoaded(tracks)
-            callback.onError(code)
+            //callback.onDataLoaded(tracks)
+            //callback.onError(code)
         }
     }
 
