@@ -5,9 +5,11 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.data.contentprovider.ContentProvider
 import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
+import com.practicum.playlistmaker.domain.search.models.SearchHistory
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.track.TrackAdapter
 
@@ -16,14 +18,10 @@ class SearchViewModel(
     private val contentProvider: ContentProvider,
 ) : ViewModel() {
 
-    companion object {
-        private val SEARCH_REQUEST_TOKEN = Any()
-    }
-
     private val tracks = ArrayList<Track>()
     private val tracksHistory = ArrayList<Track>()
-    private val adapterSearch: TrackAdapter = TrackAdapter(tracks)
-    private val adapterHistory: TrackAdapter = TrackAdapter(tracksHistory)
+    private val adapterTracks: TrackAdapter = TrackAdapter()
+    private val adapterTracksHistory: TrackAdapter = TrackAdapter()
     private val searchRunnable = Runnable { searchRequest() }
 
     private val handler = Handler(Looper.getMainLooper())
@@ -36,9 +34,14 @@ class SearchViewModel(
         tracksHistory.addAll(searchInteractor.readSearchHistory())
     }
 
+    fun setTrackAdapters(trackRecyclerView: RecyclerView, historyTrackRecyclerView: RecyclerView) {
+        trackRecyclerView.adapter = adapterTracks
+        historyTrackRecyclerView.adapter = adapterTracksHistory
+    }
+
     fun searchDebounce(changedText: String) {
         searchText = changedText
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        handler.removeCallbacksAndMessages(searchRunnable)
         handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)
     }
 
@@ -84,21 +87,11 @@ class SearchViewModel(
         }
     }
 
-
-    /*private val handler = Handler(Looper.getMainLooper())
-
-    fun searchDebounce(changedText: String) {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        val searchRunnable = Runnable { searchRequest(changedText) }
-        val postTime = SystemClock.uptimeMillis() + Constants.SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
+    override fun onCleared() {
+        handler.removeCallbacksAndMessages(searchRunnable)
     }
 
-
+    /*
 
     fun clearSearchHistory() {
         historyList.clear()
@@ -112,23 +105,6 @@ class SearchViewModel(
         }
     }
 
-    fun clearSearchLine() {
-        _searchScreenState.value = SearchState.SearchHistory(historyList)
-    }
 
-    fun addTrackToSearchHistory(track: Track) {
-        if (historyList.contains(track)) {
-            historyList.remove(track)
-        }
-        historyList.add(0, track)
-        if (historyList.size > Constants.MAX_HISTORY_SIZE) {
-            historyList.removeLast()
-        }
-        searchInteractor.saveHistory(historyList)
-    }
-
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-    }
 */
 }

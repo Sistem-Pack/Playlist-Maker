@@ -69,6 +69,8 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
             SearchViewModelFactory(this)
         )[SearchViewModel::class.java]
 
+        searchViewModel.setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
+
         binding.backButton.setOnClickListener {
             finish()
         }
@@ -95,7 +97,6 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
                 searchText = binding.editViewSearch.text.toString()
             }
         })
-
 
 
         /*binding.editViewSearch.setOnEditorActionListener { _, actionId, _ ->
