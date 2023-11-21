@@ -79,6 +79,10 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
             render(state)
         }
 
+        binding.editViewSearch.setOnFocusChangeListener { _, hasFocus ->
+            searchViewModel.searchFocusChanged(hasFocus, binding.editViewSearch.text.toString())
+        }
+
         // отправляем все на поиск
         binding.editViewSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -97,153 +101,66 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
                 searchText = binding.editViewSearch.text.toString()
             }
         })
-
-
-        /*binding.editViewSearch.setOnEditorActionListener { _, actionId, _ ->
-
-          /*binding.trackRecyclerView.visibility = View.VISIBLE
-            notFound.visibility = View.GONE
-            errorConnection.visibility = View.GONE
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                search()
-            }
-            false*/
-        }*/
-
-
-        /*
-        fun refreshHistory() {
-            tracksHistory.clear()
-            tracksHistory.addAll(searchHistory.getTracksHistory())
-            historyLayout.visibility = if (tracksHistory.isNotEmpty()) View.VISIBLE else View.GONE
-            adapterHistory.notifyDataSetChanged()
-        }
-
-        if (searchHistory.getTracksHistory().isNotEmpty()) {
-            refreshHistory()
-        }
-
-        binding.editViewSearch.setOnEditorActionListener { _, actionId, _ ->
-            binding.trackRecyclerView.visibility = View.VISIBLE
-            notFound.visibility = View.GONE
-            errorConnection.visibility = View.GONE
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                search()
-            }
-            false
-        }
-
-        binding.editViewSearch.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus
-                && binding.editViewSearch.text.isEmpty()
-                && tracksHistory.isNotEmpty()
-            ) {
-                refreshHistory()
-            } else {
-                historyLayout.visibility = View.GONE
-            }
-        }
-
-        binding.cleanHistoryButton.setOnClickListener {
-            historyLayout.visibility = View.GONE
-            tracksHistory.clear()
-            searchHistory.clean()
-        }
-
-        // at now all work process
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.clearText.visibility = clearButtonVisibility(s)
-                query = s.toString()
-                historyLayout.visibility =
-                    if (binding.editViewSearch.hasFocus()
-                        && s?.isEmpty() == true
-                        && tracksHistory.isNotEmpty()
-                    ) View.VISIBLE else View.GONE
-                searchDebounce()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                query = binding.editViewSearch.text.toString()
-            }
-        }
-        binding.editViewSearch.addTextChangedListener(simpleTextWatcher)
-
-        if (savedInstanceState != null) {
-            binding.editViewSearch.setText(savedInstanceState.getString(Consts.SEARCH_TEXT, ""))
-        }
-
-        searchRefreshButton.setOnClickListener {
-            search()
-        }
-    }
-    private fun search() {
-        if (binding.editViewSearch.text.isNotEmpty()) {
-            errorConnection.visibility = View.GONE
-            historyLayout.visibility = View.GONE
-            notFound.visibility = View.GONE
-            looper.visibility = View.VISIBLE
-            Creator.tracksInteractor().search(binding.editViewSearch.text.toString(), this)
-        } else notFound.visibility = View.VISIBLE
     }
 
-    private fun clearButtonVisibility(s: CharSequence?): Int =
-        if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)
+    private fun renderEx(visibleType: String) {
+        binding.trackRecyclerView.visibility = if (visibleType == trackRecyclerView) { View.GONE } else View.VISIBLE
+        binding.noConnectionErrorLayout.visibility = View.GONE
+        binding.notFoundLayout.visibility = View.GONE
+        binding.historyLayout.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
     }
 
-    override fun onClick(track: Track) {
-        if (clickDebounce()) {
-            searchHistory.addTrack(track)
-            Intent(this, PlayerActivity()::class.java).apply {
-                putExtra("track", track)
-                startActivity(this)
+    private fun render(state: SearchState) {
+        when (state) {
+            is SearchState.Loading -> {
+                binding.trackRecyclerView.visibility = View.GONE
+                binding.noConnectionErrorLayout.visibility = View.GONE
+                binding.notFoundLayout.visibility = View.GONE
+                binding.historyLayout.visibility = View.GONE
+                binding.progressBar.visibility = View.VISIBLE
             }
-        }
-    }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, Consts.CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-
-    override fun onDataLoaded(tracksL: List<Track>) {
-        runOnUiThread {
-            tracks.clear()
-            looper.visibility = View.GONE
-            if (tracksL.isNotEmpty()) {
-                tracks.addAll(tracksL)
-                errorConnection.visibility = View.GONE
+            is SearchState.Content -> {
+                binding.progressBar.visibility = View.GONE
+                binding.noConnectionErrorLayout.visibility = View.GONE
+                binding.notFoundLayout.visibility = View.GONE
+                binding.historyLayout.visibility = View.GONE
                 binding.trackRecyclerView.visibility = View.VISIBLE
-                adapterSearch.notifyDataSetChanged()
-            } else {
-                notFound.visibility = View.VISIBLE
+                //trackAdapter.setTracks(state.tracks)
+            }
+
+            is SearchState.SearchHistory -> {
+                binding.trackRecyclerView.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
+                binding.noConnectionErrorLayout.visibility = View.GONE
+                binding.notFoundLayout.visibility = View.GONE
+                binding.historyLayout.visibility = View.VISIBLE
+                /*trackHistoryAdapter.setTracks(state.tracks)
+                if(state.tracks.isNotEmpty()) {
+                    setStatus(SearchStatus.HISTORY)
+                } else {
+                    setStatus(SearchStatus.ALL_GONE)
+                }*/
+            }
+
+            is SearchState.Empty -> {
+                binding.trackRecyclerView.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
+                binding.noConnectionErrorLayout.visibility = View.GONE
+                binding.historyLayout.visibility = View.GONE
+                binding.notFoundLayout.visibility = View.VISIBLE
+            }
+
+            is SearchState.Error -> {
+                binding.progressBar.visibility = View.GONE
+                binding.trackRecyclerView.visibility = View.GONE
+                binding.notFoundLayout.visibility = View.GONE
+                binding.historyLayout.visibility = View.GONE
+                binding.noConnectionErrorLayout.visibility = View.VISIBLE
             }
 
         }
-    }
-
-    override fun onError(code: Int) {
-        if (code != 200) {
-            runOnUiThread {
-                tracks.clear()
-                looper.visibility = View.GONE
-                errorConnection.visibility = View.VISIBLE
-            }
-        }
-    }*/
-
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -264,35 +181,149 @@ class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
         }
     }
 
-    private fun render(state: SearchState) {
-        when (state) {
-            is SearchState.Loading -> {
-                //setStatus(SearchStatus.PROGRESS)
-            }
+}
 
-            is SearchState.Content -> {
-                /*setStatus(SearchStatus.SUCCESS)
-                trackAdapter.setTracks(state.tracks)*/
-            }
+/*binding.editViewSearch.setOnEditorActionListener { _, actionId, _ ->
 
-            is SearchState.SearchHistory -> {
-                /*trackHistoryAdapter.setTracks(state.tracks)
-                if(state.tracks.isNotEmpty()) {
-                    setStatus(SearchStatus.HISTORY)
-                } else {
-                    setStatus(SearchStatus.ALL_GONE)
-                }*/
-            }
+  /*binding.trackRecyclerView.visibility = View.VISIBLE
+    notFound.visibility = View.GONE
+    errorConnection.visibility = View.GONE
+    if (actionId == EditorInfo.IME_ACTION_DONE) {
+        search()
+    }
+    false*/
+}*/
 
-            is SearchState.Empty -> {
-                //setStatus(SearchStatus.EMPTY_SEARCH)
-            }
 
-            is SearchState.Error -> {
-               //setStatus(SearchStatus.CONNECTION_ERROR)
-            }
+/*
+fun refreshHistory() {
+    tracksHistory.clear()
+    tracksHistory.addAll(searchHistory.getTracksHistory())
+    historyLayout.visibility = if (tracksHistory.isNotEmpty()) View.VISIBLE else View.GONE
+    adapterHistory.notifyDataSetChanged()
+}
 
-        }
+if (searchHistory.getTracksHistory().isNotEmpty()) {
+    refreshHistory()
+}
+
+binding.editViewSearch.setOnEditorActionListener { _, actionId, _ ->
+    binding.trackRecyclerView.visibility = View.VISIBLE
+    notFound.visibility = View.GONE
+    errorConnection.visibility = View.GONE
+    if (actionId == EditorInfo.IME_ACTION_DONE) {
+        search()
+    }
+    false
+}
+
+binding.editViewSearch.setOnFocusChangeListener { _, hasFocus ->
+    if (hasFocus
+        && binding.editViewSearch.text.isEmpty()
+        && tracksHistory.isNotEmpty()
+    ) {
+        refreshHistory()
+    } else {
+        historyLayout.visibility = View.GONE
+    }
+}
+
+binding.cleanHistoryButton.setOnClickListener {
+    historyLayout.visibility = View.GONE
+    tracksHistory.clear()
+    searchHistory.clean()
+}
+
+// at now all work process
+val simpleTextWatcher = object : TextWatcher {
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        // empty
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        binding.clearText.visibility = clearButtonVisibility(s)
+        query = s.toString()
+        historyLayout.visibility =
+            if (binding.editViewSearch.hasFocus()
+                && s?.isEmpty() == true
+                && tracksHistory.isNotEmpty()
+            ) View.VISIBLE else View.GONE
+        searchDebounce()
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+        query = binding.editViewSearch.text.toString()
+    }
+}
+binding.editViewSearch.addTextChangedListener(simpleTextWatcher)
+
+if (savedInstanceState != null) {
+    binding.editViewSearch.setText(savedInstanceState.getString(Consts.SEARCH_TEXT, ""))
+}
+
+searchRefreshButton.setOnClickListener {
+    search()
+}
+}
+private fun search() {
+if (binding.editViewSearch.text.isNotEmpty()) {
+    errorConnection.visibility = View.GONE
+    historyLayout.visibility = View.GONE
+    notFound.visibility = View.GONE
+    looper.visibility = View.VISIBLE
+    Creator.tracksInteractor().search(binding.editViewSearch.text.toString(), this)
+} else notFound.visibility = View.VISIBLE
+}
+
+private fun clearButtonVisibility(s: CharSequence?): Int =
+if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+private fun searchDebounce() {
+handler.removeCallbacks(searchRunnable)
+handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)
+}
+
+override fun onClick(track: Track) {
+if (clickDebounce()) {
+    searchHistory.addTrack(track)
+    Intent(this, PlayerActivity()::class.java).apply {
+        putExtra("track", track)
+        startActivity(this)
+    }
+}
+}
+
+private fun clickDebounce(): Boolean {
+val current = isClickAllowed
+if (isClickAllowed) {
+    isClickAllowed = false
+    handler.postDelayed({ isClickAllowed = true }, Consts.CLICK_DEBOUNCE_DELAY)
+}
+return current
+}
+
+override fun onDataLoaded(tracksL: List<Track>) {
+runOnUiThread {
+    tracks.clear()
+    looper.visibility = View.GONE
+    if (tracksL.isNotEmpty()) {
+        tracks.addAll(tracksL)
+        errorConnection.visibility = View.GONE
+        binding.trackRecyclerView.visibility = View.VISIBLE
+        adapterSearch.notifyDataSetChanged()
+    } else {
+        notFound.visibility = View.VISIBLE
     }
 
 }
+}
+
+override fun onError(code: Int) {
+if (code != 200) {
+    runOnUiThread {
+        tracks.clear()
+        looper.visibility = View.GONE
+        errorConnection.visibility = View.VISIBLE
+    }
+}
+}*/

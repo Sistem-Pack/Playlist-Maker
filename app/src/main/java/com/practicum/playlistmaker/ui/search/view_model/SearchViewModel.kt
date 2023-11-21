@@ -49,6 +49,18 @@ class SearchViewModel(
         _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
     }
 
+    fun clearSearchHistory() {
+        tracksHistory.clear()
+        _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+        searchInteractor.clearSearchHistory()
+    }
+
+    fun searchFocusChanged(hasFocus: Boolean, text: String) {
+        if (hasFocus && text.isEmpty()) {
+            _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+        }
+    }
+
     private fun searchRequest() {
 
         if (searchText.isNotEmpty()) {
@@ -90,21 +102,4 @@ class SearchViewModel(
     override fun onCleared() {
         handler.removeCallbacksAndMessages(searchRunnable)
     }
-
-    /*
-
-    fun clearSearchHistory() {
-        historyList.clear()
-        _searchScreenState.value = SearchState.SearchHistory(historyList)
-        searchInteractor.clearSearchHistory()
-    }
-
-    fun searchFocusChanged(hasFocus: Boolean, text: String) {
-        if (hasFocus && text.isEmpty()) {
-            _searchScreenState.value = SearchState.SearchHistory(historyList)
-        }
-    }
-
-
-*/
 }
