@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.creator.Creator
 
-class SearchViewModelFactory(context: Context) : ViewModelProvider.AndroidViewModelFactory() {
+class SearchViewModelFactory(context: Context) : ViewModelProvider.Factory {
 
-    private val searchInteractor = Creator.provideSearchInteractor()
+    private val searchInteractor = Creator.provideSearchInteractor(context = context)
     private val contentProvider = Creator.provideContentProvider(context = context)
-    private val showPlayerInteractor = Creator.provideShowPlayerInteractor(context)
+    private val showPlayerInteractor = Creator.provideShowPlayerInteractor(context = context)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SearchViewModel(

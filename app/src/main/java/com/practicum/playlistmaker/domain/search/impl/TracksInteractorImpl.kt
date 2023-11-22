@@ -13,6 +13,10 @@ class TrackSearchInteractorImpl(private val repository: TrackSearchRepository) :
         executor.execute {
             val tracks = repository.search(expression)
             val code = repository.errorCode
+            when (code) {
+                200 -> consumer.consume(tracks, null)
+                else -> consumer.consume(null, code.toString())
+            }
             //callback.onDataLoaded(tracks)
             //callback.onError(code)
         }

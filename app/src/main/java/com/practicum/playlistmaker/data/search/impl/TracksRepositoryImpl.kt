@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.data.search.impl
 
 import com.practicum.playlistmaker.data.network.NetworkClient
+import com.practicum.playlistmaker.data.search.TracksHistoryStorage
 import com.practicum.playlistmaker.data.search.dto.TrackSearchRequest
 import com.practicum.playlistmaker.data.search.dto.TrackSearchResponse
 import com.practicum.playlistmaker.domain.search.api.TrackSearchRepository
@@ -33,14 +34,15 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
     }
 
     override fun readSearchHistory(): ArrayList<Track> {
-        TODO("Not yet implemented")
+        return tracksHistoryStorage.read().toCollection(ArrayList())
     }
 
     override fun saveHistory(tracks: List<Track>) {
-        TODO("Not yet implemented")
+        tracksHistoryStorage.saveHistory(tracks)
     }
 
     override fun clearSearchHistory() {
-        TODO("Not yet implemented")
+        tracksHistoryStorage.clear()
     }
+
 }

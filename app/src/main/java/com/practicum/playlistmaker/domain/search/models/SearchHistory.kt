@@ -4,7 +4,7 @@ import com.practicum.playlistmaker.App
 
 class SearchHistory(private val sharedPreferences: App) {
 
-    private companion object {
+    /*private companion object {
         const val MAX_TRACKS_LIST_COUNT = 10
     }
 
@@ -46,6 +46,6 @@ class SearchHistory(private val sharedPreferences: App) {
     fun clean() {
         tracks.clear()
         sharedPreferences.writeSearchHistory(tracks)
-    }
+    }*/
 
 }

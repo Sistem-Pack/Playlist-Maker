@@ -19,14 +19,15 @@ import com.practicum.playlistmaker.data.contentprovider.ContentProvider
 import com.practicum.playlistmaker.data.search.ShowPlayerInteractor
 import com.practicum.playlistmaker.data.search.TracksHistoryStorage
 import com.practicum.playlistmaker.data.search.impl.ShowPlayerInteractorImpl
+import com.practicum.playlistmaker.data.search.impl.TracksHistoryStorageImpl
 
 object Creator {
 
     private fun getTrackRepository(context: Context): TrackSearchRepository {
         return TracksRepositoryImpl(
             RetrofitNetworkClient(context),
-            TracksHistoryStorage(
-                context.getSharedPreferences(Consts.HISTORY_TRACK_FILE, Context.MODE_PRIVATE)
+            TracksHistoryStorageImpl(
+                context.getSharedPreferences(Consts.SEARCH_HISTORY, Context.MODE_PRIVATE)
             )
         )
     }

@@ -17,22 +17,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.searchButton.setOnClickListener {
-            Intent().apply {
-                SearchActivity::class.java
+            Intent(this, SearchActivity::class.java).apply {
                 startActivity(this)
             }
         }
 
         binding.mediatechButton.setOnClickListener {
-            Intent().apply {
-                MediatechActivity::class.java
+            Intent(this, MediatechActivity::class.java).apply {
                 startActivity(this)
             }
         }
 
         binding.settingsButton.setOnClickListener {
-            Intent().apply {
-                SettingsActivity::class.java
+            Intent(this, SettingsActivity::class.java).apply {
                 startActivity(this)
             }
         }

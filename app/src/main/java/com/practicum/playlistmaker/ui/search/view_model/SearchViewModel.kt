@@ -65,18 +65,21 @@ class SearchViewModel(
         tracksHistory.clear()
         searchInteractor.readSearchHistory()
         adapterTracksHistory.notifyDataSetChanged()
-        _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+        if (tracksHistory.isNotEmpty()) _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+        else _searchScreenState.value = SearchState.AllGone
     }
 
     fun clearSearchHistory() {
         tracksHistory.clear()
-        _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
         searchInteractor.clearSearchHistory()
+        _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
     }
 
     fun searchFocusChanged(hasFocus: Boolean, text: String) {
         if (hasFocus && text.isEmpty()) {
-            _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+            if (tracksHistory.isNotEmpty()) {
+                _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+            } else _searchScreenState.value = SearchState.AllGone
         }
     }
 
@@ -86,10 +89,12 @@ class SearchViewModel(
             _searchScreenState.value = SearchState.Loading
 
             searchInteractor.search(searchText, object : TrackSearchInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>, errorMessage: String?) {
-                    //val tracks = mutableListOf<Track>()
+                override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                     tracks.clear()
-                    tracks.addAll(foundTracks)
+                    val tracks = mutableListOf<Track>()
+                    if (foundTracks != null) {
+                        tracks.addAll(foundTracks)
+                    }
 
                     when {
                         errorMessage != null -> {

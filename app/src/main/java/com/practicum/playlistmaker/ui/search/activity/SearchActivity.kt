@@ -2,14 +2,10 @@ package com.practicum.playlistmaker.ui.search.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.creator.Consts
@@ -18,45 +14,7 @@ import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
 
-
-/*
-// in first step set all conditions
-        //inputEditText = findViewById<EditText>(R.id.edit_view_search)
-        //val clearButton = findViewById<ImageButton>(R.id.clear_text)
-        //trackRecyclerView = findViewById(R.id.track_recycler_view)
-        errorConnection = findViewById(R.id.no_connection_error_layout)
-        notFound = findViewById(R.id.not_found_layout)
-        val searchRefreshButton = findViewById<Button>(R.id.search_refresh_button)
-        val cleanHistoryButton = findViewById<Button>(R.id.clean_history_button)
-        historyLayout = findViewById(R.id.history_layout)
-        //trackRecyclerViewSearchHistory = findViewById(R.id.search_history)
-        looper = findViewById(R.id.progress_bar)
-        val searchRunnable = Runnable { search() }
-
-        //trackRecyclerView.adapter = adapterSearch
-        //trackRecyclerViewSearchHistory.adapter = adapterHistory
-        searchHistory = SearchHistory(applicationContext as App)
-
-
-        private var query: String? = null
-
-    private lateinit var searchHistory: SearchHistory
-    private val handler = Handler(Looper.getMainLooper())
-    //private lateinit var inputEditText: TextView
-    //private lateinit var trackRecyclerViewSearchHistory: RecyclerView
-    private lateinit var looper: LinearLayout
-    private lateinit var notFound: LinearLayout
-    private lateinit var errorConnection: LinearLayout
-
-    //private lateinit var trackRecyclerView: RecyclerView
-    private lateinit var historyLayout: View
-    private val searchRunnable = Runnable { search() }
-
-    private var isClickAllowed = true
-
-
-*/
-class SearchActivity : AppCompatActivity()/*, IClickView, IDataLoadCallback*/ {
+class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchViewModel: SearchViewModel
