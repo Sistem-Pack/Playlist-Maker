@@ -4,7 +4,7 @@ import com.practicum.playlistmaker.domain.search.models.Track
 
 
 interface TracksHistoryStorage {
-    fun read(): Array<Track>
+    fun read(): ArrayList<Track>
     fun saveHistory(tracks: List<Track>)
     fun clear()
 }

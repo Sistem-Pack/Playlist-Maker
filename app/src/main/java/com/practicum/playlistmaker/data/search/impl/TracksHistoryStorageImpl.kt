@@ -9,9 +9,9 @@ import com.practicum.playlistmaker.domain.search.models.Track
 
 class TracksHistoryStorageImpl(private val sharedPreferences: SharedPreferences) :
     TracksHistoryStorage {
-    override fun read(): Array<Track> {
+    override fun read(): ArrayList<Track> {
         return createTracksFromJson(
-            sharedPreferences.getString(Consts.SEARCH_HISTORY, null) ?: return emptyArray()
+            sharedPreferences.getString(Consts.SEARCH_HISTORY, null) ?: return ArrayList<Track>()
         )
     }
 
@@ -26,7 +26,7 @@ class TracksHistoryStorageImpl(private val sharedPreferences: SharedPreferences)
             .apply()
     }
 
-    private fun createTracksFromJson(json: String): Array<Track> {
+    private fun createTracksFromJson(json: String): ArrayList<Track> {
         val token = object : TypeToken<ArrayList<Track>>() {}.type
         return Gson().fromJson(json, token)
     }

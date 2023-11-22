@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.creator.Consts
@@ -59,8 +60,17 @@ class SearchActivity : AppCompatActivity() {
             searchViewModel.searchFocusChanged(hasFocus, binding.editViewSearch.text.toString())
         }
 
+        binding.editViewSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (binding.editViewSearch.hasFocus() && searchText.isEmpty()) {
+                    searchViewModel.showHistoryTracks()
+                } else searchViewModel.searchDebounce(searchText)
+            }
+            false
+        }
+
         searchViewModel.searchScreenState.observe(this) { state ->
-            render(state)
+              render(state)
         }
 
         // отправляем все на поиск
@@ -83,7 +93,13 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun render(state: SearchState) {
+        if (state is SearchState.Content && binding.trackRecyclerView.adapter != null) {
+            binding.trackRecyclerView.adapter!!.notifyDataSetChanged()
+        } else if (state is SearchState.SearchHistory && binding.searchHistory.adapter != null) {
+            binding.searchHistory.adapter!!.notifyDataSetChanged()
+        }
         binding.trackRecyclerView.visibility =
             if (state is SearchState.Content) View.VISIBLE else View.GONE
         binding.noConnectionErrorLayout.visibility =

@@ -4,7 +4,7 @@ import com.practicum.playlistmaker.domain.search.models.Track
 
 interface TrackSearchRepository {
     val errorCode: Int
-    fun search(expression: String): List<Track>
+    fun search(expression: String): ArrayList<Track>
 
     fun readSearchHistory(): ArrayList<Track>
 

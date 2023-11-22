@@ -12,13 +12,10 @@ class TrackSearchInteractorImpl(private val repository: TrackSearchRepository) :
     override fun search(expression: String, consumer: TrackSearchInteractor.TracksConsumer) {
         executor.execute {
             val tracks = repository.search(expression)
-            val code = repository.errorCode
-            when (code) {
+            when (repository.errorCode) {
                 200 -> consumer.consume(tracks, null)
-                else -> consumer.consume(null, code.toString())
+                else -> consumer.consume(null, repository.errorCode.toString())
             }
-            //callback.onDataLoaded(tracks)
-            //callback.onError(code)
         }
     }
 

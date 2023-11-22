@@ -9,8 +9,7 @@ import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 
 class ShowPlayerInteractorImpl(private val context: Context, private val contentProvider: ContentProvider): ShowPlayerInteractor {
     override fun openPlayer(track: Track) {
-        Intent().apply {
-            PlayerActivity::class.java
+        Intent(context, PlayerActivity::class.java).apply {
             putExtra(contentProvider.getStringFromResources("track"), track)
             context.startActivity(this)
         }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,14 +25,12 @@ class SearchViewModel(
     private val showPlayerInteractor: ShowPlayerInteractor,
 ) : ViewModel() {
 
-    private val tracks = ArrayList<Track>()
     private val tracksHistory = ArrayList<Track>()
     private lateinit var adapterTracks: TrackAdapter
     private lateinit var adapterTracksHistory: TrackAdapter
-    private val searchRunnable = Runnable { searchRequest() }
+    private lateinit var searchRunnable: Runnable
 
     private val handler = Handler(Looper.getMainLooper())
-    private var searchText: String = ""
     private var isClickAllowed = true
     private val handlerClickDebounce = Handler(Looper.getMainLooper())
 
@@ -55,16 +54,16 @@ class SearchViewModel(
     }
 
     fun searchDebounce(changedText: String) {
-        searchText = changedText
-        handler.removeCallbacksAndMessages(searchRunnable)
+        searchRunnable = Runnable { searchRequest(changedText) }
+        handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun showHistoryTracks() {
         tracksHistory.clear()
-        searchInteractor.readSearchHistory()
-        adapterTracksHistory.notifyDataSetChanged()
+        tracksHistory.addAll(searchInteractor.readSearchHistory())
+        adapterTracksHistory.setTracks(tracksHistory)
         if (tracksHistory.isNotEmpty()) _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
         else _searchScreenState.value = SearchState.AllGone
     }
@@ -72,7 +71,8 @@ class SearchViewModel(
     fun clearSearchHistory() {
         tracksHistory.clear()
         searchInteractor.clearSearchHistory()
-        _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+        if (tracksHistory.isNotEmpty()) _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
+        else _searchScreenState.value = SearchState.AllGone
     }
 
     fun searchFocusChanged(hasFocus: Boolean, text: String) {
@@ -83,18 +83,14 @@ class SearchViewModel(
         }
     }
 
-    private fun searchRequest() {
+    private fun searchRequest(searchText: String) {
 
         if (searchText.isNotEmpty()) {
             _searchScreenState.value = SearchState.Loading
 
             searchInteractor.search(searchText, object : TrackSearchInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                    tracks.clear()
-                    val tracks = mutableListOf<Track>()
-                    if (foundTracks != null) {
-                        tracks.addAll(foundTracks)
-                    }
+                @SuppressLint("NotifyDataSetChanged")
+                override fun consume(foundTracks: ArrayList<Track>?, errorMessage: String?) {
 
                     when {
                         errorMessage != null -> {
@@ -105,7 +101,7 @@ class SearchViewModel(
                             )
                         }
 
-                        tracks.isEmpty() -> {
+                        foundTracks.isNullOrEmpty() -> {
                             _searchScreenState.postValue(
                                 SearchState.Empty(
                                     emptyMessage = contentProvider.getStringFromResources("share_link")
@@ -153,6 +149,6 @@ class SearchViewModel(
     }
 
     override fun onCleared() {
-        handler.removeCallbacksAndMessages(searchRunnable)
+        handler.removeCallbacks(searchRunnable)
     }
 }

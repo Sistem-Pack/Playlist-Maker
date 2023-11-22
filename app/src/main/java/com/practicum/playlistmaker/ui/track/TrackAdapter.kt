@@ -18,7 +18,9 @@ class TrackAdapter(private var clickListener: LocationClickListener?): RecyclerV
         return TrackViewHolder(view)
     }
 
-    override fun getItemCount() = listTrack.size
+    override fun getItemCount(): Int {
+        return listTrack.size
+    }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
        holder.bind(listTrack[position])
@@ -32,7 +34,6 @@ class TrackAdapter(private var clickListener: LocationClickListener?): RecyclerV
         if (tracks != null) {
             listTrack.addAll(tracks)
         }
-        notifyDataSetChanged()
     }
 
 }
