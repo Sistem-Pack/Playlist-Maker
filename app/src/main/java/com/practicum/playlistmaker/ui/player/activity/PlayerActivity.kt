@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.ui.player.activity
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -10,30 +11,112 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
+import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
+import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModelFactory
+import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
+import com.practicum.playlistmaker.ui.search.view_model.SearchViewModelFactory
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
+    private lateinit var playerViewModel: PlayerViewModel
 
     private var track: Track? = null
-    private lateinit var play: ImageButton
+
+    /*//private lateinit var play: ImageButton
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
     private var url: String? = null
     private var mainThreadHandler: Handler? = null
     private lateinit var durationView: TextView
-    private var currentTrackTime: Long = 0
+    private var currentTrackTime: Long = 0*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
-        play = findViewById(R.id.play)
+        binding = ActivityPlayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        playerViewModel =
+            ViewModelProvider(this, PlayerViewModelFactory(track!!))[PlayerViewModel::class.java]
+
+        val track = intent.serializable<Track>(Constants.TRACK)
+
+        viewModel = ViewModelProvider(this, PlayerActivityViewModelFactory(track!!))
+            .get(PlayerViewModel::class.java)
+
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
+
+        viewModel.playCountdown.observe(this) { duration ->
+            binding.tvCountdown.text = duration
+        }
+
+        Glide.with(this)
+            .load(getCoverArtwork(track!!.artworkUrl100))
+            .placeholder(R.drawable.plug)
+            .centerInside()
+            .transform(RoundedCorners(this.resources.getDimensionPixelSize(R.dimen.frame_8dp)))
+            .into(binding.ivPictureArtist)
+
+        binding.tvNameTrack.text = track.trackName
+        binding.tvNameArtist.text = track.artistName
+
+        binding.tvDurationName.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        binding.tvAlbumName.text =
+            if (track.collectionName.isNullOrEmpty()) ({
+                binding.tvAlbumName.visibility = View.GONE
+                binding.tvAlbum.visibility = View.GONE
+            }).toString() else track.collectionName
+
+        if (track.releaseDate.isNullOrEmpty()) {
+            binding.tvYearName.text = ""
+        } else binding.tvYearName.text = track.releaseDate.substring(0, 4)
+
+        binding.tvGenreName.text = track.primaryGenreName
+        binding.tvCountryName.text = track.country
+
+        binding.ivPlayTrack.setOnClickListener {
+            viewModel.playbackControl(track.previewUrl)
+        }
+
+        viewModel.playState.observe(this) { playState ->
+            if (playState) {
+                binding.ivPlayTrack.setImageResource(R.drawable.pause_button)
+            } else {
+                binding.ivPlayTrack.setImageResource(R.drawable.play_button)
+            }
+        }
+        viewModel.playCountdown.observe(this) { duration ->
+            binding.tvCountdown.text = duration
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.pausePlayer()
+    }
+
+    private inline fun <reified T : Serializable> Intent.serializable(key: String): T? = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getSerializableExtra(
+            key,
+            T::class.java
+        )
+
+        else -> @Suppress("DEPRECATION") getSerializableExtra(key) as? T
+    }
+
+        /*play = findViewById(R.id.play)
         val coverImage = findViewById<ImageView>(R.id.cover)
         val backButton = findViewById<View>(R.id.back_button)
         val trackName = findViewById<TextView>(R.id.track_name)
@@ -45,8 +128,8 @@ class PlayerActivity : AppCompatActivity() {
         val genre = findViewById<TextView>(R.id.genre)
         val country = findViewById<TextView>(R.id.country)
         mainThreadHandler = Handler(Looper.getMainLooper())
-        play.isEnabled = false
-        play.alpha = 0.5f
+        binding.play.isEnabled = false
+        binding.play.alpha = 0.5f
 
         track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("track", Track::class.java)
@@ -61,12 +144,13 @@ class PlayerActivity : AppCompatActivity() {
             preparePlayer()
         }
 
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish()
         }
 
-        play.setOnClickListener {
-            val currentTimeTrackPosition = if (currentTrackTime != 0L) currentTrackTime else INTRO_TIME
+        binding.play.setOnClickListener {
+            val currentTimeTrackPosition =
+                if (currentTrackTime != 0L) currentTrackTime else INTRO_TIME
             startTimer(currentTimeTrackPosition)
             playbackControl()
         }
@@ -83,8 +167,10 @@ class PlayerActivity : AppCompatActivity() {
 
             trackName.text = track.trackName
             trackGroup.text = track.artistName
-            durationView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(INTRO_TIME * DELAY)
-            timeline.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+            durationView.text =
+                SimpleDateFormat("mm:ss", Locale.getDefault()).format(INTRO_TIME * DELAY)
+            timeline.text =
+                SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
             albumName.text =
                 if (track.collectionName!!.isNotEmpty()) track.collectionName else ""
             year.text = track.releaseDate?.substring(0, 4)
@@ -150,6 +236,7 @@ class PlayerActivity : AppCompatActivity() {
             STATE_PLAYING -> {
                 pausePlayer()
             }
+
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
             }
@@ -162,6 +249,7 @@ class PlayerActivity : AppCompatActivity() {
             createUpdateTimerTask(startTime, duration * DELAY)
         )
     }
+
     private fun createUpdateTimerTask(startTime: Long, duration: Long): Runnable {
         return object : Runnable {
             override fun run() {
@@ -180,7 +268,7 @@ class PlayerActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
+        }*/
     }
 
     companion object {

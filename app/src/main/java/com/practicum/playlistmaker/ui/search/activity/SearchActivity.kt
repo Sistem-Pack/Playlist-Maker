@@ -64,13 +64,15 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (binding.editViewSearch.hasFocus() && searchText.isEmpty()) {
                     searchViewModel.showHistoryTracks()
-                } else searchViewModel.searchDebounce(searchText)
+                } else if (searchText != binding.editViewSearch.text.toString()) {
+                    searchViewModel.searchDebounce(searchText)
+                }
             }
             false
         }
 
         searchViewModel.searchScreenState.observe(this) { state ->
-              render(state)
+            render(state)
         }
 
         // отправляем все на поиск

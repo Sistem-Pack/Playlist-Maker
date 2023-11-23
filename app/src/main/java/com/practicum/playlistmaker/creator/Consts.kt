@@ -12,5 +12,6 @@ object Consts {
 
     const val MAX_TRACKS_IN_HISTORY = 10
 
+    const val PLAY_TRACK_UPDATE_DELAY = 250L
 
 }
