@@ -2,7 +2,7 @@ package com.practicum.playlistmaker
 
 import android.app.Application
 import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.data.settings.impl.SettingsRepository
+import com.practicum.playlistmaker.data.settings.SettingsRepository
 
 class App : Application() {
 

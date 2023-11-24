@@ -4,7 +4,7 @@ import android.content.Context
 import com.practicum.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.practicum.playlistmaker.data.contentprovider.impl.ContentProviderImpl
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.data.settings.impl.SettingsRepository
+import com.practicum.playlistmaker.data.settings.SettingsRepository
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.data.sharing.impl.ExternalNavigatorImpl

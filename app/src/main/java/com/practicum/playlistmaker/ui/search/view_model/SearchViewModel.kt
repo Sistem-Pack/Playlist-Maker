@@ -1,11 +1,8 @@
 package com.practicum.playlistmaker.ui.search.view_model
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,9 +11,7 @@ import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.data.contentprovider.ContentProvider
 import com.practicum.playlistmaker.data.search.ShowPlayerInteractor
 import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
-import com.practicum.playlistmaker.domain.search.models.SearchHistory
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.track.TrackAdapter
 
 class SearchViewModel(
@@ -54,8 +49,10 @@ class SearchViewModel(
     }
 
     fun searchDebounce(changedText: String) {
+        if (this::searchRunnable.isInitialized) {
+            handler.removeCallbacks(searchRunnable)
+        }
         searchRunnable = Runnable { searchRequest(changedText) }
-        handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)
     }
 
@@ -78,13 +75,13 @@ class SearchViewModel(
     fun searchFocusChanged(hasFocus: Boolean, text: String) {
         if (hasFocus && text.isEmpty()) {
             if (tracksHistory.isNotEmpty()) {
+                adapterTracksHistory.setTracks(tracksHistory)
                 _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
             } else _searchScreenState.value = SearchState.AllGone
         }
     }
 
     private fun searchRequest(searchText: String) {
-
         if (searchText.isNotEmpty()) {
             _searchScreenState.value = SearchState.Loading
 
@@ -149,6 +146,8 @@ class SearchViewModel(
     }
 
     override fun onCleared() {
-        handler.removeCallbacks(searchRunnable)
+        if (this::searchRunnable.isInitialized) {
+            handler.removeCallbacks(searchRunnable)
+        }
     }
 }
