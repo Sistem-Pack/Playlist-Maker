@@ -6,46 +6,26 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.creator.Consts
-import com.practicum.playlistmaker.data.contentprovider.ContentProvider
-import com.practicum.playlistmaker.data.search.ShowPlayerInteractor
+import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.track.TrackAdapter
 
 class SearchViewModel(
     private val searchInteractor: TrackSearchInteractor,
     private val contentProvider: ContentProvider,
-    private val showPlayerInteractor: ShowPlayerInteractor,
 ) : ViewModel() {
 
     private val tracksHistory = ArrayList<Track>()
-    private lateinit var adapterTracks: TrackAdapter
-    private lateinit var adapterTracksHistory: TrackAdapter
     private lateinit var searchRunnable: Runnable
 
     private val handler = Handler(Looper.getMainLooper())
-    private var isClickAllowed = true
-    private val handlerClickDebounce = Handler(Looper.getMainLooper())
 
     private var _searchScreenState = MutableLiveData<SearchState>()
     var searchScreenState: LiveData<SearchState> = _searchScreenState
 
     init {
         tracksHistory.addAll(searchInteractor.readSearchHistory())
-    }
-
-    fun setTrackAdapters(trackRecyclerView: RecyclerView, historyTrackRecyclerView: RecyclerView) {
-        adapterTracks = TrackAdapter() {
-            addTrackToSearchHistory(it)
-            intentAudioPlayer(it)
-        }
-        adapterTracksHistory = TrackAdapter() {
-            intentAudioPlayer(it)
-        }
-        trackRecyclerView.adapter = adapterTracks
-        historyTrackRecyclerView.adapter = adapterTracksHistory
     }
 
     fun searchDebounce(changedText: String) {
@@ -60,7 +40,6 @@ class SearchViewModel(
     fun showHistoryTracks() {
         tracksHistory.clear()
         tracksHistory.addAll(searchInteractor.readSearchHistory())
-        adapterTracksHistory.setTracks(tracksHistory)
         if (tracksHistory.isNotEmpty()) _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
         else _searchScreenState.value = SearchState.AllGone
     }
@@ -75,7 +54,6 @@ class SearchViewModel(
     fun searchFocusChanged(hasFocus: Boolean, text: String) {
         if (hasFocus && text.isEmpty()) {
             if (tracksHistory.isNotEmpty()) {
-                adapterTracksHistory.setTracks(tracksHistory)
                 _searchScreenState.value = SearchState.SearchHistory(tracksHistory)
             } else _searchScreenState.value = SearchState.AllGone
         }
@@ -107,9 +85,8 @@ class SearchViewModel(
                         }
 
                         else -> {
-                            adapterTracks.setTracks(foundTracks)
                             _searchScreenState.postValue(
-                                SearchState.Content
+                                SearchState.Content(foundTracks)
                             )
                         }
                     }
@@ -119,22 +96,7 @@ class SearchViewModel(
         }
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handlerClickDebounce.postDelayed({ isClickAllowed = true }, Consts.CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-
-    private fun intentAudioPlayer(track: Track) {
-        if (clickDebounce()) {
-            showPlayerInteractor.openPlayer(track)
-        }
-    }
-
-    private fun addTrackToSearchHistory(track: Track) {
+    fun addTrackToSearchHistory(track: Track) {
         if (tracksHistory.contains(track)) {
             tracksHistory.remove(track)
         }

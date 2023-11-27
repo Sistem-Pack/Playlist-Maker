@@ -9,13 +9,11 @@ class SearchViewModelFactory(context: Context) : ViewModelProvider.Factory {
 
     private val searchInteractor = Creator.provideSearchInteractor(context = context)
     private val contentProvider = Creator.provideContentProvider(context = context)
-    private val showPlayerInteractor = Creator.provideShowPlayerInteractor(context = context)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SearchViewModel(
             searchInteractor = searchInteractor,
             contentProvider = contentProvider,
-            showPlayerInteractor = showPlayerInteractor
         ) as T
     }
 }

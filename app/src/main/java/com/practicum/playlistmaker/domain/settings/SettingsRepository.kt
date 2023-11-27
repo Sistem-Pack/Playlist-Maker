@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.data.settings
+package com.practicum.playlistmaker.domain.settings
 
 import com.practicum.playlistmaker.domain.settings.models.ThemeSettings
 

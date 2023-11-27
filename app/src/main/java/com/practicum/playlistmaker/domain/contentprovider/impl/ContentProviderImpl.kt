@@ -1,10 +1,9 @@
-package com.practicum.playlistmaker.data.contentprovider.impl
+package com.practicum.playlistmaker.domain.contentprovider.impl
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
-import androidx.annotation.Dimension
-import com.practicum.playlistmaker.data.contentprovider.ContentProvider
+import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 
 class ContentProviderImpl(private val context: Context) : ContentProvider {
     @SuppressLint("DiscouragedApi")

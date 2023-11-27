@@ -13,7 +13,7 @@ object Consts {
     const val MAX_TRACKS_IN_HISTORY = 10
 
     const val PLAY_TRACK_UPDATE_DELAY = 250L
-    const val DELAY = 1000L
-    const val INTRO_TIME = 30L
+    const val TRACK_DURATION_DELAY_TIME = 1000L
+    const val TRACK_DURATION_INTRO_TIME = 30L
 
 }

@@ -4,9 +4,10 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.data.contentprovider.ContentProvider
+import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.player.models.Cover
@@ -43,7 +44,7 @@ class PlayerActivity : AppCompatActivity() {
         playerViewModel =
             ViewModelProvider(
                 this,
-                PlayerViewModelFactory(track!!, contentProvider, this)
+                PlayerViewModelFactory(contentProvider)
             )[PlayerViewModel::class.java]
 
         binding.backButton.setOnClickListener {
@@ -57,7 +58,10 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackName.text = track!!.trackName
         binding.trackGroup.text = track!!.artistName
         binding.duration.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(Consts.INTRO_TIME * Consts.DELAY)
+            SimpleDateFormat(
+                "mm:ss",
+                Locale.getDefault()
+            ).format(Consts.TRACK_DURATION_INTRO_TIME * Consts.TRACK_DURATION_DELAY_TIME)
         binding.timeline.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track!!.trackTimeMillis)
         binding.album.text =
@@ -77,19 +81,9 @@ class PlayerActivity : AppCompatActivity() {
 
         playerViewModel.playState.observe(this) { playState ->
             if (playState) {
-                val playButtonImage = if (playerViewModel.useDarkMode) {
-                    contentProvider.getDrawableFromResources("play_for_light")
-                } else {
-                    contentProvider.getDrawableFromResources("play_dark")
-                }
-                binding.play.setImageDrawable(playButtonImage)
+                binding.play.setImageResource(R.drawable.pause_light)
             } else {
-                val playButtonImage = if (playerViewModel.useDarkMode) {
-                    contentProvider.getDrawableFromResources("pause_light")
-                } else {
-                    contentProvider.getDrawableFromResources("pause_for_black")
-                }
-                binding.play.setImageDrawable(playButtonImage)
+                binding.play.setImageResource(R.drawable.play_for_light)
             }
         }
         playerViewModel.playDuration.observe(this) { duration ->

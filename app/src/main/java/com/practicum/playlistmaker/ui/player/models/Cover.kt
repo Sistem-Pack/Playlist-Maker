@@ -5,7 +5,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.data.contentprovider.ContentProvider
+import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 
 class Cover(private val context: Context, private val contentProvider: ContentProvider) {
 

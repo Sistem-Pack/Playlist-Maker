@@ -1,7 +1,6 @@
-package com.practicum.playlistmaker.data.contentprovider
+package com.practicum.playlistmaker.domain.contentprovider
 
 import android.graphics.drawable.Drawable
-import androidx.annotation.Dimension
 
 interface ContentProvider {
     fun getStringFromResources(resourceString: String): String

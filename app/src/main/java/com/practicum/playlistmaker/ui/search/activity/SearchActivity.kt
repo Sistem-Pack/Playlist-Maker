@@ -2,23 +2,37 @@ package com.practicum.playlistmaker.ui.search.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Consts
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.domain.search.models.Track
+import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
+import com.practicum.playlistmaker.ui.track.TrackAdapter
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchViewModel: SearchViewModel
+
+    private lateinit var adapterTracks: TrackAdapter
+    private lateinit var adapterTracksHistory: TrackAdapter
+
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
 
     private var searchText: String = ""
 
@@ -33,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
             SearchViewModelFactory(this)
         )[SearchViewModel::class.java]
 
-        searchViewModel.setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
+        setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
 
         binding.backButton.setOnClickListener {
             finish()
@@ -93,6 +107,37 @@ class SearchActivity : AppCompatActivity() {
                 searchText = binding.editViewSearch.text.toString()
             }
         })
+
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, Consts.CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun setTrackAdapters(trackRecyclerView: RecyclerView, searchHistory: RecyclerView) {
+        adapterTracks = TrackAdapter {
+            searchViewModel.addTrackToSearchHistory(it)
+            intentAudioPlayer(it)
+        }
+        adapterTracksHistory = TrackAdapter {
+            intentAudioPlayer(it)
+        }
+        trackRecyclerView.adapter = adapterTracks
+        searchHistory.adapter = adapterTracksHistory
+    }
+
+    private fun intentAudioPlayer(track: Track) {
+        if (clickDebounce()) {
+            Intent(this, PlayerActivity::class.java).apply {
+                this.putExtra(resources.getString(R.string.track), track)
+                startActivity(this)
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -100,8 +145,10 @@ class SearchActivity : AppCompatActivity() {
         if ((binding.editViewSearch.text.toString() == "") && state is SearchState.Content)
             searchViewModel.showHistoryTracks()
         if (state is SearchState.Content && binding.trackRecyclerView.adapter != null) {
+            adapterTracks.setTracks(state.tracks)
             binding.trackRecyclerView.adapter!!.notifyDataSetChanged()
         } else if (state is SearchState.SearchHistory && binding.searchHistory.adapter != null) {
+            adapterTracksHistory.setTracks(state.tracks)
             binding.searchHistory.adapter!!.notifyDataSetChanged()
         }
         binding.trackRecyclerView.visibility =

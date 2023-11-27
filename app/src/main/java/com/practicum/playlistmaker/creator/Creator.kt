@@ -2,9 +2,9 @@ package com.practicum.playlistmaker.creator
 
 import android.content.Context
 import com.practicum.playlistmaker.data.search.impl.TracksRepositoryImpl
-import com.practicum.playlistmaker.data.contentprovider.impl.ContentProviderImpl
+import com.practicum.playlistmaker.domain.contentprovider.impl.ContentProviderImpl
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.data.settings.SettingsRepository
+import com.practicum.playlistmaker.domain.settings.SettingsRepository
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
@@ -15,10 +15,8 @@ import com.practicum.playlistmaker.domain.settings.SettingsInteractor
 import com.practicum.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 import com.practicum.playlistmaker.domain.sharing.impl.SharingInteractorImpl
-import com.practicum.playlistmaker.data.contentprovider.ContentProvider
+import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.data.player.impl.TrackPlayerImpl
-import com.practicum.playlistmaker.data.search.ShowPlayerInteractor
-import com.practicum.playlistmaker.data.search.impl.ShowPlayerInteractorImpl
 import com.practicum.playlistmaker.data.search.impl.TracksHistoryStorageImpl
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.impl.PlayerInteractorImpl
@@ -39,16 +37,12 @@ object Creator {
         return TrackSearchInteractorImpl(getTrackRepository(context))
     }
 
-    fun provideSettingsInteractor(context: Context): SettingsInteractor {
-        return SettingsInteractorImpl(provideSettingsRepository(context))
+    fun provideSettingsInteractor(): SettingsInteractor {
+        return SettingsInteractorImpl(provideSettingsRepository())
     }
 
-    fun provideSettingsRepository(context: Context): SettingsRepository {
-        return SettingsRepositoryImpl(context)
-    }
-
-    fun provideShowPlayerInteractor(context: Context): ShowPlayerInteractor {
-        return ShowPlayerInteractorImpl(context, provideContentProvider(context))
+    fun provideSettingsRepository(): SettingsRepository {
+        return SettingsRepositoryImpl()
     }
 
     fun provideSharingInteractor(context: Context): SharingInteractor {
@@ -73,5 +67,6 @@ object Creator {
     private fun provideTrackPlayer(): TrackPlayer{
         return TrackPlayerImpl()
     }
+
 
 }

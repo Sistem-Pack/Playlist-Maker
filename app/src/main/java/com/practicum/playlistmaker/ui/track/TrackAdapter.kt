@@ -11,7 +11,7 @@ class TrackAdapter(private var clickListener: LocationClickListener?): RecyclerV
         fun onLocationClick(track: Track)
     }
 
-    private var listTrack = ArrayList<Track>()
+    private val listTrack = ArrayList<Track>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_track, parent, false)
