@@ -13,6 +13,7 @@ class ExternalNavigatorImpl(val app: App) : ExternalNavigator {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, app.getString(R.string.share_link))
             type = app.getString(R.string.share_type)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
             app.startActivity(this)
         }
     }
@@ -21,6 +22,7 @@ class ExternalNavigatorImpl(val app: App) : ExternalNavigator {
         Intent().apply {
             action = Intent.ACTION_VIEW
             data = Uri.parse(app.getString(R.string.practicum_offer))
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
             app.startActivity(this)
         }
     }
@@ -32,6 +34,7 @@ class ExternalNavigatorImpl(val app: App) : ExternalNavigator {
             putExtra(Intent.EXTRA_SUBJECT, app.getString(R.string.support_subject))
             putExtra(Intent.EXTRA_TEXT, app.getString(R.string.support_message))
             data = Uri.parse("mailto:")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
             app.startActivity(this)
         }
     }
