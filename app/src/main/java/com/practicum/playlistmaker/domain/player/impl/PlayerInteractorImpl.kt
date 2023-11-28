@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.domain.player.impl
 
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.models.PlayerState
-import com.practicum.playlistmaker.player.domain.api.TrackPlayer
+import com.practicum.playlistmaker.domain.player.TrackPlayer
 
 class PlayerInteractorImpl(private val trackPlayer: TrackPlayer) : PlayerInteractor {
 

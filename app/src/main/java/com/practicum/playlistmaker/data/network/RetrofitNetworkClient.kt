@@ -1,12 +1,11 @@
 package com.practicum.playlistmaker.data.network
 
-import android.content.Context
 import com.practicum.playlistmaker.data.search.dto.Response
 import com.practicum.playlistmaker.data.search.dto.TrackSearchRequest
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitNetworkClient(context: Context) : NetworkClient {
+class RetrofitNetworkClient() : NetworkClient {
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
         .addConverterFactory(GsonConverterFactory.create())

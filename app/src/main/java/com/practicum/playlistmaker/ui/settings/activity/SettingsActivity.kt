@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 import com.practicum.playlistmaker.ui.settings.view_model.SettingsViewModel
 import com.practicum.playlistmaker.ui.settings.view_model.SettingsViewModelFactory
@@ -22,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
 
         settingsViewModel = ViewModelProvider(
             this,
-            SettingsViewModelFactory(this)
+            SettingsViewModelFactory()
         )[SettingsViewModel::class.java]
 
         settingsViewModel.themeSettingsState.observe(this) { themeSettings ->

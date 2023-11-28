@@ -16,6 +16,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Creator.initApp(this)
         sharedPreferences = getSharedPreferences(Consts.USER_PREFS, MODE_PRIVATE)
         settingsRepository = Creator.provideSettingsRepository()
         settingsRepository.setTheme(

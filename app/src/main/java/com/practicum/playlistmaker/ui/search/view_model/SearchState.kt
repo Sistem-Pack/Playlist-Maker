@@ -8,5 +8,5 @@ sealed interface SearchState {
     data object AllGone : SearchState
     data class Error(val errorMessage: String) : SearchState
     data class SearchHistory(val tracks: List<Track>) : SearchState
-    data class Empty(val emptyMessage: String) : SearchState
+    data object Empty : SearchState
 }

@@ -16,4 +16,6 @@ object Consts {
     const val TRACK_DURATION_DELAY_TIME = 1000L
     const val TRACK_DURATION_INTRO_TIME = 30L
 
+    const val TRACK_START_TIME = "00:00"
+
 }

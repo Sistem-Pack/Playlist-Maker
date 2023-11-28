@@ -1,13 +1,14 @@
 package com.practicum.playlistmaker.domain.sharing.impl
 
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
-import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 import com.practicum.playlistmaker.domain.sharing.model.EmailData
 
 class SharingInteractorImpl(
+    val app: App,
     private val externalNavigator: ExternalNavigator,
-    private val contentProvider: ContentProvider
 ) : SharingInteractor {
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink())
@@ -22,17 +23,17 @@ class SharingInteractorImpl(
     }
 
     private fun getShareAppLink(): String {
-        return contentProvider.getStringFromResources("share_link")
+        return app.getString(R.string.share_link)
     }
 
     private fun getSupportEmailData(): EmailData {
-        val messageTo = contentProvider.getStringFromResources("user_email")
-        val messageSubject = contentProvider.getStringFromResources("support_subject")
-        val messageText = contentProvider.getStringFromResources("support_message")
+        val messageTo = app.getString(R.string.user_email)
+        val messageSubject = app.getString(R.string.support_subject)
+        val messageText = app.getString(R.string.support_message)
         return EmailData(messageTo, messageSubject, messageText)
     }
 
     private fun getTermsLink(): String {
-        return contentProvider.getStringFromResources("practicum_offer")
+        return app.getString(R.string.practicum_offer)
     }
 }

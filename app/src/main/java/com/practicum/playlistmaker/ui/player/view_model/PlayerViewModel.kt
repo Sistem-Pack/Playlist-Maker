@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.creator.Consts
-import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.models.PlayerState
 import java.text.SimpleDateFormat
@@ -14,7 +13,6 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val contentProvider: ContentProvider,
 ) : ViewModel() {
 
     private val _playState = MutableLiveData<Boolean>()
@@ -66,7 +64,7 @@ class PlayerViewModel(
                 startPlayer(url)
                 playerInteractor.setTrackCompletionListener {
                     _playState.value = false
-                    _playDuration.value = contentProvider.getStringFromResources("default_duration")
+                    _playDuration.value = Consts.TRACK_START_TIME
                     handler.removeCallbacks(runnable)
                 }
             }

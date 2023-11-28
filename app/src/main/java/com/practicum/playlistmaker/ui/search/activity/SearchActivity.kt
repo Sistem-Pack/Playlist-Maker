@@ -44,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
 
         searchViewModel = ViewModelProvider(
             this,
-            SearchViewModelFactory(this)
+            SearchViewModelFactory()
         )[SearchViewModel::class.java]
 
         setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)

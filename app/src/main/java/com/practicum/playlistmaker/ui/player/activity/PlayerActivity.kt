@@ -4,13 +4,12 @@ import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Consts
-import com.practicum.playlistmaker.creator.Creator
-import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.player.models.Cover
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModelFactory
 import java.text.SimpleDateFormat
@@ -22,9 +21,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var playerViewModel: PlayerViewModel
 
     private var track: Track? = null
-    private val coverImageHolder: Cover =
-        Cover(context = this, Creator.provideContentProvider(context = this))
-    private val contentProvider: ContentProvider = Creator.provideContentProvider(context = this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +40,7 @@ class PlayerActivity : AppCompatActivity() {
         playerViewModel =
             ViewModelProvider(
                 this,
-                PlayerViewModelFactory(contentProvider)
+                PlayerViewModelFactory()
             )[PlayerViewModel::class.java]
 
         binding.backButton.setOnClickListener {
@@ -70,10 +66,12 @@ class PlayerActivity : AppCompatActivity() {
         binding.genre.text = track!!.primaryGenreName
         binding.country.text = track!!.country
 
-        coverImageHolder.provideImage(
-            track!!.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"),
-            binding.cover
-        )
+        Glide.with(this)
+            .load(track!!.artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg"))
+            .placeholder(R.drawable.album_3x)
+            .centerCrop()
+            .transform(RoundedCorners(this.resources.getDimensionPixelSize(R.dimen.dm2)))
+            .into(binding.cover)
 
         binding.play.setOnClickListener {
             playerViewModel.playbackControl(track!!.previewUrl!!)

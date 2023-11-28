@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker.creator
 
 import android.content.Context
+import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.data.search.impl.TracksRepositoryImpl
-import com.practicum.playlistmaker.domain.contentprovider.impl.ContentProviderImpl
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.domain.settings.SettingsRepository
 import com.practicum.playlistmaker.data.settings.impl.SettingsRepositoryImpl
@@ -15,26 +15,30 @@ import com.practicum.playlistmaker.domain.settings.SettingsInteractor
 import com.practicum.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.domain.sharing.SharingInteractor
 import com.practicum.playlistmaker.domain.sharing.impl.SharingInteractorImpl
-import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.data.player.impl.TrackPlayerImpl
 import com.practicum.playlistmaker.data.search.impl.TracksHistoryStorageImpl
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.impl.PlayerInteractorImpl
-import com.practicum.playlistmaker.player.domain.api.TrackPlayer
+import com.practicum.playlistmaker.domain.player.TrackPlayer
 
 object Creator {
 
-    private fun getTrackRepository(context: Context): TrackSearchRepository {
+    private lateinit var app: App
+    fun initApp(application: App) {
+        app = application
+    }
+
+    private fun getTrackRepository(): TrackSearchRepository {
         return TracksRepositoryImpl(
-            RetrofitNetworkClient(context),
+            RetrofitNetworkClient(),
             TracksHistoryStorageImpl(
-                context.getSharedPreferences(Consts.SEARCH_HISTORY, Context.MODE_PRIVATE)
+                app.getSharedPreferences(Consts.SEARCH_HISTORY, Context.MODE_PRIVATE)
             )
         )
     }
 
-    fun provideSearchInteractor(context: Context): TrackSearchInteractor {
-        return TrackSearchInteractorImpl(getTrackRepository(context))
+    fun provideSearchInteractor(): TrackSearchInteractor {
+        return TrackSearchInteractorImpl(getTrackRepository())
     }
 
     fun provideSettingsInteractor(): SettingsInteractor {
@@ -45,26 +49,21 @@ object Creator {
         return SettingsRepositoryImpl()
     }
 
-    fun provideSharingInteractor(context: Context): SharingInteractor {
+    fun provideSharingInteractor(): SharingInteractor {
         return SharingInteractorImpl(
-            provideExternalNavigator(context),
-            provideContentProvider(context)
-        )
+            app,
+            provideExternalNavigator())
     }
 
-    fun provideContentProvider(context: Context): ContentProvider {
-        return ContentProviderImpl(context)
-    }
-
-    private fun provideExternalNavigator(context: Context): ExternalNavigator {
-        return ExternalNavigatorImpl(context)
+    private fun provideExternalNavigator(): ExternalNavigator {
+        return ExternalNavigatorImpl(app)
     }
 
     fun provideGetPlayerInteractor(): PlayerInteractor {
         return PlayerInteractorImpl(provideTrackPlayer())
     }
 
-    private fun provideTrackPlayer(): TrackPlayer{
+    private fun provideTrackPlayer(): TrackPlayer {
         return TrackPlayerImpl()
     }
 

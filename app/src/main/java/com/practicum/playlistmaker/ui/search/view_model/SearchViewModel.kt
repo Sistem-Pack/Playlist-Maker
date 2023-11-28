@@ -7,13 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.creator.Consts
-import com.practicum.playlistmaker.domain.contentprovider.ContentProvider
 import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
 import com.practicum.playlistmaker.domain.search.models.Track
 
 class SearchViewModel(
     private val searchInteractor: TrackSearchInteractor,
-    private val contentProvider: ContentProvider,
 ) : ViewModel() {
 
     private val tracksHistory = ArrayList<Track>()
@@ -78,9 +76,7 @@ class SearchViewModel(
 
                         foundTracks.isNullOrEmpty() -> {
                             _searchScreenState.postValue(
-                                SearchState.Empty(
-                                    emptyMessage = contentProvider.getStringFromResources("share_link")
-                                )
+                                SearchState.Empty
                             )
                         }
 
