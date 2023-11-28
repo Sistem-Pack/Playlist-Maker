@@ -48,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
         )[SearchViewModel::class.java]
 
         setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
+        searchViewModel.showHistoryTracks()
 
         binding.backButton.setOnClickListener {
             finish()
@@ -124,16 +125,18 @@ class SearchActivity : AppCompatActivity() {
             intentAudioPlayer(it)
         }
         adapterTracksHistory = TrackAdapter {
-            intentAudioPlayer(it)
+            intentAudioPlayer(it, true)
         }
         trackRecyclerView.adapter = adapterTracks
         searchHistory.adapter = adapterTracksHistory
     }
 
-    private fun intentAudioPlayer(track: Track) {
+    private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
         if (clickDebounce()) {
             searchViewModel.addTrackToSearchHistory(track = track)
-            searchViewModel.showHistoryTracks()
+            if (updateHistoryLayout) {
+                searchViewModel.showHistoryTracks()
+            }
             Intent(this, PlayerActivity::class.java).apply {
                 this.putExtra(resources.getString(R.string.track), track)
                 startActivity(this)
