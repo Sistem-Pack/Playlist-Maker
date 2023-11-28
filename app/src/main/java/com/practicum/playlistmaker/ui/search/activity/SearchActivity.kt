@@ -121,7 +121,6 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setTrackAdapters(trackRecyclerView: RecyclerView, searchHistory: RecyclerView) {
         adapterTracks = TrackAdapter {
-            searchViewModel.addTrackToSearchHistory(it)
             intentAudioPlayer(it)
         }
         adapterTracksHistory = TrackAdapter {
@@ -133,6 +132,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun intentAudioPlayer(track: Track) {
         if (clickDebounce()) {
+            searchViewModel.addTrackToSearchHistory(track = track)
+            searchViewModel.showHistoryTracks()
             Intent(this, PlayerActivity::class.java).apply {
                 this.putExtra(resources.getString(R.string.track), track)
                 startActivity(this)

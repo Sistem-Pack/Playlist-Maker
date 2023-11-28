@@ -29,9 +29,5 @@ class TrackViewHolder(trackView: View) : RecyclerView.ViewHolder(trackView) {
             .fitCenter()
             .transform(RoundedCorners(5))
             .into(trackCover)
-
-        /*itemView.setOnClickListener {
-            listener.onClick(item)
-        }*/
     }
 }

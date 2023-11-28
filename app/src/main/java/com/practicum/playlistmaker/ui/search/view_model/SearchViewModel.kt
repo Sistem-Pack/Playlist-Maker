@@ -93,12 +93,33 @@ class SearchViewModel(
     }
 
     fun addTrackToSearchHistory(track: Track) {
-        if (tracksHistory.contains(track)) {
+        /*if (tracksHistory.contains(track)) {
             tracksHistory.remove(track)
         }
         tracksHistory.add(0, track)
         if (tracksHistory.size > Consts.MAX_TRACKS_IN_HISTORY) {
             tracksHistory.removeLast()
+        }*/
+        if (tracksHistory.isEmpty()) {
+            tracksHistory.add(track)
+            searchInteractor.saveHistory(tracksHistory)
+            return
+        }
+        if (tracksHistory.isNotEmpty()) {
+            for (item in tracksHistory) {
+                if (item.trackId.equals(track.trackId)) {
+                    tracksHistory.remove(item)
+                    tracksHistory.add(0, track)
+                    searchInteractor.saveHistory(tracksHistory)
+                    return
+                }
+            }
+        }
+        if (tracksHistory.size < Consts.MAX_TRACKS_IN_HISTORY) {
+            tracksHistory.add(0, track)
+        } else {
+            tracksHistory.removeLast()
+            tracksHistory.add(0, track)
         }
         searchInteractor.saveHistory(tracksHistory)
     }
