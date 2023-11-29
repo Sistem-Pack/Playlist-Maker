@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/BodyStartScreenStyle"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".ui.main.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,7 +88,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_history"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/view_track" />
 
@@ -103,6 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dm16"
+        android:orientation="vertical"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_track" />

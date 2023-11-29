@@ -18,6 +18,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,10 +39,13 @@ android {
 }
 
 dependencies {
+    def lifecycle_version = "2.6.2"
 
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation 'com.google.code.gson:gson:2.10'
