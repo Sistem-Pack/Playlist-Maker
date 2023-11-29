@@ -1,27 +1,28 @@
 package com.practicum.playlistmaker
 
 import android.app.Application
-import android.content.SharedPreferences
-import com.practicum.playlistmaker.creator.Consts
-import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.di.dataModule
+import com.practicum.playlistmaker.di.interactorModule
+import com.practicum.playlistmaker.di.repositoryModule
+import com.practicum.playlistmaker.di.viewModelModel
 import com.practicum.playlistmaker.domain.settings.SettingsRepository
+import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
-    companion object {
-        lateinit var sharedPreferences: SharedPreferences
-    }
-
-    private lateinit var settingsRepository : SettingsRepository
+    private lateinit var themeSwitch: SettingsRepository
 
     override fun onCreate() {
         super.onCreate()
-        Creator.initApp(this)
-        sharedPreferences = getSharedPreferences(Consts.USER_PREFS, MODE_PRIVATE)
-        settingsRepository = Creator.provideSettingsRepository()
-        settingsRepository.setTheme(
-            useDarkTheme = Creator.provideSettingsInteractor().getThemeSettings()
-        )
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, interactorModule, repositoryModule, viewModelModel)
+        }
+        themeSwitch = getKoin().get()
+        themeSwitch.setTheme(themeSwitch.getThemeSettings())
     }
+
 
 }
