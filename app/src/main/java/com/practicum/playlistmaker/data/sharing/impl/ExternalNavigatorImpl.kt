@@ -1,13 +1,13 @@
 package com.practicum.playlistmaker.data.sharing.impl
 
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
-import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.domain.sharing.model.EmailData
 
-class ExternalNavigatorImpl(val app: App) : ExternalNavigator {
+class ExternalNavigatorImpl(val app: Application) : ExternalNavigator {
     override fun shareLink(shareAppLink: String) {
         Intent().apply {
             action = Intent.ACTION_SEND

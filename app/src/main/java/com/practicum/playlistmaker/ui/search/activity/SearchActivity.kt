@@ -11,7 +11,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.creator.Consts
@@ -19,14 +18,14 @@ import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
-import com.practicum.playlistmaker.ui.search.view_model.SearchViewModelFactory
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
 import com.practicum.playlistmaker.ui.track.TrackAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel by viewModel<SearchViewModel>()
 
     private lateinit var adapterTracks: TrackAdapter
     private lateinit var adapterTracksHistory: TrackAdapter
@@ -42,12 +41,7 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        searchViewModel = ViewModelProvider(
-            this,
-            SearchViewModelFactory()
-        )[SearchViewModel::class.java]
-
-        setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
+         setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
 
         binding.backButton.setOnClickListener {
             finish()
