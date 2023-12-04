@@ -19,10 +19,9 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(dataModule, interactorModule, repositoryModule, viewModelModel)
-            //modules(dataModule, interactorModule, repositoryModule, viewModelModel)
         }
-        //themeSwitch = getKoin().get()
-        //themeSwitch.setTheme(themeSwitch.getThemeSettings())
+        themeSwitch = getKoin().get()
+        themeSwitch.setTheme(themeSwitch.getThemeSettings())
     }
 
 

@@ -13,7 +13,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.creator.Consts
+import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
@@ -41,7 +41,8 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-         setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
+        setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
+        searchViewModel.showHistoryTracks()
 
         binding.backButton.setOnClickListener {
             finish()
@@ -115,18 +116,21 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setTrackAdapters(trackRecyclerView: RecyclerView, searchHistory: RecyclerView) {
         adapterTracks = TrackAdapter {
-            searchViewModel.addTrackToSearchHistory(it)
             intentAudioPlayer(it)
         }
         adapterTracksHistory = TrackAdapter {
-            intentAudioPlayer(it)
+            intentAudioPlayer(it, true)
         }
         trackRecyclerView.adapter = adapterTracks
         searchHistory.adapter = adapterTracksHistory
     }
 
-    private fun intentAudioPlayer(track: Track) {
+    private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
         if (clickDebounce()) {
+            searchViewModel.addTrackToSearchHistory(track = track)
+            if (updateHistoryLayout) {
+                searchViewModel.showHistoryTracks()
+            }
             Intent(this, PlayerActivity::class.java).apply {
                 this.putExtra(resources.getString(R.string.track), track)
                 startActivity(this)

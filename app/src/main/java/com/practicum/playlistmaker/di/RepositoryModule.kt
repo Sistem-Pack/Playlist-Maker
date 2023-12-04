@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.di
 
-import com.practicum.playlistmaker.creator.Consts
+import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.data.player.impl.TrackPlayerImpl
 import com.practicum.playlistmaker.data.search.TracksHistoryStorage
 import com.practicum.playlistmaker.data.search.impl.TracksHistoryStorageImpl
@@ -19,7 +19,7 @@ var repositoryModule = module {
     }
 
     factory<TracksHistoryStorage> {
-        TracksHistoryStorageImpl(get(named(Consts.USER_PREFS)))
+        TracksHistoryStorageImpl(get(named(Consts.HISTORY_PREFS)))
     }
 
     factory<TrackSearchRepository> {
@@ -27,7 +27,7 @@ var repositoryModule = module {
     }
 
     factory<SettingsRepository> {
-        SettingsRepositoryImpl(get(named(Consts.USER_PREFS)))
+        SettingsRepositoryImpl(get(named(Consts.THEME_PREFS)))
     }
 
 }

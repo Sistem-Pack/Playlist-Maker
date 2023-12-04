@@ -6,7 +6,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.practicum.playlistmaker.creator.Consts
+import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
 import com.practicum.playlistmaker.domain.search.models.Track
 

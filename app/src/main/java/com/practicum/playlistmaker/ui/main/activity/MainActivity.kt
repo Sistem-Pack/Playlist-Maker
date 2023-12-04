@@ -15,24 +15,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.searchButton.setOnClickListener {
-            Intent(this, SearchActivity::class.java).apply {
-                startActivity(this)
-            }
-        }
-
-        binding.mediatechButton.setOnClickListener {
-            Intent(this, MediatechActivity::class.java).apply {
-                startActivity(this)
-            }
-        }
-
-        binding.settingsButton.setOnClickListener {
-            Intent(this, SettingsActivity::class.java).apply {
-                startActivity(this)
-            }
-        }
-
+        openSettingsActivity()
+        openSearchActivity()
+        openMediaTech()
     }
+
+    private fun openSearchActivity() {
+        binding.searchButton.setOnClickListener {
+            Intent(this@MainActivity, SearchActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
+    }
+
+    private fun openMediaTech() {
+        binding.mediatechButton.setOnClickListener {
+            Intent(this@MainActivity, MediatechActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
+    }
+
+    private fun openSettingsActivity() {
+        binding.settingsButton.setOnClickListener() {
+            val openSettingsWindow = Intent(
+                this@MainActivity, SettingsActivity::class.java
+            ).apply { startActivity(this) }
+        }
+    }
+
 }

@@ -18,7 +18,7 @@ import java.util.concurrent.Executors
 val interactorModule = module {
 
     factory<TrackSearchInteractor>{
-        TrackSearchInteractorImpl(get())
+        TrackSearchInteractorImpl(get(), get())
     }
 
     factory<ExternalNavigator> {
