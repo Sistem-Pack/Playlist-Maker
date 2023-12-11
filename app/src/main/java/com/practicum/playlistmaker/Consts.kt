@@ -1,8 +1,9 @@
-package com.practicum.playlistmaker.creator
+package com.practicum.playlistmaker
 
 object Consts {
     // constants for Shared Preferense
-    const val USER_PREFS = "PREFS"
+    const val THEME_PREFS = "THEME"
+    const val HISTORY_PREFS = "HISTORY"
     const val SW_MODE = "SWITCH_MODE"
     const val SEARCH_HISTORY = "HISTORY_TRACKS"
 

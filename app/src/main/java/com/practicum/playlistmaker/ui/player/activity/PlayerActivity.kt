@@ -3,22 +3,21 @@ package com.practicum.playlistmaker.ui.player.activity
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.creator.Consts
+import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
-import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var playerViewModel: PlayerViewModel
+    private val playerViewModel by viewModel<PlayerViewModel>()
 
     private var track: Track? = null
 
@@ -36,12 +35,6 @@ class PlayerActivity : AppCompatActivity() {
         if (track == null) {
             finish()
         }
-
-        playerViewModel =
-            ViewModelProvider(
-                this,
-                PlayerViewModelFactory()
-            )[PlayerViewModel::class.java]
 
         binding.backButton.setOnClickListener {
             finish()
