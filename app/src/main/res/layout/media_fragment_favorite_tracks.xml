@@ -9,15 +9,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        style="@style/search_nothingFoundImage"
+        style="@style/notFoundStyle"
         android:visibility="visible"
-        android:layout_marginTop="106dp" />
+        android:layout_marginTop="@dimen/dm106" />
 
     <TextView android:id="@+id/tv_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        style="@style/media_fragment"
-        android:layout_marginTop="242dp"
+        style="@style/mediaFragmentStyle"
+        android:layout_marginTop="@dimen/dm242"
         android:text="@string/media_favorite_tracks_error"/>
 </FrameLayout>

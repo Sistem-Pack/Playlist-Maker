@@ -15,28 +15,26 @@ class MediatechActivity : AppCompatActivity() {
         binding = ActivityMediatechBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            title = getString(R.string.title_activity_mediatech)
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-
-            binding?.viewPager?.adapter = MediaViewPagerAdapter(supportFragmentManager, lifecycle)
-
-            tabMediator =
-                TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-                    when (position) {
-                        0 -> tab.text = getString(R.string.media_favorite_tracks_title)
-                        1 -> tab.text = getString(R.string.media_playlist_title)
-                    }
-                }
-            tabMediator?.attach()
+        binding.backButton.setOnClickListener {
+            finish()
         }
+
+        binding.viewPager.adapter = MediaViewPagerAdapter(supportFragmentManager, lifecycle)
+
+        tabMediator =
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                when (position) {
+                    0 -> tab.text = getString(R.string.media_favorite_tracks_title)
+                    1 -> tab.text = getString(R.string.media_playlist_title)
+                }
+            }
+        tabMediator.attach()
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        tabMediator?.detach()
+        tabMediator.detach()
     }
 }
 

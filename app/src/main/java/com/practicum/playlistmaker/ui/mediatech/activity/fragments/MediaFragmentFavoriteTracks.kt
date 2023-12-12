@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.mediatech.activity
+package com.practicum.playlistmaker.ui.mediatech.activity.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.practicum.playlistmaker.databinding.MediaFragmentFavoriteTracksBindin
 
 class MediaFragmentFavoriteTracks : Fragment() {
 
-    private lateinit var _binding: MediaFragmentFavoriteTracksBinding
+    private var _binding: MediaFragmentFavoriteTracksBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
