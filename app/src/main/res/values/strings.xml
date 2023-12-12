@@ -38,4 +38,10 @@
     <string name="track">track</string>
     <string name="not_available">Аудиофайл недоступен</string>
     <string name="default_duration">00:00</string>
+    -- string for mediatech activity
+    <string name="media_favorite_tracks_title">Избранные треки</string>
+    <string name="media_playlist_title">Плейлисты</string>
+    <string name="media_add_new_playlist">Новый плейлист</string>
+    <string name="media_favorite_tracks_error">Ваша медиатека пуста</string>
+    <string name="media_playlist_error">Вы не создали \n ни одного плейлиста</string>
 </resources>
