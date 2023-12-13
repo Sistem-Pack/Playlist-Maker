@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.MediaFragmentFavoriteTracksBinding
+import com.practicum.playlistmaker.ui.mediatech.activity.view_model.MediaFavoriteTracksViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragmentFavoriteTracks : Fragment() {
 
     private var _binding: MediaFragmentFavoriteTracksBinding? = null
     private val binding get() = _binding!!
+    private val mfftViewModel by viewModel<MediaFavoriteTracksViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {

@@ -323,7 +323,8 @@
         <item name="tabIndicatorColor">@color/dark_item</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="tabSelectedTextColor">@color/dark_item</item>
-        <item name="android:textSize">14sp</item>
+        <item name="tabTextColor">@color/dark_item</item>
+        <item name="android:textSize">@dimen/dm14</item>
         <item name="android:textAlignment">center</item>
         <item name="tabIndicator">@drawable/tablayout_indicator</item>
         <item name="textAllCaps">false</item>
@@ -335,13 +336,6 @@
         <item name="background">@color/white</item>
         <item name="android:textSize">19sp</item>
         <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="mediatechToolBarStyle">
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="android:background">@color/white</item>
-        <item name="android:fontFamily">@font/ys_medium</item>
-        <item name="android:textFontWeight">500</item>
     </style>
 
     <style name="ToolbarTextAppearance">
