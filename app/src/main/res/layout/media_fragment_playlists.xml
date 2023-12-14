@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/mediatechLinearLayout"
+    >
+
+    <Button
+        android:id="@+id/button_newPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm24"
+        android:layout_gravity="center_horizontal"
+        style="@style/searchButtonUpdateStyle"
+        android:text="@string/media_add_new_playlist"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/iv_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        style="@style/notFoundStyle"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/dm106" />
+
+    <TextView android:id="@+id/tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        style="@style/mediaFragmentStyle"
+        android:layout_marginTop="@dimen/dm242"
+        android:text="@string/media_playlist_error"/>
+</FrameLayout>

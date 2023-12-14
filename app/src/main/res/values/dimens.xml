@@ -5,9 +5,11 @@
     <dimen name="dm2">2dp</dimen>
     <dimen name="dm4">4dp</dimen>
     <dimen name="dm8">8dp</dimen>
+    <dimen name="dm10">10dp</dimen>
     <dimen name="dm12">12dp</dimen>
-    <dimen name="dm16">12dp</dimen>
-    <dimen name="dm18">16dp</dimen>
+    <dimen name="dm14">14dp</dimen>
+    <dimen name="dm16">16dp</dimen>
+    <dimen name="dm18">18dp</dimen>
     <dimen name="dm21">21dp</dimen>
     <dimen name="dm24">24dp</dimen>
     <dimen name="dm26">26dp</dimen>
@@ -16,10 +18,14 @@
     <dimen name="dm36">36dp</dimen>
     <dimen name="dm44">44dp</dimen>
     <dimen name="dm45">45dp</dimen>
+    <dimen name="dm48">48dp</dimen>
     <dimen name="dm52">52dp</dimen>
     <dimen name="dm54">54dp</dimen>
+    <dimen name="dm56">56dp</dimen>
     <dimen name="dm60">60dp</dimen>
     <dimen name="dm102">102dp</dimen>
+    <dimen name="dm106">106dp</dimen>
+    <dimen name="dm242">242dp</dimen>
     -- size for strings
     <dimen name="ln13">13sp</dimen>
     <dimen name="ln14">14sp</dimen>

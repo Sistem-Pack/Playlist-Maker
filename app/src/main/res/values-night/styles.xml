@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     -- style for button on the Main Screen activity_main.xml
     <style name="ButtonMainScreenStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
@@ -267,6 +267,75 @@
         <item name="tint">@color/white</item>
         <item name="android:background">@null</item>
         <item name="contentDescription">@null</item>
+    </style>
+
+    <style name="audio_player_button_add" >
+        <item name="android:src">@drawable/playlist_add_up</item>
+    </style>
+
+    <style name="audio_player_button_like" >
+        <item name="android:src">@drawable/like_up</item>
+    </style>
+
+    -- style for MediaTechActivity
+    <style name="mediatech_tablayout" >
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="background">@color/dark_item</item>
+        <item name="android:backgroundTint">@color/dark_item</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabTextColor">@color/white</item>
+        <item name="android:textSize">@dimen/ln14</item>
+        <item name="android:textAlignment">center</item>
+        <item name="tabIndicator">@drawable/tablayout_indicator</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="mediatech_fragment" >
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="background">@color/dark_item</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="ToolbarTextAppearance">
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowColor">@color/white</item>
+        <item name="android:background">@color/dark_item</item>
+    </style>
+
+    <style name="ToolbarTextAppearance.Title">
+        <item name="android:textSize">@dimen/ln22</item>
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:background">@color/dark_item</item>
+    </style>
+
+    <style name="searchButtonUpdateStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:lineHeight">@dimen/dm16</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:paddingHorizontal">@dimen/dm14</item>
+        <item name="android:paddingVertical">@dimen/dm10</item>
+        <item name="android:visibility">gone</item>
+        <item name="cornerRadius">54dp</item>
+    </style>
+
+    <style name="mediaFragmentStyle" >
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="background">@color/dark_item</item>
+        <item name="android:textSize">@dimen/ln19</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="mediatechLinearLayout" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/dark_item</item>
     </style>
 
 </resources>

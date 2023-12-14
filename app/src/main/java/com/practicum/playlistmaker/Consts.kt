@@ -19,4 +19,6 @@ object Consts {
 
     const val TRACK_START_TIME = "00:00"
 
+    const val MEDIA_VIEW_PAGER_ADAPTER_ITEM_COUNT = 2
+
 }
