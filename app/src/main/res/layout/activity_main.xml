@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/StartScreenStyle"
-    android:id="@+id/jghfg"
-    tools:context=".ui.main.activity.MainActivity">
+    android:id="@+id/jghfg">
 
     <TextView
         android:layout_width="wrap_content"

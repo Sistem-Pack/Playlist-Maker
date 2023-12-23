@@ -348,6 +348,13 @@
         <item name="android:textSize">@dimen/ln22</item>
     </style>
 
+    <style name="Toolbar">
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
     <style name="searchButtonUpdateStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/ys_medium</item>

@@ -13,12 +13,12 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.practicum.playlistmaker.ui.settings.fragment.SettingsActivity"
-        android:label="@string/title_activity_settings"
+        android:label="@string/settings_title"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.practicum.playlistmaker.ui.search.fragment.SearchFragment"
-        android:label="@string/title_activity_search"
+        android:label="@string/search_title"
         tools:layout="@layout/fragment_search"/>
     <activity
         android:id="@+id/playerActivity"

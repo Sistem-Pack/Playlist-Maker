@@ -314,6 +314,15 @@
         <item name="android:background">@color/dark_item</item>
     </style>
 
+    <style name="Toolbar">
+        <item name="theme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:background">@color/dark_item</item>
+        <item name="android:iconTint">@color/white</item>
+        <item name="android:textColor" tools:ignore="DuplicateDefinition">@color/white</item>
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
+    </style>
+
     <style name="searchButtonUpdateStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/ys_medium</item>
