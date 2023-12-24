@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_mediatech" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.practicum.playlistmaker.ui.settings.fragment.SettingsActivity"
+        android:name="com.practicum.playlistmaker.ui.settings.fragment.SettingsFragment"
         android:label="@string/settings_title"
         tools:layout="@layout/fragment_settings" />
     <fragment

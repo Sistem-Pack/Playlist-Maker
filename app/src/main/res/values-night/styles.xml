@@ -24,7 +24,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@color/black</item>
+        <item name="android:background">@color/dark_item</item>
     </style>
     -- BODY
     <style name="BodyStartScreenStyle" parent="StartScreenStyle">
