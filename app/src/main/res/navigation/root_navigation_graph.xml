@@ -9,24 +9,24 @@
         android:id="@+id/mediaFragment"
         android:name="com.practicum.playlistmaker.ui.mediatech.fragments.MediatechFragment"
         android:label="@string/title_mediatech"
-        tools:layout="@layout/fragment_mediatech" />
+        tools:layout="@layout/fragment_mediatech" >
+        <action
+            android:id="@+id/action_mediaFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.practicum.playlistmaker.ui.settings.fragment.SettingsFragment"
         android:label="@string/settings_title"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_mediaFragment2"
-            app:destination="@id/mediaFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.practicum.playlistmaker.ui.search.fragment.SearchFragment"
         android:label="@string/search_title"
         tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_searchFragment_to_mediaFragment2"
-            app:destination="@id/mediaFragment" />
         <action
             android:id="@+id/action_searchFragment_to_activityPlayer"
             app:destination="@id/activityPlayer" />

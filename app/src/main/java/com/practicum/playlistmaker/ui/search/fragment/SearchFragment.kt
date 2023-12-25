@@ -7,26 +7,22 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import com.practicum.playlistmaker.R
+import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.Consts
+import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
+import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.track.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 
 class SearchFragment : Fragment() {
 
@@ -142,10 +138,17 @@ class SearchFragment : Fragment() {
             if (updateHistoryLayout) {
                 searchViewModel.showHistoryTracks()
             }
+            val action = SearchFragmentDirections.actionSearchFragmentToActivityPlayer(track)
+                //SpecifyAmountFragmentDirections.confirmationAction(amount)
+            //findNavController().navigate(action_settingsFragment_to_agreementFragment)
             //this.findNavController().navigate(R.id.activityPlayer)
             //findNavController().navigate(R.id.playerActivityEx)
-            val navController = Navigation.findNavController(requireActivity(), R.id.Player)
-            navController.navigate(R.id.Player)
+            try {
+                findNavController().navigate(R.id.action_searchFragment_to_activityPlayer)
+            } catch (e: Exception) {
+                Log.e("MYAPP", "exception", e)
+            }
+            //navController.navigate(R.id.action_searchFragment_to_activityPlayer)
             /*Intent(requireContext(), PlayerActivity::class.java).apply {
                 this.putExtra(resources.getString(R.string.track), track)
                 startActivity(this)
