@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,16 +13,20 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
 import com.practicum.playlistmaker.ui.track.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 
 class SearchFragment : Fragment() {
 
@@ -31,8 +34,8 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val searchViewModel by viewModel<SearchViewModel>()
 
-    private lateinit var adapterTracks: TrackAdapter
-    private lateinit var adapterTracksHistory: TrackAdapter
+    private var adapterTracks: TrackAdapter? = null
+    private var adapterTracksHistory: TrackAdapter? = null
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
@@ -44,13 +47,20 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        adapterTracks = TrackAdapter {
+            intentAudioPlayer(it)
+        }
+        adapterTracksHistory = TrackAdapter {
+            intentAudioPlayer(it, true)
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
+        binding.trackRecyclerView.adapter = adapterTracks
+        binding.searchHistory.adapter = adapterTracksHistory
         searchViewModel.showHistoryTracks()
 
         binding.clearText.setOnClickListener {
@@ -113,6 +123,8 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        adapterTracks = null
+        adapterTracksHistory = null
     }
 
     private fun clickDebounce(): Boolean {
@@ -124,27 +136,20 @@ class SearchFragment : Fragment() {
         return current
     }
 
-    private fun setTrackAdapters(trackRecyclerView: RecyclerView, searchHistory: RecyclerView) {
-        adapterTracks = TrackAdapter {
-            intentAudioPlayer(it)
-        }
-        adapterTracksHistory = TrackAdapter {
-            intentAudioPlayer(it, true)
-        }
-        trackRecyclerView.adapter = adapterTracks
-        searchHistory.adapter = adapterTracksHistory
-    }
-
     private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
         if (clickDebounce()) {
             searchViewModel.addTrackToSearchHistory(track = track)
             if (updateHistoryLayout) {
                 searchViewModel.showHistoryTracks()
             }
-            Intent(requireContext(), PlayerActivity::class.java).apply {
+            //this.findNavController().navigate(R.id.activityPlayer)
+            //findNavController().navigate(R.id.playerActivityEx)
+            val navController = Navigation.findNavController(requireActivity(), R.id.Player)
+            navController.navigate(R.id.Player)
+            /*Intent(requireContext(), PlayerActivity::class.java).apply {
                 this.putExtra(resources.getString(R.string.track), track)
                 startActivity(this)
-            }
+            }*/
         }
     }
 
@@ -153,10 +158,10 @@ class SearchFragment : Fragment() {
         if ((binding.editViewSearch.text.toString() == "") && state is SearchState.Content)
             searchViewModel.showHistoryTracks()
         if (state is SearchState.Content && binding.trackRecyclerView.adapter != null) {
-            adapterTracks.setTracks(state.tracks)
+            adapterTracks!!.setTracks(state.tracks)
             binding.trackRecyclerView.adapter!!.notifyDataSetChanged()
         } else if (state is SearchState.SearchHistory && binding.searchHistory.adapter != null) {
-            adapterTracksHistory.setTracks(state.tracks)
+            adapterTracksHistory!!.setTracks(state.tracks)
             binding.searchHistory.adapter!!.notifyDataSetChanged()
         }
         binding.trackRecyclerView.visibility =
