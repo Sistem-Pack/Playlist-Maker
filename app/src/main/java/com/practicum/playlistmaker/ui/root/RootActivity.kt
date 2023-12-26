@@ -15,7 +15,6 @@ class RootActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRootBinding.inflate(layoutInflater)
-        val layout = findViewById<View>(R.id.action_searchFragment_to_activityPlayer)
         setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.

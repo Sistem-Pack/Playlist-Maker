@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.Consts
@@ -138,21 +139,8 @@ class SearchFragment : Fragment() {
             if (updateHistoryLayout) {
                 searchViewModel.showHistoryTracks()
             }
-            val action = SearchFragmentDirections.actionSearchFragmentToActivityPlayer(track)
-                //SpecifyAmountFragmentDirections.confirmationAction(amount)
-            //findNavController().navigate(action_settingsFragment_to_agreementFragment)
-            //this.findNavController().navigate(R.id.activityPlayer)
-            //findNavController().navigate(R.id.playerActivityEx)
-            try {
-                findNavController().navigate(R.id.action_searchFragment_to_activityPlayer)
-            } catch (e: Exception) {
-                Log.e("MYAPP", "exception", e)
-            }
-            //navController.navigate(R.id.action_searchFragment_to_activityPlayer)
-            /*Intent(requireContext(), PlayerActivity::class.java).apply {
-                this.putExtra(resources.getString(R.string.track), track)
-                startActivity(this)
-            }*/
+            val bundle = bundleOf("track" to track)
+            findNavController().navigate(R.id.action_searchFragment_to_activityPlayer, bundle)
         }
     }
 

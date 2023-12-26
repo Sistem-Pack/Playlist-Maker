@@ -29,7 +29,8 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_activityPlayer"
-            app:destination="@id/activityPlayer" />
+            app:destination="@id/activityPlayer">
+        </action>
     </fragment>
     <activity
         android:id="@+id/activityPlayer"
