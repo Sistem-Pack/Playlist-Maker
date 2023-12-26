@@ -3,7 +3,6 @@ package com.practicum.playlistmaker.ui.player.activity
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.Consts
@@ -38,8 +37,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         binding.backButton.setOnClickListener {
-            findNavController(requireAct).navigateUp()
-        //finish()
+            finish()
         }
 
         playerViewModel.playDuration.observe(this) { duration ->

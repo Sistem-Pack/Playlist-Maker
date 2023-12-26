@@ -224,6 +224,10 @@
 
     -- styles for PlayerActivity
 
+    <style name="PlayerActivityStyle" >
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="backButton" parent="BackButtonImageView">
         <item name="android:padding">@dimen/dm12</item>
         <item name="android:background">@null</item>
