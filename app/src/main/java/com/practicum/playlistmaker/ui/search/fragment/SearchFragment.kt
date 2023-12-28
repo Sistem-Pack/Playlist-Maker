@@ -1,56 +1,68 @@
-package com.practicum.playlistmaker.ui.search.activity
+package com.practicum.playlistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.R
+import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.Consts
-import com.practicum.playlistmaker.databinding.ActivitySearchBinding
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
-import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
+import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.track.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val searchViewModel by viewModel<SearchViewModel>()
 
-    private lateinit var adapterTracks: TrackAdapter
-    private lateinit var adapterTracksHistory: TrackAdapter
+    private var adapterTracks: TrackAdapter? = null
+    private var adapterTracksHistory: TrackAdapter? = null
 
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
     private var searchText: String = ""
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setTrackAdapters(binding.trackRecyclerView, binding.searchHistory)
-        searchViewModel.showHistoryTracks()
-
-        binding.backButton.setOnClickListener {
-            finish()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        adapterTracks = TrackAdapter {
+            intentAudioPlayer(it)
         }
+        adapterTracksHistory = TrackAdapter {
+            intentAudioPlayer(it, true)
+        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.trackRecyclerView.adapter = adapterTracks
+        binding.searchHistory.adapter = adapterTracksHistory
+        searchViewModel.showHistoryTracks()
 
         binding.clearText.setOnClickListener {
             binding.editViewSearch.setText("")
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager)?.hideSoftInputFromWindow(
+            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(
                 binding.editViewSearch.windowToken,
                 0
             )
@@ -80,7 +92,7 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
-        searchViewModel.searchScreenState.observe(this) { state ->
+        searchViewModel.searchScreenState.observe(viewLifecycleOwner) { state ->
             render(state)
         }
 
@@ -105,6 +117,13 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        adapterTracks = null
+        adapterTracksHistory = null
+    }
+
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -114,27 +133,14 @@ class SearchActivity : AppCompatActivity() {
         return current
     }
 
-    private fun setTrackAdapters(trackRecyclerView: RecyclerView, searchHistory: RecyclerView) {
-        adapterTracks = TrackAdapter {
-            intentAudioPlayer(it)
-        }
-        adapterTracksHistory = TrackAdapter {
-            intentAudioPlayer(it, true)
-        }
-        trackRecyclerView.adapter = adapterTracks
-        searchHistory.adapter = adapterTracksHistory
-    }
-
     private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
         if (clickDebounce()) {
             searchViewModel.addTrackToSearchHistory(track = track)
             if (updateHistoryLayout) {
                 searchViewModel.showHistoryTracks()
             }
-            Intent(this, PlayerActivity::class.java).apply {
-                this.putExtra(resources.getString(R.string.track), track)
-                startActivity(this)
-            }
+            val bundle = bundleOf("track" to track)
+            findNavController().navigate(R.id.action_searchFragment_to_activityPlayer, bundle)
         }
     }
 
@@ -143,10 +149,10 @@ class SearchActivity : AppCompatActivity() {
         if ((binding.editViewSearch.text.toString() == "") && state is SearchState.Content)
             searchViewModel.showHistoryTracks()
         if (state is SearchState.Content && binding.trackRecyclerView.adapter != null) {
-            adapterTracks.setTracks(state.tracks)
+            adapterTracks!!.setTracks(state.tracks)
             binding.trackRecyclerView.adapter!!.notifyDataSetChanged()
         } else if (state is SearchState.SearchHistory && binding.searchHistory.adapter != null) {
-            adapterTracksHistory.setTracks(state.tracks)
+            adapterTracksHistory!!.setTracks(state.tracks)
             binding.searchHistory.adapter!!.notifyDataSetChanged()
         }
         binding.trackRecyclerView.visibility =
@@ -161,9 +167,15 @@ class SearchActivity : AppCompatActivity() {
             if (state is SearchState.Loading) View.VISIBLE else View.GONE
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(Consts.SEARCH_TEXT, "")
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            searchText = savedInstanceState.getString(Consts.SEARCH_TEXT, "")
+        }
+        if (searchText.isNotEmpty()) {
+            binding.editViewSearch.setText(searchText)
+            searchViewModel.searchDebounce(searchText)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

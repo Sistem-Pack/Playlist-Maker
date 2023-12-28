@@ -224,6 +224,10 @@
 
     -- styles for PlayerActivity
 
+    <style name="PlayerActivityStyle" >
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="backButton" parent="BackButtonImageView">
         <item name="android:padding">@dimen/dm12</item>
         <item name="android:background">@null</item>
@@ -348,6 +352,13 @@
         <item name="android:textSize">@dimen/ln22</item>
     </style>
 
+    <style name="Toolbar">
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
     <style name="searchButtonUpdateStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/ys_medium</item>
@@ -370,6 +381,17 @@
 
     <style name="mediatechLinearLayout" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">@color/white</item>
+    </style>
+
+    -- Style for Navigation bottom menu
+    <style name="bottom_navigation_view" >
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/dark_item</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textSize">@dimen/ln12</item>
+        <item name="android:textAlignment">center</item>
+        <item name="itemIconTint">@drawable/bottom_navigation_tab_bar</item>
+        <item name="itemTextColor">@drawable/bottom_navigation_tab_bar</item>
     </style>
 
 </resources>
