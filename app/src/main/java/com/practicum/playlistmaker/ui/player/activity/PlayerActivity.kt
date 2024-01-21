@@ -29,6 +29,7 @@ class PlayerActivity : AppCompatActivity() {
         track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("track", Track::class.java)
         } else {
+            @Suppress("DEPRECATION")
             intent.getParcelableExtra<Track>("track")
         }
 

@@ -3,11 +3,8 @@ package com.practicum.playlistmaker.ui.search.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,8 +31,8 @@ class SearchFragment : Fragment() {
     private var adapterTracks: TrackAdapter? = null
     private var adapterTracksHistory: TrackAdapter? = null
 
-    private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
+    //private var isClickAllowed = true
+    //private val handler = Handler(Looper.getMainLooper())
 
     private var searchText: String = ""
 
@@ -124,17 +121,17 @@ class SearchFragment : Fragment() {
         adapterTracksHistory = null
     }
 
-    private fun clickDebounce(): Boolean {
+    /*private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
             handler.postDelayed({ isClickAllowed = true }, Consts.CLICK_DEBOUNCE_DELAY)
         }
         return current
-    }
+    }*/
 
     private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
-        if (clickDebounce()) {
+        if (searchViewModel.clickDebounce()) {
             searchViewModel.addTrackToSearchHistory(track = track)
             if (updateHistoryLayout) {
                 searchViewModel.showHistoryTracks()

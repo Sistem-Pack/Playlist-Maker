@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.models.PlayerState
+import kotlinx.coroutines.Job
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -15,6 +16,7 @@ class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
 ) : ViewModel() {
 
+    private var timerJob: Job? = null
     private val _playState = MutableLiveData<Boolean>()
     val playState: LiveData<Boolean> = _playState
 

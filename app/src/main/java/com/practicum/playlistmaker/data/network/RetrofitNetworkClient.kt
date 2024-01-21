@@ -11,13 +11,21 @@ class RetrofitNetworkClient() : NetworkClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private var iTunesService = retrofit.create(SearchApiService::class.java)
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
+        /*return withContext(Dispatchers.IO) {
+            try {
+                val body = resp.body() ?: Response()
+                body.apply { resultCode = resp.code() }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = SERVER_ERROR_HTTP_CODE }
+            }
+        }*/
         return if (dto is TrackSearchRequest) {
-            val resp = iTunesService.search(dto.expression).execute()
-            val body = resp.body() ?: Response()
-            body.apply { resultCode = resp.code() }
-        } else {
-            Response().apply { resultCode = 400 }
-        }
+                val resp = iTunesService.search(dto.expression).execute()
+                val body = resp.body() ?: Response()
+                body.apply { resultCode = resp.code() }
+            } else {
+                Response().apply { resultCode = 400 }
+            }
     }
 }
