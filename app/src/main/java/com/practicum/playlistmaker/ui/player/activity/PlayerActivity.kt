@@ -32,7 +32,7 @@ class PlayerActivity : AppCompatActivity() {
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra<Track>("track")
-        }
+        } as Track
 
         if (track == null) {
             finish()
@@ -45,6 +45,16 @@ class PlayerActivity : AppCompatActivity() {
         playerViewModel.playDuration.observe(this) { duration ->
             binding.duration.text = duration
         }
+
+        playerViewModel.playState.observe(this) { playState ->
+            when (playState) {
+                PlayerState.PLAYING -> binding.play.setImageResource(R.drawable.pause_light)
+                PlayerState.PREPARED, PlayerState.DEFAULT, PlayerState.PAUSED ->
+                    binding.play.setImageResource(R.drawable.play_for_light)
+            }
+        }
+
+        track!!.previewUrl?.let { playerViewModel.prepare(it) }
 
         binding.trackName.text = track!!.trackName
         binding.trackGroup.text = track!!.artistName
@@ -73,34 +83,22 @@ class PlayerActivity : AppCompatActivity() {
             playerViewModel.changePlayerState()
         }
 
-        playerViewModel.playState.observe(this) { playState ->
-            when (playState) {
-                PlayerState.PLAYING -> binding.play.setImageResource(R.drawable.pause_light)
-                PlayerState.PREPARED, PlayerState.DEFAULT, PlayerState.PAUSED ->
-                    binding.play.setImageResource(R.drawable.play_for_light)
-            }
-
-
-            playerViewModel.playDuration.observe(this) { duration ->
-                binding.duration.text = duration
-            }
-        }
     }
 
-        override fun onPause() {
-            playerViewModel.pausePlayer()
-            super.onPause()
-        }
+    override fun onPause() {
+        playerViewModel.pausePlayer()
+        super.onPause()
+    }
 
-        override fun onStart() {
-            playerViewModel.startPlayer()
-            super.onStart()
-        }
+    override fun onStart() {
+        playerViewModel.startPlayer()
+        super.onStart()
+    }
 
-        override fun onResume() {
-            playerViewModel.onResume()
-            super.onResume()
-        }
+    override fun onResume() {
+        playerViewModel.onResume()
+        super.onResume()
+    }
 
 
 }

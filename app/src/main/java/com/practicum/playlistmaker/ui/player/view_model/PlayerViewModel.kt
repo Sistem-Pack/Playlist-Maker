@@ -1,7 +1,5 @@
 package com.practicum.playlistmaker.ui.player.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,24 +26,25 @@ class PlayerViewModel(
     private val _playDuration = MutableLiveData<String>()
     val playDuration: LiveData<String> = _playDuration
 
-    /*
-    private val handler = Handler(Looper.getMainLooper())
-    private val runnable = object : Runnable {
-        override fun run() {
-            _playDuration.postValue(
-                SimpleDateFormat("mm:ss", Locale.getDefault())
-                    .format(playerInteractor.getCurrentPosition())
-            )
-            handler.postDelayed(this, Consts.PLAY_TRACK_UPDATE_DELAY)
-        }
-    }
-    */
+    fun prepare(url: String) {
+        playerInteractor.preparePlayer(url) /*{ state ->
+            when (state) {
+                StatePlayer.PREPARED -> {
+                    statePlayerLiveData.postValue(StatePlayer.PREPARED)
+                    timerJob?.cancel()
+                    currentTimeLiveData.postValue(DEFAULT_TIMER)
+                }
 
-    /*private fun startPlayer(url: String) {
-        playerInteractor.startPlayer(url)
-        handler.post(runnable)
-        _playState.value = true
-    }*/
+                StatePlayer.DEFAULT -> {
+                    statePlayerLiveData.postValue(StatePlayer.DEFAULT)
+                    timerJob?.cancel()
+                    currentTimeLiveData.postValue(DEFAULT_TIMER)
+                }
+
+                else -> Unit
+            }
+        }*/
+    }
 
     fun startPlayer() {
         if (playState.value == PlayerState.PREPARED ||
@@ -104,27 +103,6 @@ class PlayerViewModel(
         super.onCleared()
     }
 
-    /*fun playbackControl(url: String) {
-        when (playerInteractor.getPlayerState()) {
-            PlayerState.PLAYING -> {
-                pausePlayer()
-            }
-
-            PlayerState.PAUSED, PlayerState.PREPARED -> {
-                startPlayer(url)
-            }
-
-            PlayerState.DEFAULT -> {
-                startPlayer(url)
-                playerInteractor.setTrackCompletionListener {
-                    _playState.value = false
-                    _playDuration.value = Consts.TRACK_START_TIME
-                    handler.removeCallbacks(runnable)
-                }
-            }
-        }
-    }*/
-
     fun changePlayerState() {
         playerInteractor.setTrackCompletionListener { state ->
             when (state) {
@@ -155,7 +133,45 @@ class PlayerViewModel(
             }
         }
     }
-
-
-
 }
+
+/*
+private val handler = Handler(Looper.getMainLooper())
+private val runnable = object : Runnable {
+    override fun run() {
+        _playDuration.postValue(
+            SimpleDateFormat("mm:ss", Locale.getDefault())
+                .format(playerInteractor.getCurrentPosition())
+        )
+        handler.postDelayed(this, Consts.PLAY_TRACK_UPDATE_DELAY)
+    }
+}
+*/
+
+/*private fun startPlayer(url: String) {
+    playerInteractor.startPlayer(url)
+    handler.post(runnable)
+    _playState.value = true
+}*/
+
+
+/*fun playbackControl(url: String) {
+    when (playerInteractor.getPlayerState()) {
+        PlayerState.PLAYING -> {
+            pausePlayer()
+        }
+
+        PlayerState.PAUSED, PlayerState.PREPARED -> {
+            startPlayer(url)
+        }
+
+        PlayerState.DEFAULT -> {
+            startPlayer(url)
+            playerInteractor.setTrackCompletionListener {
+                _playState.value = false
+                _playDuration.value = Consts.TRACK_START_TIME
+                handler.removeCallbacks(runnable)
+            }
+        }
+    }
+}*/

@@ -1,8 +1,8 @@
 package com.practicum.playlistmaker.data.player.impl
 
 import android.media.MediaPlayer
-import com.practicum.playlistmaker.domain.player.models.PlayerState
 import com.practicum.playlistmaker.domain.player.TrackPlayer
+import com.practicum.playlistmaker.domain.player.models.PlayerState
 
 class TrackPlayerImpl : TrackPlayer {
 
@@ -11,7 +11,7 @@ class TrackPlayerImpl : TrackPlayer {
 
     override fun preparePlayer(url: String) {
         mediaPlayer.setDataSource(url)
-        mediaPlayer.prepare()
+        mediaPlayer.prepareAsync()
         playerState = PlayerState.PREPARED
     }
 
@@ -40,7 +40,7 @@ class TrackPlayerImpl : TrackPlayer {
     override fun setOnCompletionListener(listener: (PlayerState) -> Unit) {
         mediaPlayer.setOnCompletionListener {
             playerState = PlayerState.PREPARED
-            //listener.invoke(listener)
+            listener(PlayerState.PREPARED)
         }
     }
 
