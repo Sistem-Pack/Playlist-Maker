@@ -30,7 +30,7 @@ class PlayerInteractorImpl(private val trackPlayer: TrackPlayer) : PlayerInterac
         return trackPlayer.playerState
     }
 
-    override fun setTrackCompletionListener(listener: () -> Unit) {
+    override fun setTrackCompletionListener(listener: (PlayerState) -> Unit) {
         trackPlayer.setOnCompletionListener(listener)
     }
 

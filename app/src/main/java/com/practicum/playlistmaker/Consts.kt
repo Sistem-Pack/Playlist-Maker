@@ -1,6 +1,9 @@
 package com.practicum.playlistmaker
 
 object Consts {
+    // http url service
+    const val BASE_URL = "https://itunes.apple.com/"
+
     // constants for Shared Preferense
     const val THEME_PREFS = "THEME"
     const val HISTORY_PREFS = "HISTORY"
@@ -13,12 +16,13 @@ object Consts {
 
     const val MAX_TRACKS_IN_HISTORY = 10
 
-    const val PLAY_TRACK_UPDATE_DELAY = 250L
     const val TRACK_DURATION_DELAY_TIME = 1000L
     const val TRACK_DURATION_INTRO_TIME = 30L
 
     const val TRACK_START_TIME = "00:00"
 
     const val MEDIA_VIEW_PAGER_ADAPTER_ITEM_COUNT = 2
+
+    const val DELAY_MILLIS = 300L
 
 }

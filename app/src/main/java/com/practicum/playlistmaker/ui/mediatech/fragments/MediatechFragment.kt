@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentMediatechBinding
-import com.practicum.playlistmaker.ui.mediatech.activity.MediaViewPagerAdapter
+import com.practicum.playlistmaker.ui.mediatech.MediaViewPagerAdapter
 
 class MediatechFragment : Fragment() {
 

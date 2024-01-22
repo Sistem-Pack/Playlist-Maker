@@ -18,10 +18,7 @@ class SearchViewModel(
 
     private val tracksHistory = ArrayList<Track>()
     private var searchJob: Job? = null
-    //private lateinit var searchRunnable: Runnable
     private var isClickAllowed = true
-
-    //private val handler = Handler(Looper.getMainLooper())
 
     private var _searchScreenState = MutableLiveData<SearchState>()
     var searchScreenState: LiveData<SearchState> = _searchScreenState
@@ -32,11 +29,6 @@ class SearchViewModel(
     }
 
     fun searchDebounce(changedText: String) {
-        /*if (this::searchRunnable.isInitialized) {
-            handler.removeCallbacks(searchRunnable)
-        }
-        searchRunnable = Runnable { searchRequest(changedText) }
-        handler.postDelayed(searchRunnable, Consts.SEARCH_DEBOUNCE_DELAY)*/
         if (lastSearchRequest == changedText) return
         this.lastSearchRequest = changedText
         searchJob?.cancel()
@@ -76,36 +68,9 @@ class SearchViewModel(
             _searchScreenState.value = SearchState.Loading
 
             viewModelScope.launch {
-                /*searchInteractor.search(searchText, object : TrackSearchInteractor.TracksConsumer {*/
                 searchInteractor.search(searchText).collect { pair ->
                     processResult(pair.first, pair.second)
                 }
-                /*@SuppressLint("NotifyDataSetChanged")
-                    override fun consume(foundTracks: ArrayList<Track>?, errorMessage: String?) {
-
-                        when {
-                            errorMessage != null -> {
-                                _searchScreenState.postValue(
-                                    SearchState.Error(
-                                        errorMessage = errorMessage
-                                    )
-                                )
-                            }
-
-                            foundTracks.isNullOrEmpty() -> {
-                                _searchScreenState.postValue(
-                                    SearchState.Empty
-                                )
-                            }
-
-                            else -> {
-                                _searchScreenState.postValue(
-                                    SearchState.Content(foundTracks)
-                                )
-                            }
-                        }
-                    }
-                })*/
             }
         }
 

@@ -37,10 +37,10 @@ class TrackPlayerImpl : TrackPlayer {
         return mediaPlayer.currentPosition
     }
 
-    override fun setOnCompletionListener(listener: () -> Unit) {
+    override fun setOnCompletionListener(listener: (PlayerState) -> Unit) {
         mediaPlayer.setOnCompletionListener {
             playerState = PlayerState.PREPARED
-            listener.invoke()
+            //listener.invoke(listener)
         }
     }
 

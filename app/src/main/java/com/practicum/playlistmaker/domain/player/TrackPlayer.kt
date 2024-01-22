@@ -9,5 +9,5 @@ interface TrackPlayer {
     fun pausePlayer()
     fun releasePlayer()
     fun getCurrentPosition(): Int
-    fun setOnCompletionListener(listener: (() -> Unit))
+    fun setOnCompletionListener(listener: (PlayerState) -> Unit)
 }

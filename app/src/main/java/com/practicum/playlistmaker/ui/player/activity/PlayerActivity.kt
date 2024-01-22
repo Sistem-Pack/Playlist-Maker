@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
+import com.practicum.playlistmaker.domain.player.models.PlayerState
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -68,24 +69,38 @@ class PlayerActivity : AppCompatActivity() {
             .into(binding.cover)
 
         binding.play.setOnClickListener {
-            playerViewModel.playbackControl(track!!.previewUrl!!)
+            /*playerViewModel.playbackControl(track!!.previewUrl!!)*/
+            playerViewModel.changePlayerState()
         }
 
         playerViewModel.playState.observe(this) { playState ->
-            if (playState) {
-                binding.play.setImageResource(R.drawable.pause_light)
-            } else {
-                binding.play.setImageResource(R.drawable.play_for_light)
+            when (playState) {
+                PlayerState.PLAYING -> binding.play.setImageResource(R.drawable.pause_light)
+                PlayerState.PREPARED, PlayerState.DEFAULT, PlayerState.PAUSED ->
+                    binding.play.setImageResource(R.drawable.play_for_light)
             }
-        }
-        playerViewModel.playDuration.observe(this) { duration ->
-            binding.duration.text = duration
+
+
+            playerViewModel.playDuration.observe(this) { duration ->
+                binding.duration.text = duration
+            }
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        playerViewModel.pausePlayer()
-    }
+        override fun onPause() {
+            playerViewModel.pausePlayer()
+            super.onPause()
+        }
+
+        override fun onStart() {
+            playerViewModel.startPlayer()
+            super.onStart()
+        }
+
+        override fun onResume() {
+            playerViewModel.onResume()
+            super.onResume()
+        }
+
 
 }

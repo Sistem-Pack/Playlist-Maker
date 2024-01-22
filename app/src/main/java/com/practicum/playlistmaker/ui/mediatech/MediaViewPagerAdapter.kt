@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.mediatech.activity
+package com.practicum.playlistmaker.ui.mediatech
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

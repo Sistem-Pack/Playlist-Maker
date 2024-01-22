@@ -31,9 +31,6 @@ class SearchFragment : Fragment() {
     private var adapterTracks: TrackAdapter? = null
     private var adapterTracksHistory: TrackAdapter? = null
 
-    //private var isClickAllowed = true
-    //private val handler = Handler(Looper.getMainLooper())
-
     private var searchText: String = ""
 
     override fun onCreateView(
@@ -120,15 +117,6 @@ class SearchFragment : Fragment() {
         adapterTracks = null
         adapterTracksHistory = null
     }
-
-    /*private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, Consts.CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }*/
 
     private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
         if (searchViewModel.clickDebounce()) {
