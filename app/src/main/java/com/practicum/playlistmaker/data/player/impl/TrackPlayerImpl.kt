@@ -8,6 +8,7 @@ class TrackPlayerImpl : TrackPlayer {
 
     override var playerState: PlayerState = PlayerState.DEFAULT
     private var mediaPlayer = MediaPlayer()
+
     override fun preparePlayer(url: String, onChangeState: (s: PlayerState) -> Unit) {
         mediaPlayer.reset()
         mediaPlayer.setOnPreparedListener {
@@ -19,7 +20,7 @@ class TrackPlayerImpl : TrackPlayer {
             onChangeState(PlayerState.DEFAULT)
         }
         mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
+        mediaPlayer.prepare()
     }
 
     override fun startPlayer() {
