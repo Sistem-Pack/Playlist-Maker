@@ -27,23 +27,37 @@ class PlayerViewModel(
     val playDuration: LiveData<String> = _playDuration
 
     fun prepare(url: String) {
-        playerInteractor.preparePlayer(url) /*{ state ->
+        playerInteractor.preparePlayer(url) { state ->
             when (state) {
-                StatePlayer.PREPARED -> {
-                    statePlayerLiveData.postValue(StatePlayer.PREPARED)
+                PlayerState.PREPARED -> {
+                    _playState.postValue(PlayerState.PREPARED)
                     timerJob?.cancel()
-                    currentTimeLiveData.postValue(DEFAULT_TIMER)
+                    _playDuration.postValue(TRACK_START_TIME)
                 }
 
-                StatePlayer.DEFAULT -> {
-                    statePlayerLiveData.postValue(StatePlayer.DEFAULT)
+                PlayerState.DEFAULT -> {
+                    _playState.postValue(PlayerState.DEFAULT)
                     timerJob?.cancel()
-                    currentTimeLiveData.postValue(DEFAULT_TIMER)
+                    _playDuration.postValue(TRACK_START_TIME)
                 }
 
                 else -> Unit
             }
-        }*/
+        }
+    }
+
+    private fun startTimer() {
+        if (_playState.value == PlayerState.DEFAULT ||
+            _playState.value == PlayerState.PREPARED) {
+            _playDuration.postValue(TRACK_START_TIME)
+        }
+        timerJob = viewModelScope.launch {
+            while (isActive) {
+                delay(Consts.DELAY_MILLIS)
+                _playDuration.postValue(SimpleDateFormat("mm:ss", Locale.getDefault())
+                    .format(playerInteractor.getCurrentPosition()))
+            }
+        }
     }
 
     fun startPlayer() {
@@ -60,26 +74,6 @@ class PlayerViewModel(
         }
     }
 
-    private fun startTimer() {
-        if (_playState.value == PlayerState.DEFAULT ||
-            _playState.value == PlayerState.PREPARED) {
-            _playDuration.postValue(Consts.TRACK_START_TIME)
-        }
-        timerJob = viewModelScope.launch {
-            while (isActive) {
-                delay(Consts.DELAY_MILLIS)
-                _playDuration.postValue(SimpleDateFormat("mm:ss", Locale.getDefault())
-                    .format(playerInteractor.getCurrentPosition()))
-            }
-        }
-    }
-
-    /*fun pausePlayer() {
-        playerInteractor.pausePlayer()
-        handler.removeCallbacks(runnable)
-        _playState.value = false
-    }*/
-
     fun pausePlayer() {
         if (_playState.value == PlayerState.PLAYING) {
             timerJob?.cancel()
@@ -88,19 +82,13 @@ class PlayerViewModel(
         }
     }
 
-    fun onResume() {
+    fun resumePlayer() {
         if (_playState.value == PlayerState.PLAYING ||
             _playState.value == PlayerState.PAUSED) {
             timerJob?.cancel()
             playerInteractor.pausePlayer()
             _playState.postValue(PlayerState.PAUSED)
         }
-    }
-
-    override fun onCleared() {
-        /*playerInteractor.releasePlayer()
-        _playState.value = false*/
-        super.onCleared()
     }
 
     fun changePlayerState() {
@@ -134,44 +122,3 @@ class PlayerViewModel(
         }
     }
 }
-
-/*
-private val handler = Handler(Looper.getMainLooper())
-private val runnable = object : Runnable {
-    override fun run() {
-        _playDuration.postValue(
-            SimpleDateFormat("mm:ss", Locale.getDefault())
-                .format(playerInteractor.getCurrentPosition())
-        )
-        handler.postDelayed(this, Consts.PLAY_TRACK_UPDATE_DELAY)
-    }
-}
-*/
-
-/*private fun startPlayer(url: String) {
-    playerInteractor.startPlayer(url)
-    handler.post(runnable)
-    _playState.value = true
-}*/
-
-
-/*fun playbackControl(url: String) {
-    when (playerInteractor.getPlayerState()) {
-        PlayerState.PLAYING -> {
-            pausePlayer()
-        }
-
-        PlayerState.PAUSED, PlayerState.PREPARED -> {
-            startPlayer(url)
-        }
-
-        PlayerState.DEFAULT -> {
-            startPlayer(url)
-            playerInteractor.setTrackCompletionListener {
-                _playState.value = false
-                _playDuration.value = Consts.TRACK_START_TIME
-                handler.removeCallbacks(runnable)
-            }
-        }
-    }
-}*/

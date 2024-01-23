@@ -126,8 +126,5 @@ class SearchViewModel(
     override fun onCleared() {
         super.onCleared()
         searchInteractor.saveHistory(tracksHistory)
-    /*//if (this::searchRunnable.isInitialized) {
-            //handler.removeCallbacks(searchRunnable)
-        }*/
     }
 }

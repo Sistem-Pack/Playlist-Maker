@@ -15,6 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+@Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
@@ -79,7 +80,6 @@ class PlayerActivity : AppCompatActivity() {
             .into(binding.cover)
 
         binding.play.setOnClickListener {
-            /*playerViewModel.playbackControl(track!!.previewUrl!!)*/
             playerViewModel.changePlayerState()
         }
 
@@ -96,7 +96,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        playerViewModel.onResume()
+        playerViewModel.resumePlayer()
         super.onResume()
     }
 
