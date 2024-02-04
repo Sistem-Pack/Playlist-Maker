@@ -6,6 +6,8 @@ import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.network.SearchApiService
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
+import com.practicum.playlistmaker.domain.favorite.FavoriteTracksInteractor
+import com.practicum.playlistmaker.domain.favorite.impl.FavoriteTracksInteractorImpl
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import com.practicum.playlistmaker.domain.search.api.TrackSearchInteractor
@@ -57,5 +59,10 @@ val interactorModule = module {
     factory {
         Executors.newCachedThreadPool()
     }
+
+    single<FavoriteTracksInteractor> {
+        FavoriteTracksInteractorImpl(get())
+    }
+
 
 }

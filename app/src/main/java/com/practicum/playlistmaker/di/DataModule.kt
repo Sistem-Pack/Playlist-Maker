@@ -2,6 +2,9 @@ package com.practicum.playlistmaker.di
 
 import android.content.Context
 import android.media.MediaPlayer
+import androidx.room.Room
+import com.example.playlistmaker.db.data.AppDatabase
+import com.example.playlistmaker.db.data.TrackDbConvertor
 import com.google.gson.Gson
 import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.Consts
@@ -50,6 +53,14 @@ val dataModule = module {
         App()
     }
 
+    factory { TrackDbConvertor() }
 
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .allowMainThreadQueries()
+            .build()
+    }
 
 }

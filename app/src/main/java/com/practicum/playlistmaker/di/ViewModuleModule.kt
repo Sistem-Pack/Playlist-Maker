@@ -30,4 +30,8 @@ val viewModelModel = module {
         MediaPlaylistsViewModel()
     }
 
+    viewModel {
+        MediaFavoriteTracksViewModel(get())
+    }
+
 }
