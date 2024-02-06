@@ -39,6 +39,13 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
+        playerViewModel.checkIsFavorite(track!!.trackId!!.toInt())
+
+        playerViewModel.favoriteState.observe(this) { isFavorite ->
+            setLikeIcon(isFavorite)
+        }
+
+
         binding.backButton.setOnClickListener {
             finish()
         }
@@ -85,6 +92,14 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
+    private fun setLikeIcon(isFavorite: Boolean) {
+        if (isFavorite) {
+            /*binding?.ivLikeTrack?.setImageResource(R.drawable.audio_player_like_favorite)*/
+        } else {
+            /*binding?.ivLikeTrack?.setImageResource(R.drawable.audio_player_like)*/
+        }
+    }
+
     override fun onPause() {
         playerViewModel.pausePlayer()
         super.onPause()
@@ -99,6 +114,5 @@ class PlayerActivity : AppCompatActivity() {
         playerViewModel.resumePlayer()
         super.onResume()
     }
-
 
 }

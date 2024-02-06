@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.Consts.TRACK_START_TIME
+import com.practicum.playlistmaker.domain.favorite.FavoriteTracksInteractor
 import com.practicum.playlistmaker.domain.player.PlayerInteractor
 import com.practicum.playlistmaker.domain.player.models.PlayerState
+import com.practicum.playlistmaker.domain.search.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -17,14 +19,20 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
+    private val favoriteInteractor: FavoriteTracksInteractor,
 ) : ViewModel() {
 
     private var timerJob: Job? = null
+    private var isFavorite = false
+
     private val _playState = MutableLiveData<PlayerState>()
     val playState: LiveData<PlayerState> = _playState
 
     private val _playDuration = MutableLiveData<String>()
     val playDuration: LiveData<String> = _playDuration
+
+    private val _favoriteLiveData = MutableLiveData<Boolean>()
+    val favoriteState: LiveData<Boolean> = _favoriteLiveData
 
     fun prepare(url: String) {
         playerInteractor.preparePlayer(url) { state ->
@@ -121,4 +129,41 @@ class PlayerViewModel(
             }
         }
     }
+
+    fun checkIsFavorite(trackId: Int): Boolean {
+        val idsList: MutableList<Int> = mutableListOf()
+        viewModelScope.launch {
+            favoriteInteractor
+                .getIdsTracks()
+                .collect { list ->
+                    idsList.addAll(list)
+                }
+        }
+        return if (idsList.contains(trackId)) {
+            _favoriteLiveData.postValue(true)
+            isFavorite = true
+            true
+        } else {
+            _favoriteLiveData.postValue(false)
+            isFavorite = false
+            false
+        }
+    }
+
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+            if (track.isFavorite) {
+                favoriteInteractor.deleteTrack(track)
+                _favoriteLiveData.postValue(false)
+                track.isFavorite = false
+                isFavorite = false
+            } else {
+                favoriteInteractor.insertTrack(track)
+                _favoriteLiveData.postValue(true)
+                track.isFavorite = true
+                isFavorite = true
+            }
+        }
+    }
+
 }

@@ -5,8 +5,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.practicum.playlistmaker.Consts.MEDIA_VIEW_PAGER_ADAPTER_ITEM_COUNT
-import com.practicum.playlistmaker.ui.mediatech.fragments.MediaFragmentFavoriteTracks
-import com.practicum.playlistmaker.ui.mediatech.fragments.MediaFragmentPlaylists
+import com.practicum.playlistmaker.ui.mediatech.favorite.fragment.MediaFragmentFavoriteTracks
+import com.practicum.playlistmaker.ui.mediatech.play.fragment.MediaFragmentPlaylists
 
 class MediaViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle)
     : FragmentStateAdapter(fragmentManager, lifecycle) {

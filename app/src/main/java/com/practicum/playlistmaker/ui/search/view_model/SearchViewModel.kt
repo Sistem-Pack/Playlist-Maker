@@ -26,6 +26,7 @@ class SearchViewModel(
 
     init {
         tracksHistory.addAll(searchInteractor.readSearchHistory())
+        _searchScreenState.postValue(SearchState.SearchHistory(tracksHistory))
     }
 
     fun searchDebounce(changedText: String) {

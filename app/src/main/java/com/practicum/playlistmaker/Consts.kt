@@ -25,4 +25,6 @@ object Consts {
 
     const val DELAY_MILLIS = 300L
 
+    const val TRACK = "track"
+
 }
