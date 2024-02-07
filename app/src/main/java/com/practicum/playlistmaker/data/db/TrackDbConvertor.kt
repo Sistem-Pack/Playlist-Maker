@@ -1,6 +1,6 @@
-package com.example.playlistmaker.db.data
+package com.practicum.playlistmaker.data.db
 
-import com.example.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.domain.search.models.Track
 
 class TrackDbConvertor {
     fun mapTrackToTrackEntity(track: Track): TrackEntity {

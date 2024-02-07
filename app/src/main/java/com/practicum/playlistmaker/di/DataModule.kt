@@ -4,7 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.room.Room
 import com.example.playlistmaker.db.data.AppDatabase
-import com.example.playlistmaker.db.data.TrackDbConvertor
+import com.practicum.playlistmaker.data.db.TrackDbConvertor
 import com.google.gson.Gson
 import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.Consts

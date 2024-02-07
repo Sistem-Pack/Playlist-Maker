@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val viewModelModel = module {
 
     viewModel {
-        PlayerViewModel(get())
+        PlayerViewModel(get(), get())
     }
 
     viewModel {
@@ -23,15 +23,11 @@ val viewModelModel = module {
     }
 
     viewModel {
-        MediaFavoriteTracksViewModel()
+        MediaFavoriteTracksViewModel(get())
     }
 
     viewModel {
         MediaPlaylistsViewModel()
-    }
-
-    viewModel {
-        MediaFavoriteTracksViewModel(get())
     }
 
 }

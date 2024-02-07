@@ -39,7 +39,7 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        playerViewModel.checkIsFavorite(track!!.trackId!!.toInt())
+        playerViewModel.checkIsFavorite(track!!.trackId)
 
         playerViewModel.favoriteState.observe(this) { isFavorite ->
             setLikeIcon(isFavorite)
@@ -90,13 +90,15 @@ class PlayerActivity : AppCompatActivity() {
             playerViewModel.changePlayerState()
         }
 
+        binding?.like?.setOnClickListener { playerViewModel.onFavoriteClicked(track = track!!) }
+
     }
 
     private fun setLikeIcon(isFavorite: Boolean) {
         if (isFavorite) {
-            /*binding?.ivLikeTrack?.setImageResource(R.drawable.audio_player_like_favorite)*/
+            binding?.like?.setImageResource(R.drawable.like_up)
         } else {
-            /*binding?.ivLikeTrack?.setImageResource(R.drawable.audio_player_like)*/
+            binding?.like?.setImageResource(R.drawable.like_down)
         }
     }
 

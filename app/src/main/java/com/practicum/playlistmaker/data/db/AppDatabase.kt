@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.practicum.playlistmaker.data.db.TrackEntity
 
 @Database(version = 1, entities = [TrackEntity::class])
 abstract class AppDatabase : RoomDatabase(){

@@ -66,7 +66,6 @@ class MediaFragmentFavoriteTracks : Fragment() {
         when (state) {
             is FavoriteTrackState.Loading -> {
                 with(binding) {
-                    progressBar.isVisible = true
                     ivPlaceholder.isVisible = false
                     tvError.isVisible = false
                     rvFavouriteTracks.isVisible = false
@@ -75,13 +74,12 @@ class MediaFragmentFavoriteTracks : Fragment() {
 
             is FavoriteTrackState.Content -> {
                 favoriteTrackAdapter.clearTracks()
-                favoriteTrackAdapter.tracksList = state.tracks as MutableList<Track>
+                favoriteTrackAdapter.listTrack = state.tracks as ArrayList<Track>
                 favoriteTrackAdapter.notifyDataSetChanged()
                 with(binding) {
                     rvFavouriteTracks.isVisible = true
                     ivPlaceholder.isVisible = false
                     tvError.isVisible = false
-                    progressBar.isVisible = false
                 }
             }
 
@@ -90,7 +88,6 @@ class MediaFragmentFavoriteTracks : Fragment() {
                     ivPlaceholder.isVisible = true
                     tvError.isVisible = true
                     rvFavouriteTracks.isVisible = false
-                    progressBar.isVisible = false
                 }
             }
         }
