@@ -40,12 +40,6 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        /*adapterTracks = TrackAdapter {
-            intentAudioPlayer(it)
-        }
-        adapterTracksHistory = TrackAdapter {
-            intentAudioPlayer(it, true)
-        }*/
         return binding.root
     }
 
