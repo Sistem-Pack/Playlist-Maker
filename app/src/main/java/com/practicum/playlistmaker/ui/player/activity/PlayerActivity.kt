@@ -90,15 +90,15 @@ class PlayerActivity : AppCompatActivity() {
             playerViewModel.changePlayerState()
         }
 
-        binding?.like?.setOnClickListener { playerViewModel.onFavoriteClicked(track = track!!) }
+        binding.like.setOnClickListener { playerViewModel.onFavoriteClicked(track = track!!) }
 
     }
 
     private fun setLikeIcon(isFavorite: Boolean) {
         if (isFavorite) {
-            binding?.like?.setImageResource(R.drawable.like_up)
+            binding.like.setImageResource(R.drawable.like_down)
         } else {
-            binding?.like?.setImageResource(R.drawable.like_down)
+            binding.like.setImageResource(R.drawable.like_up)
         }
     }
 
