@@ -90,12 +90,11 @@
 
     <ImageButton
         android:id="@+id/like"
-        style="@style/roundButtonStyle"
+        style="@style/audio_player_button_like"
         android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="@id/play"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
-        app:layout_constraintTop_toTopOf="@id/play"
-        app:srcCompat="@drawable/like_up" />
+        app:layout_constraintTop_toTopOf="@id/play" />
 
     <TextView
         android:id="@+id/duration"

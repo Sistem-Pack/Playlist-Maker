@@ -6,12 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.domain.search.models.Track
 
-class TrackAdapter(private var clickListener: LocationClickListener?): RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter(private var clickListener: LocationClickListener?) :
+    RecyclerView.Adapter<TrackViewHolder>() {
     fun interface LocationClickListener {
         fun onLocationClick(track: Track)
     }
 
-    private val listTrack = ArrayList<Track>()
+    var listTrack = ArrayList<Track>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_track, parent, false)
@@ -23,17 +24,21 @@ class TrackAdapter(private var clickListener: LocationClickListener?): RecyclerV
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-       holder.bind(listTrack[position])
-       holder.itemView.setOnClickListener {
-           clickListener?.onLocationClick(listTrack[position])
-       }
+        holder.bind(listTrack[position])
+        holder.itemView.setOnClickListener {
+            clickListener?.onLocationClick(listTrack[position])
+        }
     }
 
     fun setTracks(tracks: List<Track>?) {
-        listTrack.clear()
+        clearTracks()
         if (tracks != null) {
             listTrack.addAll(tracks)
         }
+    }
+
+    fun clearTracks() {
+        listTrack.clear()
     }
 
 }

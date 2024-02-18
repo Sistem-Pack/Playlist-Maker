@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Track(
-    val trackId: String?,
+    val trackId: Int,
     val trackName: String?,
     val artistName: String?,
     val trackTimeMillis: Long?,
@@ -13,5 +13,6 @@ data class Track(
     val releaseDate: String?,
     val primaryGenreName: String?,
     val country:String?,
-    val previewUrl:String?
+    val previewUrl:String?,
+    var isFavorite: Boolean = false,
 ): Parcelable

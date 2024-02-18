@@ -39,6 +39,13 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
+        track?.let { playerViewModel.checkIsFavorite(it.trackId) }
+
+        playerViewModel.favoriteState.observe(this) { isFavorite ->
+            setLikeIcon(isFavorite)
+        }
+
+
         binding.backButton.setOnClickListener {
             finish()
         }
@@ -83,6 +90,16 @@ class PlayerActivity : AppCompatActivity() {
             playerViewModel.changePlayerState()
         }
 
+        binding.like.setOnClickListener { playerViewModel.onFavoriteClicked(track = track!!) }
+
+    }
+
+    private fun setLikeIcon(isFavorite: Boolean) {
+        if (isFavorite) {
+            binding.like.setImageResource(R.drawable.like_down)
+        } else {
+            binding.like.setImageResource(R.drawable.like_up)
+        }
     }
 
     override fun onPause() {
@@ -99,6 +116,5 @@ class PlayerActivity : AppCompatActivity() {
         playerViewModel.resumePlayer()
         super.onResume()
     }
-
 
 }

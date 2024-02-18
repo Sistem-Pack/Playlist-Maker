@@ -18,7 +18,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
         if (errorCode == 200) {
             emit((response as TrackSearchResponse).results.map {
                 Track(
-                    it.trackId,
+                    it.trackId.toInt(),
                     it.trackName,
                     it.artistName,
                     it.trackTimeMillis,

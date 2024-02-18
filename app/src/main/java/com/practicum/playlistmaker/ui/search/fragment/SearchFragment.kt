@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
+import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.track.TrackAdapter
@@ -28,8 +30,8 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val searchViewModel by viewModel<SearchViewModel>()
 
-    private var adapterTracks: TrackAdapter? = null
-    private var adapterTracksHistory: TrackAdapter? = null
+    private val adapterTracks by lazy { TrackAdapter { initializeAdapter(it) } }
+    private val adapterTracksHistory by lazy { TrackAdapter { initializeAdapter(it) } }
 
     private var searchText: String = ""
 
@@ -38,17 +40,15 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        adapterTracks = TrackAdapter {
-            intentAudioPlayer(it)
-        }
-        adapterTracksHistory = TrackAdapter {
-            intentAudioPlayer(it, true)
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        searchViewModel.searchScreenState.observe(viewLifecycleOwner) {
+            render(it)
+        }
 
         binding.trackRecyclerView.adapter = adapterTracks
         binding.searchHistory.adapter = adapterTracksHistory
@@ -114,8 +114,6 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        adapterTracks = null
-        adapterTracksHistory = null
     }
 
     private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
@@ -170,6 +168,16 @@ class SearchFragment : Fragment() {
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+    }
+
+    private fun initializeAdapter(track: Track) {
+        if (searchViewModel.clickDebounce()) {
+            searchViewModel.addTrackToSearchHistory(track)
+            val intent = Intent(requireContext(), PlayerActivity::class.java)
+                .apply { putExtra(Consts.TRACK, track) }
+            searchViewModel.clickDebounce()
+            startActivity(intent)
+        }
     }
 
 }
