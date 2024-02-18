@@ -45,4 +45,15 @@
     <string name="media_add_new_playlist">Новый плейлист</string>
     <string name="media_favorite_tracks_error">Ваша медиатека пуста</string>
     <string name="media_playlist_error">Вы не создали \n ни одного плейлиста</string>
-</resources>
+    <string name="playlist_name">Best songs</string>
+    <string name="playlist_count"> треков</string>
+    <string name="add_image">Добавить картинку</string>
+
+    <plurals name="plural_count_tracks">
+        <item quantity="zero">%1$d треков</item>
+        <item quantity="one">%1$d трек</item>
+        <item quantity="two">%1$d трека</item>
+        <item quantity="few">%1$d трека</item>
+        <item quantity="many">%1$d треков</item>
+        <item quantity="other">%1$d треков</item>
+    </plurals></resources>

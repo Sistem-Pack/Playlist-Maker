@@ -1,6 +1,8 @@
 package com.practicum.playlistmaker.ui.root
 
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,9 +25,17 @@ class RootActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if ((destination.id == R.id.searchFragment) ||
-                (destination.id == R.id.settingsFragment)) {
-                binding.toolbar.navigationIcon = null
+            when (destination.id) {
+                R.id.searchFragment, R.id.playerFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+                }
+
+                else -> {
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                    binding.toolbar.navigationIcon = null
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+                }
             }
         }
 

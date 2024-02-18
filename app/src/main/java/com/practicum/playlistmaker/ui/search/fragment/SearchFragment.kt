@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.ui.search.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,7 +17,6 @@ import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.player.activity.PlayerActivity
 import com.practicum.playlistmaker.ui.search.view_model.SearchState
 import com.practicum.playlistmaker.ui.search.view_model.SearchViewModel
 import com.practicum.playlistmaker.ui.track.TrackAdapter
@@ -111,11 +109,6 @@ class SearchFragment : Fragment() {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun intentAudioPlayer(track: Track, updateHistoryLayout: Boolean = false) {
         if (searchViewModel.clickDebounce()) {
             searchViewModel.addTrackToSearchHistory(track = track)
@@ -132,10 +125,10 @@ class SearchFragment : Fragment() {
         if ((binding.editViewSearch.text.toString() == "") && state is SearchState.Content)
             searchViewModel.showHistoryTracks()
         if (state is SearchState.Content && binding.trackRecyclerView.adapter != null) {
-            adapterTracks!!.setTracks(state.tracks)
+            adapterTracks.setTracks(state.tracks)
             binding.trackRecyclerView.adapter!!.notifyDataSetChanged()
         } else if (state is SearchState.SearchHistory && binding.searchHistory.adapter != null) {
-            adapterTracksHistory!!.setTracks(state.tracks)
+            adapterTracksHistory.setTracks(state.tracks)
             binding.searchHistory.adapter!!.notifyDataSetChanged()
         }
         binding.trackRecyclerView.visibility =
@@ -173,11 +166,19 @@ class SearchFragment : Fragment() {
     private fun initializeAdapter(track: Track) {
         if (searchViewModel.clickDebounce()) {
             searchViewModel.addTrackToSearchHistory(track)
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-                .apply { putExtra(Consts.TRACK, track) }
             searchViewModel.clickDebounce()
-            startActivity(intent)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_activityPlayer,
+                Bundle().apply {
+                    putSerializable(Consts.TRACK, track)
+                }
+            )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

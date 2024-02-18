@@ -1,13 +1,18 @@
-package com.practicum.playlistmaker.ui.player.activity
+package com.practicum.playlistmaker.ui.player.fragment
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivityPlayerBinding
+import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
 import com.practicum.playlistmaker.domain.player.models.PlayerState
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
@@ -16,51 +21,47 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
-    private lateinit var binding: ActivityPlayerBinding
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding get() = _binding!!
+
     private val playerViewModel by viewModel<PlayerViewModel>()
 
     private var track: Track? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("track", Track::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra<Track>("track")
-        } as Track
-
-        if (track == null) {
-            finish()
-        }
-
-        track?.let { playerViewModel.checkIsFavorite(it.trackId) }
-
-        playerViewModel.favoriteState.observe(this) { isFavorite ->
-            setLikeIcon(isFavorite)
-        }
-
-
-        binding.backButton.setOnClickListener {
-            finish()
-        }
-
-        playerViewModel.playDuration.observe(this) { duration ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        playerViewModel.playDuration.observe(viewLifecycleOwner) { duration ->
             binding.duration.text = duration
         }
 
-        playerViewModel.playState.observe(this) { playState ->
+        playerViewModel.playState.observe(viewLifecycleOwner) { playState ->
             when (playState) {
                 PlayerState.PLAYING -> binding.play.setImageResource(R.drawable.pause_light)
                 PlayerState.PREPARED, PlayerState.DEFAULT, PlayerState.PAUSED ->
                     binding.play.setImageResource(R.drawable.play_for_light)
             }
         }
+        playerViewModel.favoriteState.observe(viewLifecycleOwner) { isFavorite ->
+            setLikeIcon(isFavorite)
+        }
+
+        track?.let { playerViewModel.checkIsFavorite(it.trackId) }
+        binding.play.setOnClickListener {
+            playerViewModel.changePlayerState()
+        }
+
+        binding.like.setOnClickListener { playerViewModel.onFavoriteClicked(track = track!!) }
 
         track!!.previewUrl?.let { playerViewModel.prepare(it) }
 
@@ -86,12 +87,24 @@ class PlayerActivity : AppCompatActivity() {
             .transform(RoundedCorners(this.resources.getDimensionPixelSize(R.dimen.dm2)))
             .into(binding.cover)
 
-        binding.play.setOnClickListener {
-            playerViewModel.changePlayerState()
+
+        //playerViewModel.isFavorite(track.trackId)
+
+    }
+
+    @Suppress("IMPLICIT_CAST_TO_ANY")
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable("track", Track::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            arguments?.getSerializable("track")
+        } as Track
+
+        if (track == null) {
+            findNavController().popBackStack();
         }
-
-        binding.like.setOnClickListener { playerViewModel.onFavoriteClicked(track = track!!) }
-
     }
 
     private fun setLikeIcon(isFavorite: Boolean) {
@@ -115,6 +128,26 @@ class PlayerActivity : AppCompatActivity() {
     override fun onResume() {
         playerViewModel.resumePlayer()
         super.onResume()
+    }
+
+    /*private fun initOnClickListeners() {
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.addToPlaylist.setOnClickListener {
+            PlayerBottomSheetFragment.newInstance(track).show(childFragmentManager, PlayerBottomSheetFragment.TAG)
+        }
+        binding.addToFavorites.setOnClickListener {
+            playerViewModel.onFavoriteClicked(track)
+        }
+        binding.playButton.setOnClickListener {
+            playerViewModel.playbackControl()
+        }
+    }*/
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
