@@ -39,7 +39,7 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        playerViewModel.checkIsFavorite(track!!.trackId)
+        track?.let { playerViewModel.checkIsFavorite(it.trackId) }
 
         playerViewModel.favoriteState.observe(this) { isFavorite ->
             setLikeIcon(isFavorite)
