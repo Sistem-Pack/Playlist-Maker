@@ -39,10 +39,13 @@
         android:name="com.practicum.playlistmaker.ui.player.fragment.PlayerFragment"
         android:label="">
     </fragment>
-    <!--<activity
-        android:id="@+id/activityPlayer"
-        android:name="com.practicum.playlistmaker.ui.player.activity.PlayerActivity"
-        android:label="@string/title_activity_player"
-        tools:layout="@layout/activity_player" />-->
+    <fragment
+        android:id="@+id/addPlayListFragment"
+        android:label="fragment_addplaylist"
+        tools:layout="@layout/fragment_addplaylist">
+        <action
+            android:id="@+id/action_to_addPlayListFragment"
+            app:destination="@id/addPlayListFragment" />
+    </fragment>
 
 </navigation>

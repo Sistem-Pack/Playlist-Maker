@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.data.playlist
 
-import com.example.playlistmaker.common.models.Track
-import com.example.playlistmaker.common.models.PlayList
+import com.practicum.playlistmaker.domain.search.models.PlayList
+import com.practicum.playlistmaker.domain.search.models.Track
 
 interface PlayListsRepository {
     suspend fun addPlayList(playList: PlayList)

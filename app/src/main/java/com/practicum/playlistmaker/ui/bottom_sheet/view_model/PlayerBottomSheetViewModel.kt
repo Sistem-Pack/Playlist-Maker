@@ -16,9 +16,7 @@ class PlayerBottomSheetViewModel(
     private val playListsInteractor: PlayListsInteractor
 ): ViewModel() {
     private val playListsStateLiveData = MutableLiveData<PlayListsState>()
-
     fun observePlayListsState(): LiveData<PlayListsState> = playListsStateLiveData
-
     private var isClickAllowed = true
 
     fun requestPlayLists() {

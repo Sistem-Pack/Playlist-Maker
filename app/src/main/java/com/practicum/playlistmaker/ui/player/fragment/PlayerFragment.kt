@@ -15,6 +15,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayerBinding
 import com.practicum.playlistmaker.domain.player.models.PlayerState
 import com.practicum.playlistmaker.domain.search.models.Track
+import com.practicum.playlistmaker.ui.bottom_sheet.fragment.PlayerBottomSheetFragment
 import com.practicum.playlistmaker.ui.player.view_model.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -87,8 +88,9 @@ class PlayerFragment : Fragment() {
             .transform(RoundedCorners(this.resources.getDimensionPixelSize(R.dimen.dm2)))
             .into(binding.cover)
 
-
-        //playerViewModel.isFavorite(track.trackId)
+        binding.addToTrack.setOnClickListener {
+            PlayerBottomSheetFragment.newInstance(track!!).show(childFragmentManager, Consts.TAG)
+        }
 
     }
 

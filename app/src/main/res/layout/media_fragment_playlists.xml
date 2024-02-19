@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/mediatechLinearLayout"
-    >
+    style="@style/mediatechLinearLayout">
 
     <Button
         android:id="@+id/button_newPlaylist"
@@ -32,4 +32,15 @@
         style="@style/mediaFragmentStyle"
         android:layout_marginTop="@dimen/dm242"
         android:text="@string/media_playlist_error"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_playLists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:listitem="@layout/grid_item"
+        />
 </FrameLayout>
