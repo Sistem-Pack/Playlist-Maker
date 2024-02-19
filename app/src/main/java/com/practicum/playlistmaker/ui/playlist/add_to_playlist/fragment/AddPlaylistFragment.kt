@@ -26,8 +26,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.Calendar
 
-class AddPlayListFragment : Fragment() {
-
+class AddPlaylistFragment : Fragment() {
     private lateinit var binding: FragmentAddplaylistBinding
     private val addPlayListViewModel by viewModel<AddPlayListViewModel>()
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
@@ -121,8 +120,8 @@ class AddPlayListFragment : Fragment() {
     private fun checkUnsavedData(): Boolean {
         return (
                 pickImageUri != null
-                || binding.playListNameEditText.text.toString().isNotEmpty()
-                || binding.playListDescriptionEditText.text.toString().isNotEmpty()
+                        || binding.playListNameEditText.text.toString().isNotEmpty()
+                        || binding.playListDescriptionEditText.text.toString().isNotEmpty()
                 )
     }
 
@@ -148,6 +147,4 @@ class AddPlayListFragment : Fragment() {
     companion object {
         private const val IMAGE_QUALITY = 80
     }
-
-
 }

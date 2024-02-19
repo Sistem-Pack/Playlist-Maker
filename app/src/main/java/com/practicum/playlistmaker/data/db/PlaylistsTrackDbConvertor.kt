@@ -5,9 +5,9 @@ import com.practicum.playlistmaker.domain.search.models.Track
 import java.util.Calendar
 
 class PlaylistsTrackDbConvertor {
-    fun map(playList: PlayList): PlaylistsEntity.PlayListEntity {
+    fun map(playList: PlayList): PlayListEntity {
         playList.apply {
-            return PlaylistsEntity.PlayListEntity(
+            return PlayListEntity(
                 null,
                 name,
                 description,
@@ -17,7 +17,7 @@ class PlaylistsTrackDbConvertor {
         }
     }
 
-    fun map(playListWithCountTracks: PlaylistsEntity.PlayListWithCountTracks): PlayList {
+    fun map(playListWithCountTracks: PlayListWithCountTracks): PlayList {
         playListWithCountTracks.apply {
             return PlayList(
                 playListId!!,

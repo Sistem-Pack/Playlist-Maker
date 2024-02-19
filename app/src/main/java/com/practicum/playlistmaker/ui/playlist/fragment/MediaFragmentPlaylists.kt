@@ -8,17 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.MediaFragmentPlaylistsBinding
-import com.practicum.playlistmaker.domain.playlist.models.PlayListsState
 import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.ui.playlist.PlayListViewHolder
 import com.practicum.playlistmaker.ui.playlist.PlayListsAdapter
+import com.practicum.playlistmaker.ui.playlist.PlayListsState
 import com.practicum.playlistmaker.ui.playlist.view_model.MediaPlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MediaFragmentPlaylists : Fragment() {
     private var _binding: MediaFragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
-    private val mediaPlaylistsViewModel: MediaPlaylistsViewModel by viewModel()
+    private val mediaPlaylistsViewModel by viewModel<MediaPlaylistsViewModel>()
 
     private val playListsAdapter = object : PlayListsAdapter(
         clickListener = {
@@ -39,25 +40,28 @@ class MediaFragmentPlaylists : Fragment() {
 
         binding.buttonNewPlaylist.setOnClickListener {
             findNavController().navigate(
-                R.id.action_to_addPlayListFragment
+                R.id.action_mediaFragment_to_addPlayListFragment
             )
         }
 
-        mediaPlaylistsViewModel.observeState().observe(viewLifecycleOwner) {
-            when (it) {
-                is PlayListsState.Empty -> {
-                    binding.rvPlayLists.visibility = View.GONE
-                    binding.ivPlaceholder.visibility = View.VISIBLE
-                    binding.tvError.visibility = View.VISIBLE
-                }
+        mediaPlaylistsViewModel.observePlayListsState().observe(viewLifecycleOwner) {
+            render(it)
+        }
+    }
 
-                is PlayListsState.PlayLists -> {
-                    playListsAdapter.playLists = it.playLists
-                    binding.ivPlaceholder.visibility = View.GONE
-                    binding.tvError.visibility = View.GONE
-                    binding.rvPlayLists.visibility = View.VISIBLE
-                }
-                else -> {}
+
+    private fun render(state: PlayListsState) {
+        when (state) {
+            is PlayListsState.Empty -> {
+                binding.rvPlayLists.visibility = View.GONE
+                binding.ivPlaceholder.visibility = View.VISIBLE
+                binding.tvError.visibility = View.VISIBLE
+            }
+            is PlayListsState.PlayLists -> {
+                playListsAdapter.playLists = state.tracks
+                binding.ivPlaceholder.visibility = View.GONE
+                binding.tvError.visibility = View.GONE
+                binding.rvPlayLists.visibility = View.VISIBLE
             }
         }
     }
