@@ -16,12 +16,12 @@ class PlayListsRepositoryImpl(
 
     override suspend fun addPlayList(playList: PlayList) =
         appDatabase.playListsTrackDao().addPlayList(
-            playListsTrackDbConvertor.map(playList = playList)
+            playListsTrackDbConvertor.map(playList)
         )
 
     override suspend fun addTrackToPlayList(track: Track, playListId: Int) =
         appDatabase.playListsTrackDao().addTrackToPlayList(
-            playListsTrackEntity = playListsTrackDbConvertor.map(track = track),
+            playListsTrackEntity = playListsTrackDbConvertor.map(track),
             trackPlayListEntity = TrackPlayListEntity(null, playListId, track.trackId)
         )
 
@@ -39,7 +39,7 @@ class PlayListsRepositoryImpl(
 
 
     private fun convertPlayListsTrackEntityToTrack(tracks: List<PlayListsTrackEntity>): List<Track> =
-        tracks.map { playListsTrackDbConvertor.map(playListsTrackEntity = it) }
+        tracks.map { playListsTrackDbConvertor.map(it) }
 
     private fun convertPlayListWithCountTracksToPlayList(playListWithCountTracks: List<PlayListWithCountTracks>): List<PlayList> =
         playListWithCountTracks.map {

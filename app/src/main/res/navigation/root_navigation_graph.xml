@@ -49,5 +49,21 @@
         android:id="@+id/addPlayListFragment"
         android:name="com.practicum.playlistmaker.ui.playlist.add_to_playlist.fragment.AddPlaylistFragment"
         tools:layout="@layout/fragment_addplaylist"/>
+    <fragment
+        android:id="@+id/mediaFragmentFavoriteTracks"
+        android:name="com.practicum.playlistmaker.ui.mediatech.favorite.fragment.MediaFragmentFavoriteTracks"
+        android:label="MediaFragmentFavoriteTracks" />
+    <fragment
+        android:id="@+id/mediaFragmentPlaylists"
+        android:name="com.practicum.playlistmaker.ui.playlist.fragment.MediaFragmentPlaylists"
+        android:label="MediaFragmentPlaylists" />
+    <dialog
+        android:id="@+id/playerBottomSheetFragment"
+        android:name="com.practicum.playlistmaker.ui.bottom_sheet.fragment.PlayerBottomSheetFragment"
+        android:label="PlayerBottomSheetFragment" />
+    <activity
+        android:id="@+id/rootActivity"
+        android:name="com.practicum.playlistmaker.ui.root.RootActivity"
+        android:label="RootActivity" />
 
 </navigation>

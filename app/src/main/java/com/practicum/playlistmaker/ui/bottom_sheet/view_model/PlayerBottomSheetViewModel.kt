@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.ui.bottom_sheet.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,15 +21,14 @@ class PlayerBottomSheetViewModel(
     private var isClickAllowed = true
 
     fun requestPlayLists() {
-        playListsInteractor
-        /*viewModelScope.launch {
+        viewModelScope.launch {
             val playLists = playListsInteractor.getPlayLists()
             if (playLists.isEmpty()) {
                 playListsStateLiveData.postValue(PlayListsState.Empty)
             } else {
                 playListsStateLiveData.postValue(PlayListsState.PlayLists(playLists))
             }
-        }*/
+        }
     }
 
     fun addTrackToPlayList(track: Track, playList: PlayList) {

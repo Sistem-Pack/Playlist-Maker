@@ -13,10 +13,11 @@ class MediaPlaylistsViewModel(private val playListsInteractor: PlayListsInteract
     private val playListsStateLiveData = MutableLiveData<PlayListsState>()
     fun observePlayListsState(): LiveData<PlayListsState> = playListsStateLiveData
 
+    private val plLiveData = MutableLiveData<String>()
+    fun observeLiveData(): LiveData<String> = plLiveData
 
     fun requestPlayLists() {
         viewModelScope.launch {
-            playListsInteractor
             val playLists = playListsInteractor.getPlayLists()
             if (playLists.isEmpty()) {
                 playListsStateLiveData.postValue(PlayListsState.Empty)
@@ -24,6 +25,12 @@ class MediaPlaylistsViewModel(private val playListsInteractor: PlayListsInteract
                 playListsStateLiveData.postValue(PlayListsState.PlayLists(playLists))
             }
         }
+    }
+
+    fun requestPl() {
+        //viewModelScope.launch {
+            plLiveData.postValue("fjkjkfjkf")
+        //}
     }
 
     /*fun requestPlayLists() {
