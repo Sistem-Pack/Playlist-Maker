@@ -21,5 +21,4 @@ class PlayListsInteractorImpl(private val playListsRepository: PlayListsReposito
 
     override suspend fun isTrackInPlayList(trackId: Int, playListId: Int): Boolean =
         playListsRepository.isTrackInPlayList(trackId, playListId)
-
 }

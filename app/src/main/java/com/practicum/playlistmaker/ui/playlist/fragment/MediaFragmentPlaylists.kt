@@ -63,6 +63,7 @@ class MediaFragmentPlaylists : Fragment() {
                 binding.tvError.visibility = View.GONE
                 binding.rvPlayLists.visibility = View.VISIBLE
             }
+            else -> {}
         }
     }
 

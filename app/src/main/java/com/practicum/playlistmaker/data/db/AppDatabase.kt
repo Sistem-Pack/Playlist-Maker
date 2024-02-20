@@ -13,6 +13,7 @@ import com.example.playlistmaker.db.data.TrackDao
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun trackDao(): TrackDao
+    abstract fun playListsTrackDao(): PlayListsDao
 
     companion object {
         val MIGRATION_1_2: Migration = object : Migration(1, 2) {
@@ -22,5 +23,5 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 
-    abstract fun playListsTrackDao(): PlayListsDao
+
 }

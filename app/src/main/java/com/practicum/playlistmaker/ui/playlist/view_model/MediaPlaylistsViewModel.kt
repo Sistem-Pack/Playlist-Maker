@@ -16,6 +16,7 @@ class MediaPlaylistsViewModel(private val playListsInteractor: PlayListsInteract
 
     fun requestPlayLists() {
         viewModelScope.launch {
+            playListsInteractor
             val playLists = playListsInteractor.getPlayLists()
             if (playLists.isEmpty()) {
                 playListsStateLiveData.postValue(PlayListsState.Empty)

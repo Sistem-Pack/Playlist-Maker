@@ -20,14 +20,15 @@ class PlayerBottomSheetViewModel(
     private var isClickAllowed = true
 
     fun requestPlayLists() {
-        viewModelScope.launch {
+        playListsInteractor
+        /*viewModelScope.launch {
             val playLists = playListsInteractor.getPlayLists()
             if (playLists.isEmpty()) {
                 playListsStateLiveData.postValue(PlayListsState.Empty)
             } else {
                 playListsStateLiveData.postValue(PlayListsState.PlayLists(playLists))
             }
-        }
+        }*/
     }
 
     fun addTrackToPlayList(track: Track, playList: PlayList) {

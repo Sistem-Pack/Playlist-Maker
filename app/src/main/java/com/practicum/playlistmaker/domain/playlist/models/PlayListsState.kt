@@ -4,7 +4,7 @@ import com.practicum.playlistmaker.domain.search.models.PlayList
 
 sealed interface PlayListsState {
 
-    object Empty : PlayListsState
+    data object Empty : PlayListsState
 
     data class AddTrackToPlayListResult(
         val isAdded: Boolean,
