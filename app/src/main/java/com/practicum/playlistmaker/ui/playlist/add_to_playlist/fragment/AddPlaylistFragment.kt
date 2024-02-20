@@ -146,5 +146,8 @@ class AddPlaylistFragment : Fragment() {
 
     companion object {
         private const val IMAGE_QUALITY = 80
+        fun newInstance(): AddPlaylistFragment {
+            return AddPlaylistFragment()
+        }
     }
 }

@@ -1,14 +1,12 @@
 package com.practicum.playlistmaker.ui.playlist
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.data.playlist.dto.DiffCallback
 import com.practicum.playlistmaker.domain.search.models.PlayList
 
-class PlayListsAdapter(private val clickListener: PlayListClickListener) :
+abstract class PlayListsAdapter(private val clickListener: PlayListClickListener) :
     RecyclerView.Adapter<PlayListViewHolder>() {
 
     var playLists = listOf<PlayList>()
@@ -24,11 +22,7 @@ class PlayListsAdapter(private val clickListener: PlayListClickListener) :
             diffResult.dispatchUpdatesTo(this)
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListViewHolder {
-        return PlayListViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.grid_item, parent, false)
-        )
-    }
+    abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListViewHolder
 
     override fun getItemCount(): Int = playLists.size
 

@@ -26,6 +26,7 @@
     <dimen name="dm60">60dp</dimen>
     <dimen name="dm102">102dp</dimen>
     <dimen name="dm106">106dp</dimen>
+    <dimen name="dm160">160dp</dimen>
     <dimen name="dm242">242dp</dimen>
     -- size for strings
     <dimen name="ln11">11sp</dimen>

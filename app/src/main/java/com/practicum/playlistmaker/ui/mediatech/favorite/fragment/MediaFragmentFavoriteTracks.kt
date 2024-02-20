@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.MediaFragmentFavoriteTracksBinding
+import com.practicum.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.mediatech.favorite.FavoriteTrackState
 import com.practicum.playlistmaker.ui.mediatech.favorite.view_model.MediaFavoriteTracksViewModel
@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragmentFavoriteTracks : Fragment() {
 
-    private var _binding: MediaFragmentFavoriteTracksBinding? = null
+    private var _binding: FragmentFavoriteTracksBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<MediaFavoriteTracksViewModel>()
     private val favoriteTrackAdapter by lazy { TrackAdapter { startAdapter(it) } }
@@ -27,7 +27,7 @@ class MediaFragmentFavoriteTracks : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = MediaFragmentFavoriteTracksBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteTracksBinding.inflate(inflater, container, false)
         return binding.root
     }
 

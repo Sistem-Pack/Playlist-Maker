@@ -20,8 +20,8 @@
         <ImageView
             android:id="@+id/iv_cover_playlist"
             android:background="@color/white"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="@dimen/dm160"
+            android:layout_height="@dimen/dm160"
             android:scaleType="centerCrop"
             android:src="@drawable/track_pic_312" />
     </androidx.cardview.widget.CardView>

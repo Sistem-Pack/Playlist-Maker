@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.ui.bottom_sheet.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,18 @@ class PlayerBottomSheetFragment(val track: Track) : BottomSheetDialogFragment() 
     private var _binding: FragmentBottomSheetBinding? = null
     private val binding get() = _binding!!
     private val viewModelPlayerBottomSheet by viewModel<PlayerBottomSheetViewModel>()
-    private val playListsAdapter by lazy { PlayListsAdapter { addTrackToPlayList(it) } }
+
+    private val playListsAdapter = object : PlayListsAdapter(
+        clickListener = {
+            addTrackToPlayList(it)
+        }
+    ) {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListViewHolder {
+            return PlayListViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.item_playlist_bottom_sheet, parent, false)
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

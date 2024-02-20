@@ -5,14 +5,13 @@
     android:id="@+id/trackView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:background="@color/white"
     android:orientation="horizontal"
     android:theme="@style/Theme.PlaylistMaker">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_margin="@dimen/dm8"
         app:cardCornerRadius="@dimen/dm2"
         app:cardElevation="0dp">
@@ -21,9 +20,9 @@
             android:id="@+id/iv_cover_playlist"
             android:layout_width="@dimen/dm45"
             android:layout_height="@dimen/dm45"
-            android:background="@color/white"
-            android:scaleType="centerCrop"
-            android:src="@drawable/track_pic_312" />
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_placeholder" />
 
     </androidx.cardview.widget.CardView>
 
@@ -39,7 +38,6 @@
             android:id="@+id/tv_playlist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:ellipsize="end"
             android:fontFamily="@font/ys_display_regular"
             android:maxLines="1"

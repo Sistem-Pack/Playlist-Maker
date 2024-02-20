@@ -20,8 +20,11 @@
             android:id="@+id/action_mediaFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
         <action
-            android:id="@+id/action_mediaFragment_to_addPlayListFragment"
-            app:destination="@id/addPlayListFragment" />
+            android:id="@+id/action_mediaFragment_to_mediaFragmentFavoriteTracks"
+            app:destination="@id/mediaFragmentFavoriteTracks" />
+        <action
+            android:id="@+id/action_mediaFragment_to_mediaFragmentPlaylists"
+            app:destination="@id/mediaFragmentPlaylists" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -41,9 +44,13 @@
         android:id="@+id/playerFragment"
         android:name="com.practicum.playlistmaker.ui.player.fragment.PlayerFragment"
         android:label="">
+
         <action
             android:id="@+id/action_playerFragment_to_addPlayListFragment"
             app:destination="@id/addPlayListFragment" />
+        <action
+            android:id="@+id/action_playerFragment_to_playerBottomSheetFragment"
+            app:destination="@id/playerBottomSheetFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPlayListFragment"
@@ -56,11 +63,19 @@
     <fragment
         android:id="@+id/mediaFragmentPlaylists"
         android:name="com.practicum.playlistmaker.ui.playlist.fragment.MediaFragmentPlaylists"
-        android:label="MediaFragmentPlaylists" />
+        android:label="MediaFragmentPlaylists" >
+        <action
+            android:id="@+id/action_mediaFragmentPlaylists_to_addPlayListFragment"
+            app:destination="@id/addPlayListFragment" />
+    </fragment>
     <dialog
         android:id="@+id/playerBottomSheetFragment"
         android:name="com.practicum.playlistmaker.ui.bottom_sheet.fragment.PlayerBottomSheetFragment"
-        android:label="PlayerBottomSheetFragment" />
+        android:label="PlayerBottomSheetFragment" >
+        <action
+            android:id="@+id/action_playerBottomSheetFragment_to_addPlayListFragment"
+            app:destination="@id/addPlayListFragment" />
+    </dialog>
     <activity
         android:id="@+id/rootActivity"
         android:name="com.practicum.playlistmaker.ui.root.RootActivity"
