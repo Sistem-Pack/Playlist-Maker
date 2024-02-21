@@ -132,21 +132,6 @@ class PlayerFragment : Fragment() {
         super.onResume()
     }
 
-    /*private fun initOnClickListeners() {
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-        binding.addToPlaylist.setOnClickListener {
-            PlayerBottomSheetFragment.newInstance(track).show(childFragmentManager, PlayerBottomSheetFragment.TAG)
-        }
-        binding.addToFavorites.setOnClickListener {
-            playerViewModel.onFavoriteClicked(track)
-        }
-        binding.playButton.setOnClickListener {
-            playerViewModel.playbackControl()
-        }
-    }*/
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
