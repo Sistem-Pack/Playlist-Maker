@@ -9,12 +9,8 @@ import com.practicum.playlistmaker.ui.playlist.PlayListsState
 import kotlinx.coroutines.launch
 
 class MediaPlaylistsViewModel(private val playListsInteractor: PlayListsInteractor): ViewModel() {
-
     private val playListsStateLiveData = MutableLiveData<PlayListsState>()
     fun observePlayListsState(): LiveData<PlayListsState> = playListsStateLiveData
-
-    private val plLiveData = MutableLiveData<String>()
-    fun observeLiveData(): LiveData<String> = plLiveData
 
     fun requestPlayLists() {
         viewModelScope.launch {
@@ -26,21 +22,4 @@ class MediaPlaylistsViewModel(private val playListsInteractor: PlayListsInteract
             }
         }
     }
-
-    fun requestPl() {
-        //viewModelScope.launch {
-            plLiveData.postValue("fjkjkfjkf")
-        //}
-    }
-
-    /*fun requestPlayLists() {
-         viewModelScope.launch {
-            val playLists = playListsInteractor.getPlayLists()
-            if (playLists.isEmpty()) {
-                renderState(PlayListsState.Empty)
-            } else {
-                renderState(PlayListsState.PlayLists(playLists))
-            }
-        }
-    }*/
 }

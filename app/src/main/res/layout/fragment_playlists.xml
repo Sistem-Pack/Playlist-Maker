@@ -26,10 +26,11 @@
         android:layout_marginTop="@dimen/dm106" />
 
     <TextView android:id="@+id/tv_error"
+        style="@style/mediaFragmentStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        style="@style/mediaFragmentStyle"
+
         android:layout_marginTop="@dimen/dm242"
         android:text="@string/media_playlist_error"/>
 
@@ -37,11 +38,13 @@
         android:id="@+id/rv_playLists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginLeft="@dimen/dm16"
+        android:layout_marginTop="@dimen/dm76"
+        android:layout_marginRight="@dimen/dm16"
         android:orientation="vertical"
+        android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        android:visibility="visible"
-        tools:listitem="@layout/grid_item"
-        />
+        tools:listitem="@layout/grid_item" />
+
 </FrameLayout>

@@ -21,12 +21,11 @@ class RootActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.
         findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
-
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playerFragment -> {
+                R.id.playerFragment, R.id.addPlayListFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 }

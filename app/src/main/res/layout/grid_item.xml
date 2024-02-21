@@ -5,11 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:layout_marginVertical="@dimen/dm8"
     android:orientation="vertical"
-    android:padding="@dimen/dm8"
-    >
+    android:padding="@dimen/dm8" >
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -19,7 +17,6 @@
 
         <ImageView
             android:id="@+id/iv_cover_playlist"
-            android:background="@color/white"
             android:layout_width="@dimen/dm160"
             android:layout_height="@dimen/dm160"
             android:scaleType="centerCrop"
@@ -28,23 +25,23 @@
 
     <TextView
         android:id="@+id/tv_playlist_name"
+        style="@style/trackStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dm4"
         android:ellipsize="end"
         android:fontFamily="@font/ys_display_regular"
         android:maxLines="1"
-        android:textColor="@color/black"
         android:textSize="@dimen/ln12"
         tools:text="@string/playlist_name" />
 
     <TextView
         android:id="@+id/tv_playlist_tracks_count"
+        style="@style/trackStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
         android:maxLines="1"
         android:text="@string/playlist_count"
-        android:textColor="@color/dark_item"
         android:textSize="@dimen/ln12" />
 </androidx.appcompat.widget.LinearLayoutCompat>

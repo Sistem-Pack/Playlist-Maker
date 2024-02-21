@@ -55,7 +55,9 @@
     <fragment
         android:id="@+id/addPlayListFragment"
         android:name="com.practicum.playlistmaker.ui.playlist.add_to_playlist.fragment.AddPlaylistFragment"
-        tools:layout="@layout/fragment_addplaylist"/>
+        tools:layout="@layout/fragment_addplaylist"
+        android:label="@string/media_add_new_playlist"
+        />
     <fragment
         android:id="@+id/mediaFragmentFavoriteTracks"
         android:name="com.practicum.playlistmaker.ui.mediatech.favorite.fragment.MediaFragmentFavoriteTracks"

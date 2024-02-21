@@ -53,13 +53,13 @@ class AddPlaylistFragment : Fragment() {
             }
         }
 
-        binding.toolbar.setOnClickListener {
+        /*binding.toolbar.setOnClickListener {
             if (checkUnsavedData()) {
                 confirmDialog.show()
             } else {
                 findNavController().popBackStack()
             }
-        }
+        }*/
 
         binding.playListNameEditText.doOnTextChanged { s: CharSequence?, _, _, _ ->
             val descriptionNotEmpty = !binding.playListDescriptionEditText.text.isNullOrEmpty()
