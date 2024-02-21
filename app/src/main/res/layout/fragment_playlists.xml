@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/dm8"
     style="@style/mediatechLinearLayout">
 
     <Button
@@ -30,17 +31,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-
         android:layout_marginTop="@dimen/dm242"
         android:text="@string/media_playlist_error"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_playLists"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dm16"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dm76"
-        android:layout_marginRight="@dimen/dm16"
         android:orientation="vertical"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

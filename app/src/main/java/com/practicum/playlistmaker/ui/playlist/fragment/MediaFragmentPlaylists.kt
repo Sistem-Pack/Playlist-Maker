@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutParams
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.practicum.playlistmaker.domain.search.models.PlayList
@@ -13,6 +15,7 @@ import com.practicum.playlistmaker.ui.playlist.PlayListViewHolder
 import com.practicum.playlistmaker.ui.playlist.PlayListsAdapter
 import com.practicum.playlistmaker.ui.playlist.PlayListsState
 import com.practicum.playlistmaker.ui.playlist.view_model.MediaPlaylistsViewModel
+import com.practicum.playlistmaker.ui.track.TrackViewHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragmentPlaylists : Fragment() {
@@ -46,7 +49,7 @@ class MediaFragmentPlaylists : Fragment() {
 
         binding.buttonNewPlaylist.setOnClickListener {
             findNavController().navigate(
-                R.id.action_mediaFragmentPlaylists_to_addPlayListFragment
+                R.id.action_mediaFragment_to_addPlayListFragment
             )
         }
 
