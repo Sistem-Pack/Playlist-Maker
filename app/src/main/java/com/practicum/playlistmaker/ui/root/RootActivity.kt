@@ -25,7 +25,12 @@ class RootActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playerFragment, R.id.addPlayListFragment -> {
+                R.id.addPlayListFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                    binding.toolbar.visibility = View.GONE
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+                }
+                R.id.playerFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 }

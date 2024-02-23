@@ -58,6 +58,14 @@ class AddPlaylistFragment : Fragment() {
             binding.playlistCreateButton.isEnabled = !s.isNullOrEmpty() || descriptionNotEmpty
         }
 
+        binding.toolbar.setOnClickListener {
+            if (checkUnsavedData()) {
+                confirmDialog.show()
+            } else {
+                findNavController().popBackStack()
+            }
+        }
+
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
@@ -68,6 +76,7 @@ class AddPlaylistFragment : Fragment() {
         binding.addImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
 
         binding.playlistCreateButton.setOnClickListener {
             val name = binding.playListNameEditText.text.toString()

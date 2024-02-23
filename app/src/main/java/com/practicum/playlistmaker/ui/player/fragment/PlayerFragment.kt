@@ -23,12 +23,9 @@ import java.util.Locale
 
 @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
 class PlayerFragment : Fragment() {
-
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
-
     private val playerViewModel by viewModel<PlayerViewModel>()
-
     private var track: Track? = null
 
     override fun onCreateView(

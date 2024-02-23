@@ -335,6 +335,17 @@
         <item name="android:textFontWeight" tools:ignore="NewApi">500</item>
     </style>
 
+    <style name="AddToolBar">
+        <item name="android:background">@color/dark_item</item>
+        <item name="android:fontFamily">@font/ys_medium</item>
+        <item name="android:textSize">@dimen/ln22</item>
+        <item name="title">@string/media_add_new_playlist</item>
+        <item name="android:titleTextColor">@color/white</item>
+        <item name="navigationIcon">@drawable/arrow_back</item>
+        <item name="navigationIconTint">@color/white</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
     <style name="searchButtonUpdateStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/ys_medium</item>

@@ -19,6 +19,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/dm16" />
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/AddToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <ImageView
         android:id="@+id/addImage"
         android:layout_width="@dimen/zero"
