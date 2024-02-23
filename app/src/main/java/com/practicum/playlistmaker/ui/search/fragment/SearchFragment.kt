@@ -170,7 +170,7 @@ class SearchFragment : Fragment() {
             findNavController().navigate(
                 R.id.action_searchFragment_to_activityPlayer,
                 Bundle().apply {
-                    putSerializable(Consts.TRACK, track)
+                    putParcelable(Consts.TRACK, track)
                 }
             )
         }

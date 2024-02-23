@@ -95,10 +95,10 @@ class PlayerFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getSerializable("track", Track::class.java)
+            arguments?.getParcelable(Consts.TRACK, Track::class.java)
         } else {
             @Suppress("DEPRECATION")
-            arguments?.getSerializable("track")
+            arguments?.getParcelable(Consts.TRACK)
         } as Track
 
         if (track == null) {

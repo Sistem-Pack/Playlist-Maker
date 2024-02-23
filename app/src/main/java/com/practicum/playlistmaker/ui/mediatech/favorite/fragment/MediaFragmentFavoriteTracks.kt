@@ -59,7 +59,7 @@ class MediaFragmentFavoriteTracks : Fragment() {
             findNavController().navigate(
                 R.id.action_mediaFragment_to_playerFragment,
                 Bundle().apply {
-                    putSerializable(Consts.TRACK, track)
+                    putParcelable(Consts.TRACK, track)
                 }
             )
         }

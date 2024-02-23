@@ -142,13 +142,9 @@ class AddPlaylistFragment : Fragment() {
         val outputStream = FileOutputStream(file)
         BitmapFactory
             .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, outputStream)
+            .compress(Bitmap.CompressFormat.JPEG, Consts.IMAGE_QUALITY, outputStream)
+        inputStream!!.close()
+        outputStream.close()
     }
 
-    companion object {
-        private const val IMAGE_QUALITY = 80
-        fun newInstance(): AddPlaylistFragment {
-            return AddPlaylistFragment()
-        }
-    }
 }
