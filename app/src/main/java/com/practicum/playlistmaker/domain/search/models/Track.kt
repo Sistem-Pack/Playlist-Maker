@@ -2,6 +2,7 @@ package com.practicum.playlistmaker.domain.search.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+
 @Parcelize
 data class Track(
     val trackId: Int,

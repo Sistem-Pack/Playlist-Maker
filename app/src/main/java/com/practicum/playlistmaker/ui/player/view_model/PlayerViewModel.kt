@@ -23,7 +23,7 @@ class PlayerViewModel(
 ) : ViewModel() {
 
     private var timerJob: Job? = null
-    private var isFavorite = false
+    var isFavorite = false
 
     private val _playState = MutableLiveData<PlayerState>()
     val playState: LiveData<PlayerState> = _playState

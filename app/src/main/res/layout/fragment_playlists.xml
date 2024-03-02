@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/mediatechLinearLayout"
-    >
+    android:paddingHorizontal="@dimen/dm8"
+    style="@style/mediatechLinearLayout">
 
     <Button
         android:id="@+id/button_newPlaylist"
@@ -26,10 +27,22 @@
         android:layout_marginTop="@dimen/dm106" />
 
     <TextView android:id="@+id/tv_error"
+        style="@style/mediaFragmentStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        style="@style/mediaFragmentStyle"
         android:layout_marginTop="@dimen/dm242"
         android:text="@string/media_playlist_error"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_playLists"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dm76"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:listitem="@layout/grid_item" />
+
 </FrameLayout>

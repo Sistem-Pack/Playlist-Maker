@@ -2,6 +2,7 @@
 <resources>
     -- size for all views
     <dimen name="zero">0dp</dimen>
+    <dimen name="one">1dp</dimen>
     <dimen name="dm2">2dp</dimen>
     <dimen name="dm4">4dp</dimen>
     <dimen name="dm8">8dp</dimen>
@@ -23,10 +24,14 @@
     <dimen name="dm54">54dp</dimen>
     <dimen name="dm56">56dp</dimen>
     <dimen name="dm60">60dp</dimen>
+    <dimen name="dm76">76dp</dimen>
+    <dimen name="dm82">82dp</dimen>
     <dimen name="dm102">102dp</dimen>
     <dimen name="dm106">106dp</dimen>
+    <dimen name="dm160">160dp</dimen>
     <dimen name="dm242">242dp</dimen>
     -- size for strings
+    <dimen name="ln11">11sp</dimen>
     <dimen name="ln12">12sp</dimen>
     <dimen name="ln13">13sp</dimen>
     <dimen name="ln14">14sp</dimen>

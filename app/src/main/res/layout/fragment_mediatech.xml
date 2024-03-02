@@ -12,13 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm48"
         style="@style/mediatech_tablayout"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         android:visibility="visible"
         app:tabMode="fixed"
+        android:textAllCaps="true"
         app:tabIndicatorFullWidth="false"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textAllCaps="true"
         android:visibility="visible"/>
 </LinearLayout>

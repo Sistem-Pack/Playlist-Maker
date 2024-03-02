@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/mediatechLinearLayout">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/dm16" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/AddToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/addImage"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/zero"
+        android:scaleType="centerCrop"
+        android:layout_marginHorizontal="@dimen/dm24"
+        android:layout_marginTop="@dimen/dm82"
+        android:src="@drawable/add_image_for_playlist"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/add_image"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/playListNameTextInputLayout"
+        style="@style/PlayListCreateTextInputLayout"
+        android:hint="@string/playlist_name_hint"
+        app:boxStrokeColor="@color/text_not_stroke"
+        app:hintTextColor="@color/text_not"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@+id/addImage">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/playListNameEditText"
+            style="@style/PlayListCreateEditText"
+            android:inputType="textCapSentences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/playListDescriptionTextInputLayout"
+        style="@style/PlayListCreateTextInputLayout"
+        app:boxStrokeColor="@color/text_not_stroke"
+        app:hintTextColor="@color/text_not"
+        android:hint="@string/description"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+        app:layout_constraintStart_toStartOf="@+id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@+id/playListNameTextInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/playListDescriptionEditText"
+            style="@style/PlayListCreateEditText"
+            android:inputType="textCapSentences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playlistCreateButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button"
+        android:enabled="false"
+        android:fontFamily="@font/ys_medium"
+        android:inputType="textCapSentences"
+        android:padding="@dimen/dm12"
+        android:text="@string/create"
+        android:textColor="@color/white"
+        android:textSize="@dimen/ln16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

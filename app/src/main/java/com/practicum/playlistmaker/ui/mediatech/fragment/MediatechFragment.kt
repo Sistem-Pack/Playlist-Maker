@@ -11,7 +11,6 @@ import com.practicum.playlistmaker.databinding.FragmentMediatechBinding
 import com.practicum.playlistmaker.ui.mediatech.MediaViewPagerAdapter
 
 class MediatechFragment : Fragment() {
-
     private var _binding: FragmentMediatechBinding ? = null
     private val binding get() = _binding!!
     private var tabMediator: TabLayoutMediator? = null
@@ -26,7 +25,6 @@ class MediatechFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.viewPager.adapter = MediaViewPagerAdapter(childFragmentManager, lifecycle)
 
         tabMediator =

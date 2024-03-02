@@ -4,6 +4,8 @@ import com.practicum.playlistmaker.domain.favorite.FavoriteTracksRepository
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.data.favorite.impl.FavoriteTracksRepositoryImpl
 import com.practicum.playlistmaker.data.player.impl.TrackPlayerImpl
+import com.practicum.playlistmaker.data.playlist.PlayListsRepository
+import com.practicum.playlistmaker.data.playlist.impl.PlayListsRepositoryImpl
 import com.practicum.playlistmaker.data.search.TracksHistoryStorage
 import com.practicum.playlistmaker.data.search.impl.TracksHistoryStorageImpl
 import com.practicum.playlistmaker.data.search.impl.TracksRepositoryImpl
@@ -34,6 +36,10 @@ var repositoryModule = module {
 
     single<FavoriteTracksRepository> {
         FavoriteTracksRepositoryImpl(get(), get())
+    }
+
+    single<PlayListsRepository> {
+        PlayListsRepositoryImpl(get(), get())
     }
 
 }
