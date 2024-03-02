@@ -167,12 +167,7 @@ class SearchFragment : Fragment() {
         if (searchViewModel.clickDebounce()) {
             searchViewModel.addTrackToSearchHistory(track)
             searchViewModel.clickDebounce()
-            findNavController().navigate(
-                R.id.action_searchFragment_to_activityPlayer,
-                Bundle().apply {
-                    putParcelable(Consts.TRACK, track)
-                }
-            )
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToActivityPlayer(track))
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.Consts
@@ -27,6 +28,7 @@ class PlayerFragment : Fragment() {
     private val binding get() = _binding!!
     private val playerViewModel by viewModel<PlayerViewModel>()
     private var track: Track? = null
+    private val args: PlayerFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,12 +96,7 @@ class PlayerFragment : Fragment() {
     @Suppress("IMPLICIT_CAST_TO_ANY")
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(Consts.TRACK, Track::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            arguments?.getParcelable(Consts.TRACK)
-        } as Track
+        track = args.track
 
         if (track == null) {
             findNavController().popBackStack();
