@@ -31,7 +31,7 @@ class PlayListViewModel(
             ))
             renderState(
                 PlayListState.PlayListTracks(
-                playListsInteractor.getPlayListTracks(playListId)
+                playListsInteractor.getPlayListTracks(playListId).toMutableList()
             ))
         }
     }

@@ -10,8 +10,8 @@ interface PlayListsInteractor {
     suspend fun editPlayList(playListId: Int, playListName: String, playListDescription: String, pickImageUri: Uri?)
     suspend fun addTrackToPlayList(track: Track, playListId: Int)
     suspend fun getPlayList(playListId: Int): PlayList
-    suspend fun getPlayLists(): ArrayList<PlayList>
-    suspend fun getPlayListTracks(playListId: Int): ArrayList<Track>
+    suspend fun getPlayLists(): List<PlayList>
+    suspend fun getPlayListTracks(playListId: Int): List<Track>
     suspend fun isTrackInPlayList(trackId: Int, playListId: Int): Boolean
     suspend fun deleteTrackFromPlaylist(trackId: Int, playListId: Int)
     suspend fun deletePlaylist(playList: PlayList)

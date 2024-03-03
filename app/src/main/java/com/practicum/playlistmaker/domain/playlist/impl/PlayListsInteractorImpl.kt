@@ -47,10 +47,10 @@ class PlayListsInteractorImpl(private val playListsRepository: PlayListsReposito
     override suspend fun addTrackToPlayList(track: Track, playListId: Int) =
         playListsRepository.addTrackToPlayList(track, playListId)
 
-    override suspend fun getPlayLists(): ArrayList<PlayList> =
+    override suspend fun getPlayLists(): List<PlayList> =
         playListsRepository.getPlayLists()
 
-    override suspend fun getPlayListTracks(playListId: Int): ArrayList<Track> =
+    override suspend fun getPlayListTracks(playListId: Int): List<Track> =
         playListsRepository.getPlayListTracks(playListId)
 
     override suspend fun isTrackInPlayList(trackId: Int, playListId: Int): Boolean =

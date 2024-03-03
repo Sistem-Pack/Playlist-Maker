@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import android.view.animation.AnimationUtils
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityRootBinding
 

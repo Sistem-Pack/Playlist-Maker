@@ -1,13 +1,13 @@
-package com.example.playlistmaker.medialibrary.ui.playlists
+package com.practicum.playlistmaker.ui.play_list_bottom_sheet.view_model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.common.models.PlayList
-import com.example.playlistmaker.medialibrary.domain.db.PlayListsInteractor
+import com.practicum.playlistmaker.Consts
+import com.practicum.playlistmaker.domain.playlist.PlayListsInteractor
+import com.practicum.playlistmaker.domain.search.models.PlayList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collect
 
 
 class PlayListBottomSheetViewModel(
@@ -30,7 +30,7 @@ class PlayListBottomSheetViewModel(
         if (isClickAllowed) {
             isClickAllowed = false
             viewModelScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                delay(Consts.CLICK_DEBOUNCE_DELAY)
                 isClickAllowed = true
             }
         }
@@ -44,9 +44,5 @@ class PlayListBottomSheetViewModel(
                     tracksCount.value = count
                 }
         }
-    }
-
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 }

@@ -5,5 +5,5 @@ import com.practicum.playlistmaker.domain.search.models.Track
 
 sealed interface PlayListState {
     data class PlayListInfo(val playList: PlayList) : PlayListState
-    data class PlayListTracks(val tracks: ArrayList<Track>) : PlayListState
+    data class PlayListTracks(val tracks: List<Track>) : PlayListState
 }

@@ -158,11 +158,11 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
         }
     }
 
-    private fun showTracks(tracks: ArrayList<Track>) {
+    private fun showTracks(tracks: List<Track>) {
         if (tracks.isEmpty()) {
             Toast.makeText(requireContext(), getString(R.string.playlist_is_empty), Toast.LENGTH_SHORT).show()
         }
-        playListTracksAdapter.listTrack = tracks
+        playListTracksAdapter.listTrack = tracks as ArrayList<Track>
         var durationSum = 0L
         playListTracksAdapter.listTrack.forEach { track ->
             durationSum += track.trackTimeMillis ?: 0
