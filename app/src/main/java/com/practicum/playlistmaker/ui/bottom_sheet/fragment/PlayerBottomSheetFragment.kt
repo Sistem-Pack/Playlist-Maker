@@ -13,8 +13,8 @@ import com.practicum.playlistmaker.domain.playlist.models.PlayListsState
 import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.domain.search.models.Track
 import com.practicum.playlistmaker.ui.bottom_sheet.view_model.PlayerBottomSheetViewModel
-import com.practicum.playlistmaker.ui.playlist.PlayListViewHolder
-import com.practicum.playlistmaker.ui.playlist.PlayListsAdapter
+import com.practicum.playlistmaker.ui.mediatech.play.PlayListViewHolder
+import com.practicum.playlistmaker.ui.mediatech.play.PlayListsAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerBottomSheetFragment(val track: Track) : BottomSheetDialogFragment() {

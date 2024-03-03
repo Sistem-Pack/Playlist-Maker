@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.data.db
 
 import com.practicum.playlistmaker.domain.search.models.Track
 
-class TrackDbConvertor {
+class TrackDbConverter {
     fun mapTrackToTrackEntity(track: Track): TrackEntity {
         return TrackEntity(
             track.trackId,

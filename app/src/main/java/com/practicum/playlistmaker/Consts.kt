@@ -29,5 +29,6 @@ object Consts {
     const val TAG = "PlayerBottomSheet"
     const val PLAY_LISTS_IMAGES_DIRECTORY = "play_list_images"
     const val IMAGE_QUALITY = 80
+    const val PLAYLIST = "playlist"
 
 }

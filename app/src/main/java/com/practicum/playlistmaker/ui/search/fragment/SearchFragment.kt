@@ -23,14 +23,11 @@ import com.practicum.playlistmaker.ui.track.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
-
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val searchViewModel by viewModel<SearchViewModel>()
-
-    private val adapterTracks by lazy { TrackAdapter { initializeAdapter(it) } }
-    private val adapterTracksHistory by lazy { TrackAdapter { initializeAdapter(it) } }
-
+    private val adapterTracks by lazy { TrackAdapter ({ initializeAdapter(it) }) }
+    private val adapterTracksHistory by lazy { TrackAdapter ({ initializeAdapter(it) }) }
     private var searchText: String = ""
 
     override fun onCreateView(

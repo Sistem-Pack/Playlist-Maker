@@ -25,19 +25,33 @@ class RootActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.addPlayListFragment -> {
-                    binding.bottomNavigationView.visibility = View.GONE
-                    binding.toolbar.visibility = View.GONE
+                R.id.addPlayListFragment, R.id.playListFragment -> {
+                    if (binding.bottomNavigationView.visibility == View.VISIBLE) {
+                        binding.toolbar.visibility = View.GONE
+                        binding.bottomNavigationView.visibility = View.GONE
+                        binding.bottomNavigationView.animation =
+                            AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+                        binding.bottomNavigationView.animate()
+                    }
+
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 }
                 R.id.playerFragment -> {
-                    binding.bottomNavigationView.visibility = View.GONE
+                    if (binding.bottomNavigationView.visibility == View.VISIBLE) {
+                        binding.bottomNavigationView.visibility = View.GONE
+                        binding.bottomNavigationView.animation =
+                            AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+                        binding.bottomNavigationView.animate()
+                    }
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 }
-
                 else -> {
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-                    binding.toolbar.navigationIcon = null
+                    if (binding.bottomNavigationView.visibility == View.GONE) {
+                        binding.bottomNavigationView.visibility = View.VISIBLE
+                        binding.toolbar.navigationIcon = null
+                        binding.bottomNavigationView.animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_up)
+                        binding.bottomNavigationView.animate()
+                    }
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
                 }
             }
