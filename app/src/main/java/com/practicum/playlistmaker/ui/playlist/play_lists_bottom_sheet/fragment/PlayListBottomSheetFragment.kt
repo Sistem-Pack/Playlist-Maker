@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.play_lists_bottom_sheet.fragment
+package com.practicum.playlistmaker.ui.playlist.play_lists_bottom_sheet.fragment
 
 import android.os.Bundle
 import android.os.Environment
@@ -15,8 +15,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBottomSheetBinding
 import com.practicum.playlistmaker.domain.search.models.PlayList
-import com.practicum.playlistmaker.ui.play_list_bottom_sheet.fragment.PlayListBottomSheetFragment
-import com.practicum.playlistmaker.ui.play_lists_bottom_sheet.view_model.PlayListBottomSheetViewModel
+import com.practicum.playlistmaker.ui.playlist.play_lists_bottom_sheet.view_model.PlayListBottomSheetViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
@@ -24,14 +23,10 @@ class PlayListBottomSheetFragment(
     private val externalNavigator: ExternalNavigator,
     private val playList: PlayList,
     private val shareText: String
-) :
-    BottomSheetDialogFragment() {
-
+) : BottomSheetDialogFragment() {
     private var _binding: FragmentPlaylistBottomSheetBinding? = null
     private val binding get() = _binding!!
-
     private val viewModelPlayListBottomSheet by viewModel<PlayListBottomSheetViewModel>()
-
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     override fun onCreateView(

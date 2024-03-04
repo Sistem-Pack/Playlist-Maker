@@ -1,15 +1,14 @@
-package com.practicum.playlistmaker.ui.bottom_sheet.view_model
+package com.practicum.playlistmaker.ui.player.player_bottom_sheet.view_model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.domain.playlist.PlayListsInteractor
-import com.practicum.playlistmaker.domain.playlist.models.PlayListsState
 import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.domain.search.models.Track
+import com.practicum.playlistmaker.ui.mediatech.play.PlayListsState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -45,6 +44,7 @@ class PlayerBottomSheetViewModel(
             }
         }
     }
+
 
     fun clickDebounce(): Boolean {
         val current = isClickAllowed

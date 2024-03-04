@@ -6,17 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.domain.playlist.PlayListsInteractor
-import com.practicum.playlistmaker.ui.playlist.PlayListState
+import com.practicum.playlistmaker.ui.player.PlayListState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlayListViewModel(
     private val playListsInteractor: PlayListsInteractor
 ) : ViewModel() {
-
     private val stateLiveData = MutableLiveData<PlayListState>()
     fun observeState(): LiveData<PlayListState> = stateLiveData
-
     private var isClickAllowed = true
 
     private fun renderState(state: PlayListState) {

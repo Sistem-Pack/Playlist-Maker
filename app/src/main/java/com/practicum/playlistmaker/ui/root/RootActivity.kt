@@ -19,38 +19,37 @@ class RootActivity : AppCompatActivity() {
         binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.
-        findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.addPlayListFragment, R.id.playListFragment -> {
-                    if (binding.bottomNavigationView.visibility == View.VISIBLE) {
-                        binding.toolbar.visibility = View.GONE
-                        binding.bottomNavigationView.visibility = View.GONE
-                        binding.bottomNavigationView.animation =
-                            AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
-                        binding.bottomNavigationView.animate()
-                    }
+                    binding.toolbar.visibility = View.GONE
+                    binding.bottomNavigationView.visibility = View.GONE
+                    binding.bottomNavigationView.animation =
+                        AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+                    binding.bottomNavigationView.animate()
+                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+                }
 
-                    window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-                }
                 R.id.playerFragment -> {
-                    if (binding.bottomNavigationView.visibility == View.VISIBLE) {
-                        binding.bottomNavigationView.visibility = View.GONE
-                        binding.bottomNavigationView.animation =
-                            AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
-                        binding.bottomNavigationView.animate()
-                    }
+                    binding.bottomNavigationView.visibility = View.GONE
+                    binding.toolbar.visibility = View.VISIBLE
+                    binding.bottomNavigationView.animation =
+                        AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+                    binding.bottomNavigationView.animate()
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 }
+
                 else -> {
                     if (binding.bottomNavigationView.visibility == View.GONE) {
                         binding.bottomNavigationView.visibility = View.VISIBLE
                         binding.toolbar.navigationIcon = null
-                        binding.bottomNavigationView.animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_up)
+                        binding.bottomNavigationView.animation =
+                            AnimationUtils.loadAnimation(this, R.anim.slide_in_up)
                         binding.bottomNavigationView.animate()
                     }
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -58,7 +57,7 @@ class RootActivity : AppCompatActivity() {
             }
         }
 
-       binding.bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
 
     }
 }

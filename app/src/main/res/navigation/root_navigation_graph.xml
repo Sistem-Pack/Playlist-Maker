@@ -28,6 +28,17 @@
         <action
             android:id="@+id/action_mediaFragment_to_addPlayListFragment"
             app:destination="@id/addPlayListFragment" />
+        <action
+            android:id="@+id/action_mediaFragmentPlaylists_to_playListFragment"
+            app:destination="@id/playListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="playList"
+                app:argType="com.practicum.playlistmaker.domain.search.models.PlayList" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -52,14 +63,14 @@
         android:name="com.practicum.playlistmaker.ui.player.fragment.PlayerFragment"
         android:label="">
         <action
-            android:id="@+id/action_playerFragment_to_addPlayListFragment"
-            app:destination="@id/addPlayListFragment" />
-        <action
             android:id="@+id/action_playerFragment_to_playerBottomSheetFragment"
             app:destination="@id/playerBottomSheetFragment" />
         <argument
             android:name="track"
             app:argType="com.practicum.playlistmaker.domain.search.models.Track" />
+        <action
+            android:id="@+id/action_playerFragment_to_addPlayListFragment"
+            app:destination="@id/addPlayListFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPlayListFragment"
@@ -78,17 +89,6 @@
         android:id="@+id/mediaFragmentPlaylists"
         android:name="com.practicum.playlistmaker.ui.mediatech.play.fragment.MediaFragmentPlaylists"
         android:label="MediaFragmentPlaylists">
-        <action
-            android:id="@+id/action_mediaFragmentPlaylists_to_playListFragment"
-            app:destination="@id/playListFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right">
-            <argument
-                android:name="playList"
-                app:argType="com.practicum.playlistmaker.domain.search.models.PlayList" />
-        </action>
     </fragment>
     <dialog
         android:id="@+id/playerBottomSheetFragment"
@@ -123,7 +123,7 @@
     </fragment>
     <dialog
         android:id="@+id/playListBottomSheetFragment"
-        android:name="com.practicum.playlistmaker.ui.play_lists_bottom_sheet.fragment.PlayListBottomSheetFragment"
+        android:name="com.practicum.playlistmaker.ui.playlist.play_lists_bottom_sheet.fragment.PlayListBottomSheetFragment"
         android:label="PlayListBottomSheetFragment">
         <action
             android:id="@+id/action_playListBottomSheetFragment_to_addPlayListFragment"

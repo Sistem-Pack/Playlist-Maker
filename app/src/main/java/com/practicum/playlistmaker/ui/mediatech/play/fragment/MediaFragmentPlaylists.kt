@@ -9,9 +9,10 @@ import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.practicum.playlistmaker.domain.search.models.PlayList
+import com.practicum.playlistmaker.ui.mediatech.fragment.MediatechFragmentDirections
 import com.practicum.playlistmaker.ui.mediatech.play.PlayListViewHolder
 import com.practicum.playlistmaker.ui.mediatech.play.PlayListsAdapter
-import com.practicum.playlistmaker.ui.mediatech.play.PlayListsState
+import com.practicum.playlistmaker.ui.playlist.PlayListsState
 import com.practicum.playlistmaker.ui.mediatech.play.view_model.MediaPlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -62,8 +63,9 @@ class MediaFragmentPlaylists : Fragment() {
                 binding.ivPlaceholder.visibility = View.VISIBLE
                 binding.tvError.visibility = View.VISIBLE
             }
+
             is PlayListsState.PlayLists -> {
-                playListsAdapter.playLists = state.tracks
+                playListsAdapter.playLists = state.playLists
                 binding.ivPlaceholder.visibility = View.GONE
                 binding.tvError.visibility = View.GONE
                 binding.rvPlayLists.visibility = View.VISIBLE
@@ -77,7 +79,11 @@ class MediaFragmentPlaylists : Fragment() {
     }
 
     private fun clickOnPlayList(playList: PlayList) {
-        findNavController().navigate(MediaFragmentPlaylistsDirections.actionMediaFragmentPlaylistsToPlayListFragment(playList))
+        findNavController().navigate(
+            MediatechFragmentDirections.actionMediaFragmentPlaylistsToPlayListFragment(
+                playList
+            )
+        )
     }
 
     override fun onDestroyView() {

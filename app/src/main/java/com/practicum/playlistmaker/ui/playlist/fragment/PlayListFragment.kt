@@ -20,8 +20,9 @@ import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBinding
 import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.play_lists_bottom_sheet.fragment.PlayListBottomSheetFragment
-import com.practicum.playlistmaker.ui.playlist.PlayListState
+import com.practicum.playlistmaker.ui.mediatech.play.fragment.MediaFragmentPlaylists
+import com.practicum.playlistmaker.ui.playlist.play_lists_bottom_sheet.fragment.PlayListBottomSheetFragment
+import com.practicum.playlistmaker.ui.player.PlayListState
 import com.practicum.playlistmaker.ui.playlist.view_model.PlayListViewModel
 import com.practicum.playlistmaker.ui.track.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -64,6 +65,7 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
                 is PlayListState.PlayListTracks -> {
                     showTracks(it.tracks)
                 }
+
                 is PlayListState.PlayListInfo -> {
                     playList = it.playList
                     showPlayList()
@@ -93,14 +95,22 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
                 if (playListTracksAdapter.listTrack.isNotEmpty()) {
                     externalNavigator.sharePlayList(buildShareText())
                 } else {
-                    Toast.makeText(requireContext(), getString(R.string.playlist_is_empty_for_share), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.playlist_is_empty_for_share),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
 
         binding.iconMore.setOnClickListener {
             if (playListViewModel.clickDebounce()) {
-                PlayListBottomSheetFragment.newInstance(externalNavigator, playList, buildShareText())
+                PlayListBottomSheetFragment.newInstance(
+                    externalNavigator,
+                    playList,
+                    buildShareText()
+                )
                     .show(childFragmentManager, PlayListBottomSheetFragment.TAG)
             }
         }
@@ -124,7 +134,6 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
 
     private fun showPlayList() {
         binding.apply {
-
             val filePath = File(
                 requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 Consts.PLAY_LISTS_IMAGES_DIRECTORY
@@ -134,7 +143,6 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
                 .load(playList.image?.let { imageName -> File(filePath, imageName) })
                 .placeholder(R.drawable.track_pic_312)
                 .into(ivCoverPlaylist)
-
             tvPlaylistName.text = playList.name
             tvPlaylistName.isSelected = true
 
@@ -160,7 +168,11 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
 
     private fun showTracks(tracks: List<Track>) {
         if (tracks.isEmpty()) {
-            Toast.makeText(requireContext(), getString(R.string.playlist_is_empty), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.playlist_is_empty),
+                Toast.LENGTH_SHORT
+            ).show()
         }
         playListTracksAdapter.listTrack = tracks as ArrayList<Track>
         var durationSum = 0L
@@ -168,21 +180,27 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
             durationSum += track.trackTimeMillis ?: 0
         }
         durationSum = TimeUnit.MILLISECONDS.toMinutes(durationSum)
-        binding.playListInfoDuration.text = binding.playListInfoDuration.resources.getQuantityString(
-            R.plurals.plural_minutes,
-            durationSum.toInt(),
-            durationSum
-        )
-        binding.playListInfoCountTracks.text = binding.playListInfoCountTracks.resources.getQuantityString(
-            R.plurals.plural_count_tracks,
-            playListTracksAdapter.listTrack.size,
-            playListTracksAdapter.listTrack.size
-        )
+        binding.playListInfoDuration.text =
+            binding.playListInfoDuration.resources.getQuantityString(
+                R.plurals.plural_minutes,
+                durationSum.toInt(),
+                durationSum
+            )
+        binding.playListInfoCountTracks.text =
+            binding.playListInfoCountTracks.resources.getQuantityString(
+                R.plurals.plural_count_tracks,
+                playListTracksAdapter.listTrack.size,
+                playListTracksAdapter.listTrack.size
+            )
     }
 
     private fun clickOnTrack(track: Track) {
         if (playListViewModel.clickDebounce()) {
-            findNavController().navigate(PlayListFragmentDirections.actionPlayListFragmentToPlayerFragment(track))
+            findNavController().navigate(
+                PlayListFragmentDirections.actionPlayListFragmentToPlayerFragment(
+                    track
+                )
+            )
         }
     }
 
@@ -197,10 +215,15 @@ class PlayListFragment(private val externalNavigator: ExternalNavigator) : Fragm
             }
         }
         confirmDialog.show()
-        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        fun newInstance(externalNavigator: ExternalNavigator) = PlayListFragment(externalNavigator)
+    }
+
 }

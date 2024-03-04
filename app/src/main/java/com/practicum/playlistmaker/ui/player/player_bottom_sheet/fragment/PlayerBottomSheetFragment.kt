@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.ui.bottom_sheet.fragment
+package com.practicum.playlistmaker.ui.player.player_bottom_sheet.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,20 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.practicum.playlistmaker.ui.player.player_bottom_sheet.view_model.PlayerBottomSheetViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.FragmentBottomSheetBinding
-import com.practicum.playlistmaker.domain.playlist.models.PlayListsState
+import com.practicum.playlistmaker.databinding.FragmentPlayerBottomSheetBinding
 import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.domain.search.models.Track
-import com.practicum.playlistmaker.ui.bottom_sheet.view_model.PlayerBottomSheetViewModel
 import com.practicum.playlistmaker.ui.mediatech.play.PlayListViewHolder
 import com.practicum.playlistmaker.ui.mediatech.play.PlayListsAdapter
+import com.practicum.playlistmaker.ui.mediatech.play.PlayListsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerBottomSheetFragment(val track: Track) : BottomSheetDialogFragment() {
-    private var _binding: FragmentBottomSheetBinding? = null
+    private var _binding: FragmentPlayerBottomSheetBinding? = null
     private val binding get() = _binding!!
+
     private val viewModelPlayerBottomSheet by viewModel<PlayerBottomSheetViewModel>()
 
     private val playListsAdapter = object : PlayListsAdapter(
@@ -39,12 +40,13 @@ class PlayerBottomSheetFragment(val track: Track) : BottomSheetDialogFragment() 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBottomSheetBinding.inflate(inflater, container, false)
+        _binding = FragmentPlayerBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.playlistsRecycler.adapter = playListsAdapter
 
         viewModelPlayerBottomSheet.observePlayListsState().observe(viewLifecycleOwner) {
@@ -71,7 +73,6 @@ class PlayerBottomSheetFragment(val track: Track) : BottomSheetDialogFragment() 
                 R.id.action_playerFragment_to_addPlayListFragment
             )
         }
-
     }
 
     override fun onResume() {
@@ -95,6 +96,8 @@ class PlayerBottomSheetFragment(val track: Track) : BottomSheetDialogFragment() 
     }
 
     companion object {
+        const val TAG = "PlayerBottomSheet"
+
         fun newInstance(track: Track): PlayerBottomSheetFragment {
             return PlayerBottomSheetFragment(track)
         }
