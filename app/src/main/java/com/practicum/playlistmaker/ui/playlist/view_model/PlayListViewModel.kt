@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.Consts
+import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.domain.playlist.PlayListsInteractor
 import com.practicum.playlistmaker.ui.player.PlayListState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class PlayListViewModel(
+    private val externalNavigator: ExternalNavigator,
     private val playListsInteractor: PlayListsInteractor
 ) : ViewModel() {
     private val stateLiveData = MutableLiveData<PlayListState>()
@@ -44,6 +46,10 @@ class PlayListViewModel(
             }
         }
         return current
+    }
+
+    fun shareText(text: String) {
+        externalNavigator.shareText(text)
     }
 
     fun deleteTrackFromPlaylist(trackId: Int, playListId: Int) {

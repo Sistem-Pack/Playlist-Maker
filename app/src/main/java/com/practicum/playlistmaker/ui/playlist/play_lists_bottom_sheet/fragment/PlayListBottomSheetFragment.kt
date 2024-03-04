@@ -12,7 +12,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBottomSheetBinding
 import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.ui.playlist.play_lists_bottom_sheet.view_model.PlayListBottomSheetViewModel
@@ -20,7 +19,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
 class PlayListBottomSheetFragment(
-    private val externalNavigator: ExternalNavigator,
     private val playList: PlayList,
     private val shareText: String
 ) : BottomSheetDialogFragment() {
@@ -40,7 +38,6 @@ class PlayListBottomSheetFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModelPlayListBottomSheet.tracksCount.observe(viewLifecycleOwner) { count ->
             playList.tracksCount = count
         }
@@ -67,7 +64,7 @@ class PlayListBottomSheetFragment(
             if (viewModelPlayListBottomSheet.clickDebounce()) {
 
                 if (playList.tracksCount > 0) {
-                    externalNavigator.sharePlayList(shareText)
+                    viewModelPlayListBottomSheet.shareText(shareText)
                 } else {
                     dismiss()
                     Toast.makeText(
@@ -126,11 +123,10 @@ class PlayListBottomSheetFragment(
         const val TAG = "PlaylistBottomSheet"
 
         fun newInstance(
-            externalNavigator: ExternalNavigator,
             playList: PlayList,
             shareText: String
         ): PlayListBottomSheetFragment {
-            return PlayListBottomSheetFragment(externalNavigator, playList, shareText)
+            return PlayListBottomSheetFragment(playList, shareText)
         }
     }
 }

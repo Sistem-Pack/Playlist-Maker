@@ -41,7 +41,7 @@ class ExternalNavigatorImpl(val app: Application) : ExternalNavigator {
         }
     }
 
-    override fun sharePlayList(text: String) {
+    override fun shareText(text: String) {
         try {
             Intent().apply {
                 action = Intent.ACTION_SEND

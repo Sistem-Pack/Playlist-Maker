@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet"
-    android:orientation="vertical"
-    tools:context=".player.ui.PlayerBottomSheetFragment">
+    android:orientation="vertical">
 
     <View
         android:layout_width="50dp"

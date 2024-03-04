@@ -89,19 +89,18 @@
         android:id="@+id/mediaFragmentPlaylists"
         android:name="com.practicum.playlistmaker.ui.mediatech.play.fragment.MediaFragmentPlaylists"
         android:label="MediaFragmentPlaylists">
-    </fragment>
-    <dialog
-        android:id="@+id/playerBottomSheetFragment"
-        android:name="com.practicum.playlistmaker.ui.bottom_sheet.fragment.PlayerBottomSheetFragment"
-        android:label="PlayerBottomSheetFragment">
         <action
-            android:id="@+id/action_playerBottomSheetFragment_to_addPlayListFragment"
-            app:destination="@id/addPlayListFragment" />
-    </dialog>
-    <activity
-        android:id="@+id/rootActivity"
-        android:name="com.practicum.playlistmaker.ui.root.RootActivity"
-        android:label="RootActivity" />
+            android:id="@+id/action_mediaFragmentPlaylists_to_playListFragment"
+            app:destination="@id/playListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="playList"
+                app:argType="com.practicum.playlistmaker.domain.search.models.PlayList" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/playListFragment"
         android:name="com.practicum.playlistmaker.ui.playlist.fragment.PlayListFragment"
@@ -121,6 +120,18 @@
             android:name="playList"
             app:argType="com.practicum.playlistmaker.domain.search.models.PlayList" />
     </fragment>
+    <dialog
+        android:id="@+id/playerBottomSheetFragment"
+        android:name="com.practicum.playlistmaker.ui.bottom_sheet.fragment.PlayerBottomSheetFragment"
+        android:label="PlayerBottomSheetFragment">
+        <action
+            android:id="@+id/action_playerBottomSheetFragment_to_addPlayListFragment"
+            app:destination="@id/addPlayListFragment" />
+    </dialog>
+    <activity
+        android:id="@+id/rootActivity"
+        android:name="com.practicum.playlistmaker.ui.root.RootActivity"
+        android:label="RootActivity" />
     <dialog
         android:id="@+id/playListBottomSheetFragment"
         android:name="com.practicum.playlistmaker.ui.playlist.play_lists_bottom_sheet.fragment.PlayListBottomSheetFragment"

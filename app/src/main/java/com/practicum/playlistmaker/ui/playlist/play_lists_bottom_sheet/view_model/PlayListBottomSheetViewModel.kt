@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.Consts
+import com.practicum.playlistmaker.data.sharing.ExternalNavigator
 import com.practicum.playlistmaker.domain.playlist.PlayListsInteractor
 import com.practicum.playlistmaker.domain.search.models.PlayList
 import kotlinx.coroutines.delay
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 
 
 class PlayListBottomSheetViewModel(
+    private val externalNavigator: ExternalNavigator,
     private val playListsInteractor: PlayListsInteractor
 ): ViewModel() {
     private var isClickAllowed = true
@@ -33,6 +35,10 @@ class PlayListBottomSheetViewModel(
             }
         }
         return current
+    }
+
+    fun shareText(text: String) {
+        externalNavigator.shareText(text)
     }
 
     fun observeTrackCount(playListId: Int) {
