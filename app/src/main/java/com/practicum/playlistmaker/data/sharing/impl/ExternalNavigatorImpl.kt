@@ -47,6 +47,7 @@ class ExternalNavigatorImpl(val app: Application) : ExternalNavigator {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, text)
                 type = "text/plain"
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 app.startActivity(this)
             }
         } catch (e: ActivityNotFoundException) {

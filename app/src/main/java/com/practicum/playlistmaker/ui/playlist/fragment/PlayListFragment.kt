@@ -80,7 +80,7 @@ class PlayListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        playList = args.playList
+        playList = args.playList!!
     }
 
     private fun initOnClickListeners() {
@@ -130,7 +130,6 @@ class PlayListFragment : Fragment() {
 
     private fun showPlayList() {
         binding.apply {
-
             val filePath = File(
                 requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 Consts.PLAY_LISTS_IMAGES_DIRECTORY

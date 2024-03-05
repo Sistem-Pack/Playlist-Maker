@@ -32,7 +32,7 @@ class AddPlaylistFragment : Fragment() {
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private var pickImageUri: Uri? = null
     private var playList: PlayList? = null
-    //private val args: AddPlaylistFragmentArgs by navArgs()
+    private val args: AddPlaylistFragmentArgs? by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -136,7 +136,10 @@ class AddPlaylistFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        //playList = args.playList
+        if (args?.playList != null) {
+            playList = args?.playList
+        }
+
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (checkUnsavedData()) {

@@ -46,8 +46,9 @@ class MediaFragmentPlaylists : Fragment() {
         binding.rvPlayLists.adapter = playListsAdapter
 
         binding.buttonNewPlaylist.setOnClickListener {
+            val playList: PlayList? = null
             findNavController().navigate(
-                R.id.action_mediaFragment_to_addPlayListFragment
+                MediatechFragmentDirections.actionMediaFragmentToAddPlayListFragment(playList)
             )
         }
 

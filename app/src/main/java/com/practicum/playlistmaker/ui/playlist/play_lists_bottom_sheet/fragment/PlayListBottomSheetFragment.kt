@@ -14,6 +14,7 @@ import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlaylistBottomSheetBinding
 import com.practicum.playlistmaker.domain.search.models.PlayList
+import com.practicum.playlistmaker.ui.playlist.fragment.PlayListFragmentDirections
 import com.practicum.playlistmaker.ui.playlist.play_lists_bottom_sheet.view_model.PlayListBottomSheetViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -62,7 +63,6 @@ class PlayListBottomSheetFragment(
 
         binding.buttonSharePlaylist.setOnClickListener {
             if (viewModelPlayListBottomSheet.clickDebounce()) {
-
                 if (playList.tracksCount > 0) {
                     viewModelPlayListBottomSheet.shareText(shareText)
                 } else {
@@ -80,9 +80,7 @@ class PlayListBottomSheetFragment(
             if (viewModelPlayListBottomSheet.clickDebounce()) {
                 dismiss()
                 findNavController().navigate(
-                    PlayListBottomSheetFragmentDirections.actionPlayListBottomSheetFragmentToAddPlayListFragment(
-                        playList
-                    )
+                    PlayListFragmentDirections.actionPlayListFragmentToAddPlayListFragment(playList)
                 )
             }
         }
