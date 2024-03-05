@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.playlistmaker.db.data.TrackDao
 
 @Database(
-    version = 4,
+    version = 1,
     entities = [TrackEntity::class, PlayListsTrackEntity::class, PlayListEntity::class, TrackPlayListEntity::class]
 )
 abstract class AppDatabase : RoomDatabase() {

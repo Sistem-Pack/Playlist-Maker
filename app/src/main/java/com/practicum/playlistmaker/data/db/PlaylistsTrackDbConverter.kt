@@ -4,6 +4,7 @@ import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.domain.search.models.Track
 
 class PlaylistsTrackDbConverter {
+
     fun map(playList: PlayList): PlayListEntity {
         playList.apply {
             return PlayListEntity(
