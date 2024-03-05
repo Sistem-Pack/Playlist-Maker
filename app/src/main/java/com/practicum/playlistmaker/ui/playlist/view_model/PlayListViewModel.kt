@@ -27,12 +27,15 @@ class PlayListViewModel(
         viewModelScope.launch {
             renderState(
                 PlayListState.PlayListInfo(
-                playListsInteractor.getPlayList(playListId)
-            ))
+                    playListsInteractor.getPlayList(playListId)
+                )
+            )
+            delay(100)
             renderState(
                 PlayListState.PlayListTracks(
-                playListsInteractor.getPlayListTracks(playListId).toMutableList()
-            ))
+                    playListsInteractor.getPlayListTracks(playListId).toMutableList()
+                )
+            )
         }
     }
 
@@ -57,8 +60,9 @@ class PlayListViewModel(
             playListsInteractor.deleteTrackFromPlaylist(trackId, playListId)
             renderState(
                 PlayListState.PlayListTracks(
-                playListsInteractor.getPlayListTracks(playListId)
-            ))
+                    playListsInteractor.getPlayListTracks(playListId)
+                )
+            )
         }
     }
 

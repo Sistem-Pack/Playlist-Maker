@@ -5,17 +5,6 @@ import com.practicum.playlistmaker.domain.search.models.Track
 
 class PlaylistsTrackDbConverter {
 
-    fun map(playList: PlayList): PlayListEntity {
-        playList.apply {
-            return PlayListEntity(
-                null,
-                name,
-                description,
-                image
-            )
-        }
-    }
-
     fun map(playListWithCountTracks: PlayListWithCountTracks): PlayList {
         playListWithCountTracks.apply {
             return PlayList(
@@ -23,7 +12,7 @@ class PlaylistsTrackDbConverter {
                 name,
                 description,
                 image,
-                tracksCount,
+                tracksCount
             )
         }
     }
@@ -57,9 +46,8 @@ class PlaylistsTrackDbConverter {
                 releaseDate,
                 primaryGenreName,
                 country,
-                previewUrl,
+                previewUrl
             )
         }
     }
-
 }

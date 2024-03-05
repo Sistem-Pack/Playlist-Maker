@@ -87,14 +87,18 @@ class PlayListsRepositoryImpl(
             appDatabase.playListsTrackDao().getPlayList(playListId)
         )
 
-    override suspend fun getPlayLists(): List<PlayList> = convertPlayListWithCountTracksToPlayList(
-        appDatabase.playListsTrackDao().getPlayLists()
-    )
+    override suspend fun getPlayLists(): List<PlayList> =
+        convertPlayListWithCountTracksToPlayList(
+            appDatabase.playListsTrackDao().getPlayLists()
+        )
 
     override suspend fun getPlayListTracks(playListId: Int): List<Track> =
         convertPlayListsTrackEntityToTrack(
             appDatabase.playListsTrackDao().getPlayListTracks(playListId)
         )
+
+    override suspend fun isTrackInPlayList(trackId: Int, playListId: Int): Boolean =
+        appDatabase.playListsTrackDao().isTrackInPlayList(trackId, playListId)
 
     override suspend fun deleteTrackFromPlaylist(trackId: Int, playListId: Int) {
         appDatabase.playListsTrackDao().deleteTrackFromPlayList(trackId, playListId)
@@ -132,11 +136,10 @@ class PlayListsRepositoryImpl(
         return imageFileName
     }
 
-    override suspend fun isTrackInPlayList(trackId: Int, playListId: Int): Boolean =
-        appDatabase.playListsTrackDao().isTrackInPlayList(trackId, playListId)
-
     private fun convertPlayListsTrackEntityToTrack(tracks: List<PlayListsTrackEntity>): List<Track> =
-        tracks.map { playListsTrackDbConverter.map(it) }
+        tracks.map {
+            playListsTrackDbConverter.map(it)
+        }
 
     private fun convertPlayListWithCountTracksToPlayList(playListWithCountTracks: List<PlayListWithCountTracks>): List<PlayList> =
         playListWithCountTracks.map {
