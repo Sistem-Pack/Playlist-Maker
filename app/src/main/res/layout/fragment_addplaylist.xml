@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/mediatechLinearLayout">
@@ -31,54 +32,55 @@
         android:id="@+id/addImage"
         android:layout_width="@dimen/zero"
         android:layout_height="@dimen/zero"
-        android:scaleType="centerCrop"
         android:layout_marginHorizontal="@dimen/dm24"
-        android:layout_marginTop="@dimen/dm82"
+        android:layout_marginTop="82dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="@string/add_image"
+        android:scaleType="centerCrop"
         android:src="@drawable/add_image_for_playlist"
-        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintBottom_toTopOf="@+id/playListNameTextInputLayout"
+        app:layout_constraintDimensionRatio="w, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/add_image"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playListNameTextInputLayout"
         style="@style/PlayListCreateTextInputLayout"
         android:hint="@string/playlist_name_hint"
+        android:layout_marginBottom="@dimen/dm16"
         app:boxStrokeColor="@color/text_not_stroke"
         app:hintTextColor="@color/text_not"
-        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/playListDescriptionTextInputLayout"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/addImage">
+        app:layout_constraintStart_toStartOf="@+id/leftBorder">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playListNameEditText"
             style="@style/PlayListCreateEditText"
-            android:inputType="textCapSentences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:inputType="textCapSentences" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playListDescriptionTextInputLayout"
         style="@style/PlayListCreateTextInputLayout"
+        android:hint="@string/description"
         app:boxStrokeColor="@color/text_not_stroke"
         app:hintTextColor="@color/text_not"
-        android:hint="@string/description"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="170dp"
+        app:layout_constraintBottom_toTopOf="@+id/playlistCreateButton"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
-        app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/playListNameTextInputLayout">
+        app:layout_constraintStart_toStartOf="@+id/leftBorder">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playListDescriptionEditText"
             style="@style/PlayListCreateEditText"
-            android:inputType="textCapSentences"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
