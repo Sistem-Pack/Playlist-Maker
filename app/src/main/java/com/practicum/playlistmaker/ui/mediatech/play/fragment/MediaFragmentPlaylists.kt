@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
@@ -12,8 +13,8 @@ import com.practicum.playlistmaker.domain.search.models.PlayList
 import com.practicum.playlistmaker.ui.mediatech.fragment.MediatechFragmentDirections
 import com.practicum.playlistmaker.ui.mediatech.play.PlayListViewHolder
 import com.practicum.playlistmaker.ui.mediatech.play.PlayListsAdapter
-import com.practicum.playlistmaker.ui.playlist.PlayListsState
 import com.practicum.playlistmaker.ui.mediatech.play.view_model.MediaPlaylistsViewModel
+import com.practicum.playlistmaker.ui.playlist.PlayListsState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragmentPlaylists : Fragment() {
@@ -58,19 +59,11 @@ class MediaFragmentPlaylists : Fragment() {
     }
 
     private fun render(state: PlayListsState) {
-        when (state) {
-            is PlayListsState.Empty -> {
-                binding.rvPlayLists.visibility = View.GONE
-                binding.ivPlaceholder.visibility = View.VISIBLE
-                binding.tvError.visibility = View.VISIBLE
-            }
-
-            is PlayListsState.PlayLists -> {
-                playListsAdapter.playLists = state.playLists
-                binding.ivPlaceholder.visibility = View.GONE
-                binding.tvError.visibility = View.GONE
-                binding.rvPlayLists.visibility = View.VISIBLE
-            }
+        binding.rvPlayLists.isVisible = state is PlayListsState.PlayLists
+        binding.tvError.isVisible = state is PlayListsState.Empty
+        binding.ivPlaceholder.isVisible = state is PlayListsState.Empty
+        if (state is PlayListsState.PlayLists) {
+            playListsAdapter.playLists = state.playLists
         }
     }
 

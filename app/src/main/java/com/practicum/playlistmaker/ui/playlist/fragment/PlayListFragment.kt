@@ -37,14 +37,7 @@ class PlayListFragment : Fragment() {
     private lateinit var playList: PlayList
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private val args: PlayListFragmentArgs by navArgs()
-    private val playListTracksAdapter by lazy { TrackAdapter(
-        {
-            clickOnTrack(it)
-        },
-        {
-            longClickOnTrack(it)
-        }
-    ) }
+    private val playListTracksAdapter by lazy { TrackAdapter(::clickOnTrack, ::longClickOnTrack) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,7 +73,7 @@ class PlayListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        playList = args.playList!!
+        playList = args.playList ?: return
     }
 
     private fun initOnClickListeners() {

@@ -26,8 +26,8 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val searchViewModel by viewModel<SearchViewModel>()
-    private val adapterTracks by lazy { TrackAdapter ({ initializeAdapter(it) }) }
-    private val adapterTracksHistory by lazy { TrackAdapter ({ initializeAdapter(it) }) }
+    private val adapterTracks by lazy { TrackAdapter (::initializeAdapter) }
+    private val adapterTracksHistory by lazy { TrackAdapter ( ::initializeAdapter) }
     private var searchText: String = ""
 
     override fun onCreateView(
