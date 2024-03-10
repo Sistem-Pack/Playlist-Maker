@@ -26,7 +26,6 @@ object Consts {
     const val DELAY_MILLIS = 300L
 
     const val TRACK = "track"
-    const val TAG = "PlayerBottomSheet"
     const val PLAY_LISTS_IMAGES_DIRECTORY = "play_list_images"
     const val IMAGE_QUALITY = 80
 

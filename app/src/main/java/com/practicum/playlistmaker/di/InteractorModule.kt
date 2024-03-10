@@ -66,7 +66,7 @@ val interactorModule = module {
         FavoriteTracksInteractorImpl(get())
     }
 
-    single <PlayListsInteractor> {
+    single<PlayListsInteractor> {
         PlayListsInteractorImpl(get())
     }
 

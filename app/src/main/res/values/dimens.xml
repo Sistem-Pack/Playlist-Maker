@@ -16,6 +16,7 @@
     <dimen name="dm26">26dp</dimen>
     <dimen name="dm28">28dp</dimen>
     <dimen name="dm30">30dp</dimen>
+    <dimen name="dm32">32dp</dimen>
     <dimen name="dm36">36dp</dimen>
     <dimen name="dm44">44dp</dimen>
     <dimen name="dm45">45dp</dimen>

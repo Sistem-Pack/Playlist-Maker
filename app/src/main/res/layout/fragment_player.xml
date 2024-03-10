@@ -67,6 +67,8 @@
         app:layout_constraintBottom_toBottomOf="@id/play"
         app:layout_constraintStart_toStartOf="@id/left_guideline"
         app:layout_constraintTop_toTopOf="@id/play"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
         app:srcCompat="@drawable/playlist_add_up" />
 
     <ImageButton
@@ -74,21 +76,25 @@
         style="@style/BackButtonImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:layout_marginBottom="@dimen/dm4"
-        android:background="@null"
         android:contentDescription="@string/null_string"
         android:src="@drawable/play_dark"
         app:layout_constraintBottom_toTopOf="@id/duration"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
-        app:layout_constraintStart_toStartOf="@id/left_guideline" />
+        app:layout_constraintStart_toStartOf="@id/left_guideline"
+        android:background="?attr/selectableItemBackground" />
 
     <ImageButton
         android:id="@+id/like"
         style="@style/audio_player_button_like"
         android:contentDescription="@null"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@id/play"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
-        app:layout_constraintTop_toTopOf="@id/play" />
+        app:layout_constraintTop_toTopOf="@id/play"
+        android:background="?attr/selectableItemBackground"
+        />
 
     <TextView
         android:id="@+id/duration"

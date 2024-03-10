@@ -21,7 +21,7 @@ class MediaFragmentFavoriteTracks : Fragment() {
     private var _binding: FragmentFavoriteTracksBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<MediaFavoriteTracksViewModel>()
-    private val favoriteTrackAdapter by lazy { TrackAdapter { startAdapter(it) } }
+    private val favoriteTrackAdapter by lazy { TrackAdapter({ startAdapter(it) }) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +55,6 @@ class MediaFragmentFavoriteTracks : Fragment() {
 
     private fun startAdapter(track: Track) {
         if (viewModel.clickDebounce()) {
-            viewModel.clickDebounce()
             findNavController().navigate(
                 R.id.action_mediaFragment_to_playerFragment,
                 Bundle().apply {

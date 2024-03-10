@@ -7,8 +7,8 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.App
 import com.practicum.playlistmaker.Consts
 import com.practicum.playlistmaker.data.db.AppDatabase
-import com.practicum.playlistmaker.data.db.PlaylistsTrackDbConvertor
-import com.practicum.playlistmaker.data.db.TrackDbConvertor
+import com.practicum.playlistmaker.data.db.PlaylistsTrackDbConverter
+import com.practicum.playlistmaker.data.db.TrackDbConverter
 import com.practicum.playlistmaker.data.network.NetworkClient
 import com.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import com.practicum.playlistmaker.data.network.SearchApiService
@@ -54,9 +54,9 @@ val dataModule = module {
         App()
     }
 
-    factory { TrackDbConvertor() }
+    factory { TrackDbConverter() }
 
-    factory { PlaylistsTrackDbConvertor() }
+    factory { PlaylistsTrackDbConverter() }
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")

@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.data.favorite.impl
 
 import com.practicum.playlistmaker.data.db.AppDatabase
-import com.practicum.playlistmaker.data.db.TrackDbConvertor
+import com.practicum.playlistmaker.data.db.TrackDbConverter
 import com.practicum.playlistmaker.data.db.TrackEntity
 import com.practicum.playlistmaker.domain.favorite.FavoriteTracksRepository
 import com.practicum.playlistmaker.domain.search.models.Track
@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.flow
 
 class FavoriteTracksRepositoryImpl(
     private val appDatabase: AppDatabase,
-    private val trackDbConvertor: TrackDbConvertor,
+    private val trackDbConverter: TrackDbConverter,
 ) : FavoriteTracksRepository {
 
     override suspend fun insertTrack(track: Track) {
-        appDatabase.trackDao().insertTrack(trackDbConvertor.mapTrackToTrackEntity(track))
+        appDatabase.trackDao().insertTrack(trackDbConverter.mapTrackToTrackEntity(track))
     }
 
     override suspend fun deleteTrack(track: Track) {
-        appDatabase.trackDao().deleteTrack(trackDbConvertor.mapTrackToTrackEntity(track))
+        appDatabase.trackDao().deleteTrack(trackDbConverter.mapTrackToTrackEntity(track))
     }
 
     override suspend fun getTracks(): Flow<List<Track>> = flow {
@@ -32,6 +32,6 @@ class FavoriteTracksRepositoryImpl(
     }
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> {
-        return tracks.map { track -> trackDbConvertor.mapEntityTrackToTrack(track) }
+        return tracks.map { track -> trackDbConverter.mapEntityTrackToTrack(track) }
     }
 }
