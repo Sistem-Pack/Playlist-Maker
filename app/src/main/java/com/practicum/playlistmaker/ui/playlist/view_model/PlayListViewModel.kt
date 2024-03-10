@@ -15,8 +15,10 @@ class PlayListViewModel(
     private val externalNavigator: ExternalNavigator,
     private val playListsInteractor: PlayListsInteractor
 ) : ViewModel() {
+
     private val stateLiveData = MutableLiveData<PlayListState>()
     fun observeState(): LiveData<PlayListState> = stateLiveData
+
     private var isClickAllowed = true
 
     private fun renderState(state: PlayListState) {
